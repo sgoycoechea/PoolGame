@@ -7,6 +7,7 @@
 #include "include/Ball.h"
 #include <math.h>
 #include <vector>
+#include <chrono>
 
 #define _USE_MATH_DEFINES
 #define FPS 60
@@ -53,48 +54,61 @@ void drawPrism(vector<Point*> points, Color* topColor, Color* restOfColors){
         drawQuad(rightPoints, restOfColors);
 }
 
-void drawBalls(float ballRad, float ballSeparation){
+vector<Ball*> initializeBalls(float ballRad, float ballSeparation){
     Color* redColor = new Color(70,10,10);
     Color* whiteColor = new Color(200, 200, 200);
 
     // White ball
     Ball* whiteBall = new Ball(-2, ballRad, 0, ballRad, whiteColor);
-    whiteBall->draw(50,50);
     // First line
     Ball* ball1 = new Ball(1, ballRad, 0, ballRad, redColor);
-    ball1->draw(50,50);
     // Second line
     Ball* ball2 = new Ball(1+ballSeparation, ballRad, ballRad, ballRad, redColor);
-    ball2->draw(50,50);
     Ball* ball3 = new Ball(1+ballSeparation, ballRad, -ballRad, ballRad, redColor);
-    ball3->draw(50,50);
     // Third line
     Ball* ball4 = new Ball(1+ballSeparation*2, ballRad, 0, ballRad, redColor);
-    ball4->draw(50,50);
     Ball* ball5 = new Ball(1+ballSeparation*2, ballRad, ballRad*2, ballRad, redColor);
-    ball5->draw(50,50);
     Ball* ball6 = new Ball(1+ballSeparation*2, ballRad, -ballRad*2, ballRad, redColor);
-    ball6->draw(50,50);
     // Forth line
     Ball* ball7 = new Ball(1+ballSeparation*3, ballRad, ballRad, ballRad, redColor);
-    ball7->draw(50,50);
     Ball* ball8 = new Ball(1+ballSeparation*3, ballRad, -ballRad, ballRad, redColor);
-    ball8->draw(50,50);
     Ball* ball9 = new Ball(1+ballSeparation*3, ballRad, ballRad + ballRad*2, ballRad, redColor);
-    ball9->draw(50,50);
     Ball* ball10 = new Ball(1+ballSeparation*3, ballRad, -ballRad - ballRad*2, ballRad, redColor);
-    ball10->draw(50,50);
     // Fifth line
     Ball* ball11 = new Ball(1+ballSeparation*4, ballRad, 0, ballRad, redColor);
-    ball11->draw(50,50);
     Ball* ball12 = new Ball(1+ballSeparation*4, ballRad, ballRad*2, ballRad, redColor);
-    ball12->draw(50,50);
     Ball* ball13 = new Ball(1+ballSeparation*4, ballRad, ballRad*2*2, ballRad, redColor);
-    ball13->draw(50,50);
     Ball* ball14 = new Ball(1+ballSeparation*4, ballRad, -ballRad*2, ballRad, redColor);
-    ball14->draw(50,50);
     Ball* ball15 = new Ball(1+ballSeparation*4, ballRad, -ballRad*2*2, ballRad, redColor);
-    ball15->draw(50,50);
+
+    vector<Ball*> balls;
+    balls.push_back(whiteBall);
+    balls.push_back(ball1);
+    balls.push_back(ball2);
+    balls.push_back(ball3);
+    balls.push_back(ball4);
+    balls.push_back(ball5);
+    balls.push_back(ball6);
+    balls.push_back(ball7);
+    balls.push_back(ball8);
+    balls.push_back(ball9);
+    balls.push_back(ball10);
+    balls.push_back(ball11);
+    balls.push_back(ball12);
+    balls.push_back(ball13);
+    balls.push_back(ball14);
+    balls.push_back(ball15);
+    return balls;
+}
+
+void drawBalls(vector<Ball*> balls){
+    for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it)
+        (*it)->draw(50,50);
+}
+
+void moveBalls(vector<Ball*> balls, float time, float lTop, float wTop, float wBorder){
+    for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it)
+        (*it)->updatePosAndVel(time, lTop, wTop, wBorder);
 }
 
 void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, float wBorder, float hBorder){
@@ -215,15 +229,20 @@ int main(int argc, char *argv[]) {
     float hBorder = h/4;
     // -----------------------------------
 
+    auto lastFrameTime = std::chrono::system_clock::now();
     bool fin=false;
     SDL_Event evento;
+    vector<Ball*> balls = initializeBalls(ballRad, ballSeparation);
+    balls[0]->setVelocity(7,0,7);
+
     do{
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
         gluLookAt(x,y,-z,0,0,0,0,1,0);
 
         drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
-        drawBalls(ballRad, ballSeparation);
+        moveBalls(balls, 1, lTop, wTop, wBorder);
+        drawBalls(balls);
 
         int xm,ym;
         SDL_GetMouseState(&xm, &ym);
@@ -296,6 +315,7 @@ int main(int argc, char *argv[]) {
             }
         }
         SDL_GL_SwapBuffers();
+        lastFrameTime = std::chrono::system_clock::now();
     }while(!fin);
     return 0;
 }

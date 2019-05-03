@@ -38,6 +38,57 @@ void Ball::setVelocity(float x, float y, float z){
     this->velZ = z;
 }
 
+
+void Ball::updatePosAndVel(float time, float lTop, float wTop, float wBorder){
+
+    float velDecrease = time / 100;
+    float posFactor = time / 100;
+
+    // Ball is against a border
+    if (posX >= lTop/2 - rad - wBorder || posX <= -lTop/2 + rad + wBorder)
+        velX = -velX;
+    if (posZ >= wTop/2 - rad - wBorder || posZ <= -wTop/2 + rad + wBorder)
+        velZ = -velZ;
+
+    posX += velX * posFactor;
+    posZ += velZ * posFactor;
+
+
+
+    if (velDecrease > 0){
+
+        // X velocity
+        if (velX > 0){
+            velX -= velDecrease;
+            if (velX < 0) velX = 0;
+        }
+        else if (velX < 0){
+            velX += velDecrease;
+            if (velX > 0) velX = 0;
+        }
+
+        // Y velocity
+        if (velY > 0){
+            velY -= velDecrease;
+            if (velY < 0) velY = 0;
+        }
+        else if (velY < 0){
+            velY += velDecrease;
+            if (velY > 0) velY = 0;
+        }
+
+        // Z velocity
+        if (velZ > 0){
+            velZ -= velDecrease;
+            if (velZ < 0) velZ = 0;
+        }
+        else if (velZ < 0){
+            velZ += velDecrease;
+            if (velZ > 0) velZ = 0;
+        }
+    }
+}
+
 void Ball::draw(float lats, float longs) {
    float i, j;
     for(i = 0; i <= lats; i++)

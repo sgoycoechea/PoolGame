@@ -25,6 +25,7 @@ class Ball{
         float getRad();
         void setVelocity(float, float, float);
         void draw(float, float);
+        void updatePosAndVel(float, float, float, float);
 };
 
 #endif
