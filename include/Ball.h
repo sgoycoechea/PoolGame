@@ -13,6 +13,10 @@ class Ball{
         float velX;
         float velY;
         float velZ;
+        float rotX;
+        float rotY;
+        float rotZ;
+        float rotAng;
         float rad;
         Color* color;
     public:

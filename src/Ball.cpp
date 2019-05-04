@@ -13,6 +13,10 @@ Ball::Ball(float x, float y, float z, float rad, Color* color){
     this->velX = 0;
     this->velY = 0;
     this->velZ = 0;
+    this->rotX = 0;
+    this->rotY = 0;
+    this->rotZ = 0;
+    this->rotAng = 0;
     this->color = color;
 }
 
@@ -41,7 +45,7 @@ void Ball::setVelocity(float x, float y, float z){
 
 void Ball::updatePosAndVel(float time, float lTop, float wTop, float wBorder){
 
-    float velDecrease = time / 100;
+    float velDecrease = time / 20;
     float posFactor = time / 100;
 
     // Ball is against a border
@@ -50,10 +54,25 @@ void Ball::updatePosAndVel(float time, float lTop, float wTop, float wBorder){
     if (posZ >= wTop/2 - rad - wBorder || posZ <= -wTop/2 + rad + wBorder)
         velZ = -velZ;
 
+    float diffX = posX;
+    float diffZ = posZ;
+    float circumference = 2 * M_PI * rad;
+
     posX += velX * posFactor;
     posZ += velZ * posFactor;
 
 
+    diffX = posX - diffX;
+    diffZ = posZ - diffZ;
+    float distanceMoved = sqrt(pow(diffX,2) + pow(diffZ,2));
+
+    if(velX != 0 || velY != 0 || velZ != 0){
+        rotX = velZ;
+        rotY = 0;
+        rotZ = -velX;
+
+        rotAng += distanceMoved / circumference * 180;
+    }
 
     if (velDecrease > 0){
 
@@ -109,8 +128,10 @@ void Ball::draw(float lats, float longs, GLuint textura) {
         glPushMatrix();
 
         glTranslatef(posX, posY, posZ);
+        glRotatef(rotAng, rotX, rotY, rotZ); // Ball rotation when it moves
         glRotatef(90,0,1,0); // To fix texture position
         glRotatef(-90,1,0,0); // To fix texture position
+
         glBegin(GL_QUAD_STRIP);
         glColor3ub( color->getR(), color->getG(), color->getB());
 

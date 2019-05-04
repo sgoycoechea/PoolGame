@@ -8,7 +8,10 @@
 #include <math.h>
 #include <vector>
 #include <chrono>
+#include <ctime>
 #include <fstream>
+#include <unistd.h>
+#include <thread>
 #include <algorithm>
 #define _USE_MATH_DEFINES
 #define FPS 60
@@ -109,7 +112,7 @@ void drawBalls(vector<Ball*> balls, GLuint* textures){
     int i = 0;
     for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it){
         if (i == 0)
-            (*it)->draw(50,50,-1);
+            (*it)->draw(50,50,textures[10]);
         else
             (*it)->draw(50,50, textures[i - 1]);
         i++;
@@ -302,22 +305,29 @@ int main(int argc, char *argv[]) {
     float hBorder = h/4;
     // -----------------------------------
 
-    auto lastFrameTime = std::chrono::system_clock::now();
+    auto lastFrameTime = clock();
     bool fin=false;
     SDL_Event evento;
     vector<Ball*> balls = initializeBalls(ballRad, ballSeparation);
-    balls[0]->setVelocity(7,0,7);
-
+    balls[0]->setVelocity(7,0,10);
     do{
+
+
+        auto currentTime = clock();
+        float frameTime = (float)(currentTime - lastFrameTime);
+        lastFrameTime = clock();
+
+
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
         gluLookAt(x,y,-z,0,0,0,0,1,0);
 
+
         drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
-        moveBalls(balls, 1, lTop, wTop, wBorder);
-
-
+        moveBalls(balls, frameTime/40, lTop, wTop, wBorder);
         drawBalls(balls, textures);
+
 
 
         int xm,ym;
@@ -391,7 +401,14 @@ int main(int argc, char *argv[]) {
             }
         }
         SDL_GL_SwapBuffers();
-        lastFrameTime = std::chrono::system_clock::now();
+
+        // Force 60fps
+        currentTime = clock();
+        frameTime = (float)(currentTime - lastFrameTime);
+        if (frameTime < 17)
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(17- frameTime)));
+
+
     }while(!fin);
     return 0;
 }
