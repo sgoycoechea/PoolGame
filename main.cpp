@@ -126,9 +126,8 @@ void moveBalls(vector<Ball*> balls, float time, float lTop, float wTop, float wB
 
 void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, float wBorder, float hBorder){
 
-    Color* greenColor = new Color(35,123,86);
-    Color* brownColor1 = new Color(60,36,21);
-    Color* brownColor2 = new Color(60,36,21);
+    Color* greenColor = new Color(35, 123, 86);
+    Color* brownColor = new Color(60, 36, 21);
 
     vector<Point*> table;
     table.push_back(new Point(-lTop/2,0,wTop/2));
@@ -181,47 +180,39 @@ void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, fl
     border4.push_back(new Point(-lTop/2 , 0,-wTop/2));
 
     // Draw table
-    drawPrism(table, greenColor, brownColor1);
-    drawPrism(border1, brownColor2, brownColor2);
-    drawPrism(border2, brownColor2, brownColor2);
-    drawPrism(border3, brownColor2, brownColor2);
-    drawPrism(border4, brownColor2, brownColor2);
+    drawPrism(table, greenColor, brownColor);
+    drawPrism(border1, brownColor, brownColor);
+    drawPrism(border2, brownColor, brownColor);
+    drawPrism(border3, brownColor, brownColor);
+    drawPrism(border4, brownColor, brownColor);
 }
 
 GLuint* loadTextures(){
-
     GLuint* textures = new GLuint[15];
 
     // Get the texture of all 15 balls
     for (int i = 1; i <= 15; i++){
-        string archivo = "images/ball" + to_string(i) + ".jpg";
+        string file = "images/ball" + to_string(i) + ".jpg";
 
-        FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(archivo.c_str());
-        FIBITMAP* bitmap = FreeImage_Load(fif, archivo.c_str());
+        FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(file.c_str());
+        FIBITMAP* bitmap = FreeImage_Load(fif, file.c_str());
         bitmap = FreeImage_ConvertTo24Bits(bitmap);
-
         int texW = FreeImage_GetWidth(bitmap);
         int texH = FreeImage_GetHeight(bitmap);
+        void* data = FreeImage_GetBits(bitmap);
+        GLuint texture;
 
-        void* datos = FreeImage_GetBits(bitmap);
-
-        GLuint textura;
-        glGenTextures(1, &textura);
-
-        glBindTexture(GL_TEXTURE_2D, textura);
-
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texW, texH, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+        delete data;
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texW, texH, 0, GL_BGR, GL_UNSIGNED_BYTE, datos);
-
-        delete datos;
-
-        textures[i-1] = textura;
+        textures[i-1] = texture;
     }
 
     // Shuffle textures to get random ball positions
@@ -234,7 +225,6 @@ GLuint* loadTextures(){
     for (int i = 0; i < 15; i++)
         if (textures[i] == blackTexture)
             blackPosition = i;
-
     GLuint aux = textures[3];
     textures[3] = textures[blackPosition];
     textures[blackPosition] = aux;
@@ -279,13 +269,7 @@ int main(int argc, char *argv[]) {
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_MODELVIEW);
 
-
-
-
-
     GLuint* textures = loadTextures();
-
-
 
 
     // ---- Size of table and balls -----
@@ -306,17 +290,14 @@ int main(int argc, char *argv[]) {
     // -----------------------------------
 
     auto lastFrameTime = clock();
-    bool fin=false;
-    SDL_Event evento;
+    bool quit=false;
+    SDL_Event event;
     vector<Ball*> balls = initializeBalls(ballRad, ballSeparation);
-    balls[0]->setVelocity(7,0,10);
+    balls[0]->setVelocity(15,0,10);
     do{
-
-
         auto currentTime = clock();
         float frameTime = (float)(currentTime - lastFrameTime);
         lastFrameTime = clock();
-
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -329,11 +310,10 @@ int main(int argc, char *argv[]) {
         drawBalls(balls, textures);
 
 
-
         int xm,ym;
         SDL_GetMouseState(&xm, &ym);
-        while(SDL_PollEvent(&evento)){
-            switch(evento.type){
+        while(SDL_PollEvent(&event)){
+            switch(event.type){
 
             case SDL_MOUSEBUTTONDOWN:
                 if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3)){
@@ -345,21 +325,21 @@ int main(int argc, char *argv[]) {
                 break;
             case SDL_MOUSEMOTION:
                 if(moverCam){
-                    if (evento.motion.yrel<0 && angb < 80 )
-                        angb-=evento.motion.yrel*0.4;//factor de ajuste: 0,4
-                    else if (evento.motion.yrel>=0 && angb > -80)
-                        angb-=evento.motion.yrel*0.4;//factor de ajuste: 0,4
-                    anga+=evento.motion.xrel*0.4;//factor de ajuste: 0,4
+                    if (event.motion.yrel<0 && angb < 80 )
+                        angb-=event.motion.yrel*0.4;//factor de ajuste: 0,4
+                    else if (event.motion.yrel>=0 && angb > -80)
+                        angb-=event.motion.yrel*0.4;//factor de ajuste: 0,4
+                    anga+=event.motion.xrel*0.4;//factor de ajuste: 0,4
                     actualizarCam(x,y,z,angb,anga,rad);
                 }
                 break;
             case SDL_QUIT:
-                fin = true;
+                quit = true;
                 break;
             case SDL_KEYDOWN:{
-                switch(evento.key.keysym.sym){
+                switch(event.key.keysym.sym){
                 case SDLK_ESCAPE:
-                    fin = true;
+                    quit = true;
                     break;
                 case SDLK_s:{
                     rad-=.05;//factor de ajuste: 0,05
@@ -402,13 +382,13 @@ int main(int argc, char *argv[]) {
         }
         SDL_GL_SwapBuffers();
 
-        // Force 60fps
+        // Force 60fps cap
         currentTime = clock();
         frameTime = (float)(currentTime - lastFrameTime);
         if (frameTime < 17)
             std::this_thread::sleep_for(std::chrono::milliseconds((int)(17- frameTime)));
 
 
-    }while(!fin);
+    }while(!quit);
     return 0;
 }

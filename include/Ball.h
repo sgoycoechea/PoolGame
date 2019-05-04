@@ -21,13 +21,6 @@ class Ball{
         Color* color;
     public:
         Ball(float, float, float, float, Color*);
-        float getPosX();
-        float getPosY();
-        float getPosZ();
-        float getVelX();
-        float getVelY();
-        float getVelZ();
-        float getRad();
         void setVelocity(float, float, float);
         void draw(float, float, GLuint);
         void updatePosAndVel(float, float, float, float);
