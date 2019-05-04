@@ -5,11 +5,12 @@
 
 using namespace std;
 
-Ball::Ball(float x, float y, float z, float rad, Color* color){
+Ball::Ball(double x, double y, double z, double rad, double mass, Color* color){
     this->posX = x;
     this->posY = y;
     this->posZ = z;
     this->rad = rad;
+    this->mass = mass;
     this->velX = 0;
     this->velY = 0;
     this->velZ = 0;
@@ -20,38 +21,94 @@ Ball::Ball(float x, float y, float z, float rad, Color* color){
     this->color = color;
 }
 
-void Ball::setVelocity(float x, float y, float z){
+void Ball::setVelocity(double x, double y, double z){
     this->velX = x;
     this->velY = y;
     this->velZ = z;
 }
 
+void Ball::setVelocity(Point* velVector){
+    this->velX = velVector->getX();
+    this->velY = velVector->getY();
+    this->velZ = velVector->getZ();
+}
 
-void Ball::updatePosAndVel(float time, float lTop, float wTop, float wBorder){
+bool Ball::isMoving(){
+    return velX != 0 || velY != 0 || velZ != 0;
+}
 
-    float velDecrease = time / 20;
-    float posFactor = time / 100;
+
+void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder, Ball** balls){
+
+    double velDecrease = time / 20;
+    double posFactor = time / 100;
 
     // Ball is against a border
-    if (posX >= lTop/2 - rad - wBorder || posX <= -lTop/2 + rad + wBorder)
+    if (posX >= lTop/2 - rad - wBorder || posX <= -lTop/2 + rad + wBorder){
         velX = -velX;
-    if (posZ >= wTop/2 - rad - wBorder || posZ <= -wTop/2 + rad + wBorder)
+
+        if (posX >= lTop/2 - rad - wBorder)
+            posX = lTop/2 - rad - wBorder;
+        else
+            posX = -lTop/2 + rad + wBorder;
+
+    }
+    if (posZ >= wTop/2 - rad - wBorder || posZ <= -wTop/2 + rad + wBorder){
         velZ = -velZ;
 
+        if (posZ >= wTop/2 - rad - wBorder)
+            posZ = wTop/2 - rad - wBorder;
+        else
+            posZ = -wTop/2 + rad + wBorder;
+    }
 
-    float diffX = posX;
-    float diffY = posY;
-    float diffZ = posZ;
+
+    double diffX = posX;
+    double diffY = posY;
+    double diffZ = posZ;
     posX += velX * posFactor;
     posZ += velZ * posFactor;
+
+
+    // --------------------------------
+    // Dont let balls get inside others
+    /*
+    for (int i = 0; i < 16; i ++){
+        Point* ball1Pos = getPos();
+        Point* ball2Pos = balls[i]->getPos();
+        Point* normalVector = (*ball1Pos) - ball2Pos;
+        double magnitude = normalVector->magnitude();
+        Point* unitVector = (*normalVector) / magnitude;
+
+
+        if (magnitude < rad * 2 && magnitude > 0){
+
+            double diff = rad * 2 - magnitude;
+            double diffX = unitVector->getX() * diff;
+            double diffY = unitVector->getY() * diff;
+            double diffZ = unitVector->getZ() * diff;
+
+            if (posX < balls[i]->getPosX())
+                diffX = -diffX;
+            if (posY < balls[i]->getPosY())
+                diffY = -diffY;
+            if (posZ < balls[i]->getPosZ())
+                diffZ = -diffZ;
+
+            posX = posX + diffX;
+            posY = posY + diffY;
+            posZ = posZ + diffZ;
+        }
+    }
+    */
+    // --------------------------------
 
 
     diffX = posX - diffX;
     diffY = posY - diffY;
     diffZ = posZ - diffZ;
-    float distanceMovedInXZPlane = sqrt(pow(diffX,2) + pow(diffZ,2));
-    float distanceMoved = sqrt(pow(distanceMovedInXZPlane,2) + pow(diffY,2));
-    float circumference = 2 * M_PI * rad;
+    double distanceMoved = sqrt(pow(diffX,2) + pow(diffY,2) + pow(diffZ,2));
+    double circumference = 2 * M_PI * rad;
 
     // Ball rotation
     if(velX != 0 || velY != 0 || velZ != 0){
@@ -96,8 +153,38 @@ void Ball::updatePosAndVel(float time, float lTop, float wTop, float wBorder){
     }
 }
 
+double Ball::getPosX(){
+    return posX;
+}
+
+double Ball::getPosY(){
+    return posY;
+}
+
+double Ball::getPosZ(){
+    return posZ;
+}
+
+double Ball::getMass(){
+    return mass;
+}
+
+Point* Ball::getPos(){
+    return new Point(posX, posY, posZ);
+}
+
+Point* Ball::getVel(){
+    return new Point(velX, velY, velZ);
+}
+
+void Ball::setPos(Point* pos){
+    posX = pos->getX();
+    posY = pos->getY();
+    posZ = pos->getZ();
+}
+
 void Ball::draw(float lats, float longs, GLuint texture) {
-    float i, j;
+    double i, j;
     for(i = 0; i <= lats; i++)
     {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
@@ -114,7 +201,7 @@ void Ball::draw(float lats, float longs, GLuint texture) {
         glPushMatrix();
 
         glTranslatef(posX, posY, posZ); // Ball movement
-        glRotatef(rotAng, rotX, rotY, rotZ); // Ball rotation when it moves
+        //glRotatef(rotAng, rotX, rotY, rotZ); // Ball rotation when it moves
 
         // To fix texture initial position
         glRotatef(90,0,1,0);

@@ -26,7 +26,7 @@ void actualizarCam(float &x,float &y, float &z, float x_angle, float y_angle,flo
 
  void drawQuad(vector<Point*> points, Color* color){
     glBegin(GL_QUADS);
-        glColor3ub( color->getR(), color->getG(), color->getB());
+        glColor3ub(color->getR(), color->getG(), color->getB());
         glVertex3f(points[0]->getX(), points[0]->getY(), points[0]->getZ());
         glVertex3f(points[1]->getX(), points[1]->getY(), points[1]->getZ());
         glVertex3f(points[2]->getX(), points[2]->getY(), points[2]->getZ());
@@ -54,74 +54,143 @@ void drawPrism(vector<Point*> points, Color* topColor, Color* restOfColors){
         drawQuad(rightPoints, restOfColors);
 }
 
-vector<Ball*> initializeBalls(float ballRad, float ballSeparation){
+Ball** initializeBalls(double ballRad, double ballMass, float ballSeparation){
+    Ball** balls = new Ball*[16];
     Color* redColor = new Color(70,10,10);
     Color* whiteColor = new Color(230, 230, 230);
 
     // White ball
-    Ball* whiteBall = new Ball(-2, ballRad, 0, ballRad, whiteColor);
+    balls[0] = new Ball(-2, ballRad, 0, ballRad, ballMass, whiteColor);
     // First line
-    Ball* ball1 = new Ball(1, ballRad, 0, ballRad, redColor);
+    balls[1] = new Ball(1, ballRad, 0, ballRad, ballMass, redColor);
     // Second line
-    Ball* ball2 = new Ball(1+ballSeparation, ballRad, ballRad, ballRad, redColor);
-    Ball* ball3 = new Ball(1+ballSeparation, ballRad, -ballRad, ballRad, redColor);
+    balls[2] = new Ball(1+ballSeparation, ballRad, ballRad, ballRad, ballMass, redColor);
+    balls[3] = new Ball(1+ballSeparation, ballRad, -ballRad, ballRad, ballMass, redColor);
     // Third line
-    Ball* ball4 = new Ball(1+ballSeparation*2, ballRad, 0, ballRad, redColor);
-    Ball* ball5 = new Ball(1+ballSeparation*2, ballRad, ballRad*2, ballRad, redColor);
-    Ball* ball6 = new Ball(1+ballSeparation*2, ballRad, -ballRad*2, ballRad, redColor);
+    balls[4] = new Ball(1+ballSeparation*2, ballRad, 0, ballRad, ballMass, redColor);
+    balls[5] = new Ball(1+ballSeparation*2, ballRad, ballRad*2, ballRad, ballMass, redColor);
+    balls[6] = new Ball(1+ballSeparation*2, ballRad, -ballRad*2, ballRad, ballMass, redColor);
     // Forth line
-    Ball* ball7 = new Ball(1+ballSeparation*3, ballRad, ballRad, ballRad, redColor);
-    Ball* ball8 = new Ball(1+ballSeparation*3, ballRad, -ballRad, ballRad, redColor);
-    Ball* ball9 = new Ball(1+ballSeparation*3, ballRad, ballRad + ballRad*2, ballRad, redColor);
-    Ball* ball10 = new Ball(1+ballSeparation*3, ballRad, -ballRad - ballRad*2, ballRad, redColor);
+    balls[7] = new Ball(1+ballSeparation*3, ballRad, ballRad, ballRad, ballMass, redColor);
+    balls[8] = new Ball(1+ballSeparation*3, ballRad, -ballRad, ballRad, ballMass, redColor);
+    balls[9] = new Ball(1+ballSeparation*3, ballRad, ballRad + ballRad*2, ballRad, ballMass, redColor);
+    balls[10] = new Ball(1+ballSeparation*3, ballRad, -ballRad - ballRad*2, ballRad, ballMass, redColor);
     // Fifth line
-    Ball* ball11 = new Ball(1+ballSeparation*4, ballRad, 0, ballRad, redColor);
-    Ball* ball12 = new Ball(1+ballSeparation*4, ballRad, ballRad*2, ballRad, redColor);
-    Ball* ball13 = new Ball(1+ballSeparation*4, ballRad, ballRad*2*2, ballRad, redColor);
-    Ball* ball14 = new Ball(1+ballSeparation*4, ballRad, -ballRad*2, ballRad, redColor);
-    Ball* ball15 = new Ball(1+ballSeparation*4, ballRad, -ballRad*2*2, ballRad, redColor);
+    balls[11] = new Ball(1+ballSeparation*4, ballRad, 0, ballRad, ballMass, redColor);
+    balls[12] = new Ball(1+ballSeparation*4, ballRad, ballRad*2, ballRad, ballMass, redColor);
+    balls[13] = new Ball(1+ballSeparation*4, ballRad, ballRad*2*2, ballRad, ballMass, redColor);
+    balls[14] = new Ball(1+ballSeparation*4, ballRad, -ballRad*2, ballRad, ballMass, redColor);
+    balls[15] = new Ball(1+ballSeparation*4, ballRad, -ballRad*2*2, ballRad, ballMass, redColor);
 
-    vector<Ball*> balls;
-    balls.push_back(whiteBall);
-    balls.push_back(ball1);
-    balls.push_back(ball2);
-    balls.push_back(ball3);
-    balls.push_back(ball4);
-    balls.push_back(ball5);
-    balls.push_back(ball6);
-    balls.push_back(ball7);
-    balls.push_back(ball8);
-    balls.push_back(ball9);
-    balls.push_back(ball10);
-    balls.push_back(ball11);
-    balls.push_back(ball12);
-    balls.push_back(ball13);
-    balls.push_back(ball14);
-    balls.push_back(ball15);
     return balls;
 }
 
 void writeOutput(string text){
-    ofstream myfile;
-    myfile.open ("output.txt");
-    myfile << text;
-    myfile.close();
+    std::ofstream outfile;
+    outfile.open("output.txt", std::ios_base::app);
+    outfile << text;
 }
 
-void drawBalls(vector<Ball*> balls, GLuint* textures){
+void drawBalls(Ball** balls, GLuint* textures){
     int i = 0;
-    for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it){
-        if (i == 0)
-            (*it)->draw(50,50,textures[10]);
-        else
-            (*it)->draw(50,50, textures[i - 1]);
-        i++;
+    balls[0]->draw(50,50,-1);
+    for (int i = 1; i < 16; i++){
+        balls[i]->draw(50,50, textures[i - 1]);
     }
 }
 
-void moveBalls(vector<Ball*> balls, float time, float lTop, float wTop, float wBorder){
-    for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it)
-        (*it)->updatePosAndVel(time, lTop, wTop, wBorder);
+void moveBalls(Ball** balls, float time, float lTop, float wTop, float wBorder){
+    for (int i = 0; i < 16; i++)
+        balls[i]->updatePosAndVel(time, lTop, wTop, wBorder, balls);
+}
+
+
+void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, int** lastCollisions){
+
+    Ball* ball1 = balls[ball1Idx];
+    Ball* ball2 = balls[ball2Idx];
+    Point* ball1Pos = ball1->getPos();
+    Point* ball2Pos = ball2->getPos();
+    Point* ball1Vel = ball1->getVel();
+    Point* ball2Vel = ball2->getVel();
+    double ball1Mass = ball1->getMass();
+    double ball2Mass = ball2->getMass();
+    Point* normalVector = (*ball1Pos) - ball2Pos;
+
+    double magnitude = normalVector->magnitude();
+
+    int currentTime = (int)(clock());
+
+    if (magnitude < ballRad * 2 && currentTime - lastCollisions[ball1Idx][ball2Idx] > 30){
+
+        lastCollisions[ball1Idx][ball2Idx] = currentTime;
+        lastCollisions[ball2Idx][ball1Idx] = currentTime;
+
+        Point* unitVector = (*normalVector) / magnitude;
+        Point* tangentVector = new Point(-unitVector->getZ(), -unitVector->getY(), unitVector->getX());
+
+
+
+        // Don't let balls get inside each other
+        /*
+        double diff = ballRad * 2 - magnitude;
+        double diffX1 = unitVector->getX() * diff / 2;
+        double diffY1 = unitVector->getY() * diff / 2;
+        double diffZ1 = unitVector->getZ() * diff / 2;
+        double diffX2 = unitVector->getX() * diff / 2;
+        double diffY2 = unitVector->getY() * diff / 2;
+        double diffZ2 = unitVector->getZ() * diff / 2;
+
+        if (ball1->getPosX() > ball2->getPosX()){
+            diffX2 = -diffX2;}
+        else{
+            diffX1 = -diffX1;}
+        if (ball1->getPosY() > ball2->getPosY()){
+            diffY2 = -diffY2;}
+        else{
+            diffY1 = -diffY1;}
+        if (ball1->getPosZ() > ball2->getPosZ()){
+            diffZ2 = -diffZ2;}
+        else{
+            diffZ1 = -diffZ1;}
+
+        ball1->setPos(new Point(ball1->getPosX() + diffX1, ball1->getPosY() + diffY1, ball1->getPosZ() + diffZ1));
+        ball2->setPos(new Point(ball2->getPosX() + diffX2, ball2->getPosY() + diffY2, ball2->getPosZ() + diffZ2));
+
+        */
+
+
+
+        double vector1NormalMagnitude = unitVector->dotProduct(ball1Vel);
+        double vector1TangentMagnitude = tangentVector->dotProduct(ball1Vel);
+        double vector2NormalMagnitude = unitVector->dotProduct(ball2Vel);
+        double vector2TangentMagnitude = tangentVector->dotProduct(ball2Vel);
+
+        // Because of conservation of kinetic energy
+        double newVector1NormalMagnitude = (vector1NormalMagnitude * (ball1Mass - ball2Mass) + 2 * ball2Mass * vector2NormalMagnitude) / (ball1Mass + ball2Mass);
+        double newVector2NormalMagnitude = (vector2NormalMagnitude * (ball2Mass - ball1Mass) + 2 * ball1Mass * vector1NormalMagnitude) / (ball1Mass + ball2Mass);
+
+        // These are the same
+        double newVector1TangentMagnitude = vector1TangentMagnitude;
+        double newVector2TangentMagnitude = vector2TangentMagnitude;
+
+        Point* newVector1Normal = (*unitVector) * newVector1NormalMagnitude;
+        Point* newVector1Tangent = (*tangentVector) * newVector1TangentMagnitude;
+        Point* newVector2Normal = (*unitVector) * newVector2NormalMagnitude;
+        Point* newVector2Tangent = (*tangentVector) * newVector2TangentMagnitude;
+
+        Point* newVector1Velocity = (*newVector1Normal) + newVector1Tangent;
+        Point* newVector2Velocity = (*newVector2Normal) + newVector2Tangent;
+
+        ball1->setVelocity(newVector1Velocity);
+        ball2->setVelocity(newVector2Velocity);
+    }
+}
+
+void applyCollisions(Ball** balls, double ballRad, int** lastCollisions){
+    for (int i = 0; i < 16; i++)
+        for(int j = i+1; j < 16; j++)
+            applyCollision(balls, i, j, ballRad, lastCollisions);
 }
 
 void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, float wBorder, float hBorder){
@@ -278,7 +347,8 @@ int main(int argc, char *argv[]) {
     // Pool table's length = ballRadius * 50
     float lTop = 8;
     float wTop = lTop/2;
-    float ballRad = lTop / 50;
+    double ballRad = lTop / 50;
+    double ballMass = 1;
     float ballSeparation = ballRad*1.75;
 
     float lBottom = 5;
@@ -289,11 +359,23 @@ int main(int argc, char *argv[]) {
     float hBorder = h/4;
     // -----------------------------------
 
+    // --------- Colision checks ---------
+
+    int** lastCollisions = new int*[16];
+        for (int i = 0; i < 16; i++)
+            lastCollisions[i] = new int[16];
+        for(int i = 0; i < 16; i++)
+            for(int j = 0; j < 16; j++)
+                lastCollisions[i][j] = 0;
+
+    // -----------------------------------
+
+
     auto lastFrameTime = clock();
     bool quit=false;
     SDL_Event event;
-    vector<Ball*> balls = initializeBalls(ballRad, ballSeparation);
-    balls[0]->setVelocity(15,0,10);
+    Ball** balls = initializeBalls(ballRad, ballMass, ballSeparation);
+    balls[0]->setVelocity(20,0,0);
     do{
         auto currentTime = clock();
         float frameTime = (float)(currentTime - lastFrameTime);
@@ -306,7 +388,11 @@ int main(int argc, char *argv[]) {
 
 
         drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
+
+        applyCollisions(balls, ballRad, lastCollisions);
         moveBalls(balls, frameTime/40, lTop, wTop, wBorder);
+
+
         drawBalls(balls, textures);
 
 

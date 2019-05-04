@@ -13,6 +13,12 @@ class Point{
         float getX();
         float getY();
         float getZ();
+        float dotProduct(Point*);
+        double magnitude();
+        Point* operator-(Point*);
+        Point* operator+(Point*);
+        Point* operator/(double);
+        Point* operator*(double);
 };
 
 #endif
