@@ -1,6 +1,7 @@
 #ifndef BALL_H
 #define BALL_H
 #include "Color.h"
+#include "SDL/SDL_opengl.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ class Ball{
         float getVelZ();
         float getRad();
         void setVelocity(float, float, float);
-        void draw(float, float);
+        void draw(float, float, GLuint);
         void updatePosAndVel(float, float, float, float);
 };
 

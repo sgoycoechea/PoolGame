@@ -89,8 +89,10 @@ void Ball::updatePosAndVel(float time, float lTop, float wTop, float wBorder){
     }
 }
 
-void Ball::draw(float lats, float longs) {
-   float i, j;
+void Ball::draw(float lats, float longs, GLuint textura) {
+
+
+    float i, j;
     for(i = 0; i <= lats; i++)
     {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
@@ -101,11 +103,14 @@ void Ball::draw(float lats, float longs) {
         double z1 = sin(lat1);
         double zr1 = cos(lat1);
 
-
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, textura);
 
         glPushMatrix();
-        glTranslatef(posX, posY, posZ);
 
+        glTranslatef(posX, posY, posZ);
+        glRotatef(90,0,1,0); // To fix texture position
+        glRotatef(-90,1,0,0); // To fix texture position
         glBegin(GL_QUAD_STRIP);
         glColor3ub( color->getR(), color->getG(), color->getB());
 
@@ -130,5 +135,6 @@ void Ball::draw(float lats, float longs) {
         }
         glEnd();
         glPopMatrix();
+        glDisable(GL_TEXTURE_2D);
     }
  }

@@ -8,7 +8,8 @@
 #include <math.h>
 #include <vector>
 #include <chrono>
-
+#include <fstream>
+#include <algorithm>
 #define _USE_MATH_DEFINES
 #define FPS 60
 #define M_PI 3.1415926
@@ -19,10 +20,6 @@ void actualizarCam(float &x,float &y, float &z, float x_angle, float y_angle,flo
     x = sin(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
     y = sin(x_angle*M_PI/180) * radius;
 }
-
-
-
-
 
  void drawQuad(vector<Point*> points, Color* color){
     glBegin(GL_QUADS);
@@ -56,7 +53,7 @@ void drawPrism(vector<Point*> points, Color* topColor, Color* restOfColors){
 
 vector<Ball*> initializeBalls(float ballRad, float ballSeparation){
     Color* redColor = new Color(70,10,10);
-    Color* whiteColor = new Color(200, 200, 200);
+    Color* whiteColor = new Color(230, 230, 230);
 
     // White ball
     Ball* whiteBall = new Ball(-2, ballRad, 0, ballRad, whiteColor);
@@ -101,9 +98,22 @@ vector<Ball*> initializeBalls(float ballRad, float ballSeparation){
     return balls;
 }
 
-void drawBalls(vector<Ball*> balls){
-    for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it)
-        (*it)->draw(50,50);
+void writeOutput(string text){
+    ofstream myfile;
+    myfile.open ("output.txt");
+    myfile << text;
+    myfile.close();
+}
+
+void drawBalls(vector<Ball*> balls, GLuint* textures){
+    int i = 0;
+    for (std::vector<Ball*>::iterator it = balls.begin() ; it != balls.end(); ++it){
+        if (i == 0)
+            (*it)->draw(50,50,-1);
+        else
+            (*it)->draw(50,50, textures[i - 1]);
+        i++;
+    }
 }
 
 void moveBalls(vector<Ball*> balls, float time, float lTop, float wTop, float wBorder){
@@ -175,6 +185,61 @@ void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, fl
     drawPrism(border4, brownColor2, brownColor2);
 }
 
+GLuint* loadTextures(){
+
+    GLuint* textures = new GLuint[15];
+
+    // Get the texture of all 15 balls
+    for (int i = 1; i <= 15; i++){
+        string archivo = "images/ball" + to_string(i) + ".jpg";
+
+        FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(archivo.c_str());
+        FIBITMAP* bitmap = FreeImage_Load(fif, archivo.c_str());
+        bitmap = FreeImage_ConvertTo24Bits(bitmap);
+
+        int texW = FreeImage_GetWidth(bitmap);
+        int texH = FreeImage_GetHeight(bitmap);
+
+        void* datos = FreeImage_GetBits(bitmap);
+
+        GLuint textura;
+        glGenTextures(1, &textura);
+
+        glBindTexture(GL_TEXTURE_2D, textura);
+
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texW, texH, 0, GL_BGR, GL_UNSIGNED_BYTE, datos);
+
+        delete datos;
+
+        textures[i-1] = textura;
+    }
+
+    // Shuffle textures to get random ball positions
+    GLuint blackTexture = textures[7];
+    srand(time(0));
+    random_shuffle(textures, textures + 15);
+
+    // Swap black ball into 8th position
+    int blackPosition = -1;
+    for (int i = 0; i < 15; i++)
+        if (textures[i] == blackTexture)
+            blackPosition = i;
+
+    GLuint aux = textures[3];
+    textures[3] = textures[blackPosition];
+    textures[blackPosition] = aux;
+
+    return textures;
+}
+
+
 float x,y,z;
 int main(int argc, char *argv[]) {
     float anga=0;
@@ -212,6 +277,14 @@ int main(int argc, char *argv[]) {
     glMatrixMode(GL_MODELVIEW);
 
 
+
+
+
+    GLuint* textures = loadTextures();
+
+
+
+
     // ---- Size of table and balls -----
 
     // Pool table's length = width * 2
@@ -242,7 +315,10 @@ int main(int argc, char *argv[]) {
 
         drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
         moveBalls(balls, 1, lTop, wTop, wBorder);
-        drawBalls(balls);
+
+
+        drawBalls(balls, textures);
+
 
         int xm,ym;
         SDL_GetMouseState(&xm, &ym);

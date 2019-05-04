@@ -2136,7 +2136,7 @@
 	<math.h>
 	"SDL/SDL_opengl.h"
 
-1556915774 source:c:\users\santiago\desktop\poolgame\main.cpp
+1556933740 source:c:\users\santiago\desktop\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -2147,6 +2147,8 @@
 	<math.h>
 	<vector>
 	<chrono>
+	<fstream>
+	<algorithm>
 
 1325745840 c:\users\santiago\desktop\poolgame\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
@@ -2358,10 +2360,11 @@
 
 1556731645 c:\users\santiago\desktop\poolgame\include\point.h
 
-1556915733 c:\users\santiago\desktop\poolgame\include\ball.h
+1556925163 c:\users\santiago\desktop\poolgame\include\ball.h
 	"Color.h"
+	"SDL/SDL_opengl.h"
 
-1556915730 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
+1556932640 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
 	"../include/Ball.h"
 	<math.h>
 	"SDL/SDL_opengl.h"
