@@ -30,6 +30,7 @@ class Ball{
         double getPosX();
         double getPosY();
         double getPosZ();
+        double getRad();
         double getMass();
         bool isMoving();
         Point* getPos();

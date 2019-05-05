@@ -40,7 +40,7 @@ bool Ball::isMoving(){
 
 void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder, Ball** balls){
 
-    double velDecrease = time / 20;
+    double velDecrease = time / 10;
     double posFactor = time / 100;
 
     // Ball is against a border
@@ -177,6 +177,10 @@ Point* Ball::getVel(){
     return new Point(velX, velY, velZ);
 }
 
+double Ball::getRad(){
+    return rad;
+}
+
 void Ball::setPos(Point* pos){
     posX = pos->getX();
     posY = pos->getY();
@@ -201,7 +205,7 @@ void Ball::draw(float lats, float longs, GLuint texture) {
         glPushMatrix();
 
         glTranslatef(posX, posY, posZ); // Ball movement
-        //glRotatef(rotAng, rotX, rotY, rotZ); // Ball rotation when it moves
+        glRotatef(rotAng, rotX, rotY, rotZ); // Ball rotation when it moves
 
         // To fix texture initial position
         glRotatef(90,0,1,0);

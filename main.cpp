@@ -24,6 +24,12 @@ void actualizarCam(float &x,float &y, float &z, float x_angle, float y_angle,flo
     y = sin(x_angle*M_PI/180) * radius;
 }
 
+void actualizarCue(float &x,float &y, float &z, float x_angle, float y_angle,float radius){
+    z = cos(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
+    x = sin(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
+    y = sin(x_angle*M_PI/180) * radius;
+}
+
  void drawQuad(vector<Point*> points, Color* color){
     glBegin(GL_QUADS);
         glColor3ub(color->getR(), color->getG(), color->getB());
@@ -99,9 +105,50 @@ void drawBalls(Ball** balls, GLuint* textures){
     }
 }
 
+
+void drawCue(int numSteps,float radius, float hl,float* arrX_1,float* arrY_1, Ball* whiteBall, int ang, float rotX, float rotY, float rotZ, int strength){
+
+
+    Color* brownColor = new Color(216, 156, 104);
+    float a = 0.0f;
+    float step = (2*M_PI) / (float)numSteps;
+
+    glPushMatrix();
+
+    double rad = whiteBall->getRad();
+    glTranslatef(whiteBall->getPosX(), whiteBall->getPosY(), whiteBall->getPosZ());
+    glRotatef(ang, rotX, rotY, rotZ);
+    glTranslatef(0, hl + rad + strength/4 * rad, 0);
+    glRotatef(-90, 1, 0, 0);
+
+
+    glBegin(GL_TRIANGLE_STRIP);
+    glColor3ub(brownColor->getR(), brownColor->getG(), brownColor->getB());
+    for (int i = 0; i <= numSteps; i++)
+    {
+        float x = cos(a) * radius;
+        float y = sin(a) * radius;
+        arrX_1[i]=x;
+        arrY_1[i]=y;
+        glNormal3f(x/radius,y/radius,0);
+        glTexCoord2f(0,i*2*radius*M_PI/numSteps);
+        glVertex3f(x,y,-hl);
+        glNormal3f(x/radius,y/radius, 0);
+        glTexCoord2f(2*hl,i*2*radius*M_PI/numSteps);
+        glVertex3f(x,y, hl);
+        a += step;
+    }
+    glEnd();
+    glPopMatrix();
+}
+
 void moveBalls(Ball** balls, float time, float lTop, float wTop, float wBorder){
     for (int i = 0; i < 16; i++)
         balls[i]->updatePosAndVel(time, lTop, wTop, wBorder, balls);
+}
+
+void hitBall(Ball* whiteBall, float cueRotX, float cueRotY, float cueRotZ, float cueAngA, float cueAngB, int strength){
+    whiteBall->setVelocity(new Point(cueRotX * strength, 0, cueRotZ * strength));
 }
 
 
@@ -121,7 +168,7 @@ void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, in
 
     int currentTime = (int)(clock());
 
-    if (magnitude < ballRad * 2 && currentTime - lastCollisions[ball1Idx][ball2Idx] > 30){
+    if (magnitude < ballRad * 2 && currentTime - lastCollisions[ball1Idx][ball2Idx] > 50){
 
         lastCollisions[ball1Idx][ball2Idx] = currentTime;
         lastCollisions[ball2Idx][ball1Idx] = currentTime;
@@ -307,7 +354,8 @@ int main(int argc, char *argv[]) {
     float anga=0;
     float angb=-45;
     float rad=-8.4852; // sqrt(y^2 + z^2)
-    bool moverCam=false;
+    bool moveCam=false;
+    bool moveCue=false;
     if(SDL_Init(SDL_INIT_VIDEO)<0) {
         cerr << "No se pudo iniciar SDL: " << SDL_GetError() << endl;
         exit(1);
@@ -370,12 +418,20 @@ int main(int argc, char *argv[]) {
 
     // -----------------------------------
 
+    int cueAngA = 0;
+    int cueAngB = 0;
+
+    float cueRotX = 0;
+    float cueRotY = 0;
+    float cueRotZ = 0;
+
+    int strength = 4;
 
     auto lastFrameTime = clock();
     bool quit=false;
     SDL_Event event;
     Ball** balls = initializeBalls(ballRad, ballMass, ballSeparation);
-    balls[0]->setVelocity(20,0,0);
+
     do{
         auto currentTime = clock();
         float frameTime = (float)(currentTime - lastFrameTime);
@@ -391,9 +447,18 @@ int main(int argc, char *argv[]) {
 
         applyCollisions(balls, ballRad, lastCollisions);
         moveBalls(balls, frameTime/40, lTop, wTop, wBorder);
-
-
         drawBalls(balls, textures);
+
+
+
+        int numSteps = 100;
+        int cueLength = 2.3;
+        float arrX_1[numSteps+1];
+        float arrY_1[numSteps+1];
+
+        if (!balls[0]->isMoving())
+            drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueAngB + cueAngA, cueRotX, cueRotY, cueRotZ, strength);
+
 
 
         int xm,ym;
@@ -403,14 +468,19 @@ int main(int argc, char *argv[]) {
 
             case SDL_MOUSEBUTTONDOWN:
                 if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3)){
-                    moverCam=true;
+                    moveCam=true;
                 }
+                if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)){
+                    moveCue=true;
+                }
+
                 break;
             case SDL_MOUSEBUTTONUP:
-                moverCam=false;
+                moveCam=false;
+                moveCue=false;
                 break;
             case SDL_MOUSEMOTION:
-                if(moverCam){
+                if(moveCam){
                     if (event.motion.yrel<0 && angb < 80 )
                         angb-=event.motion.yrel*0.4;//factor de ajuste: 0,4
                     else if (event.motion.yrel>=0 && angb > -80)
@@ -418,6 +488,12 @@ int main(int argc, char *argv[]) {
                     anga+=event.motion.xrel*0.4;//factor de ajuste: 0,4
                     actualizarCam(x,y,z,angb,anga,rad);
                 }
+                if(moveCue){
+                    cueAngA+=event.motion.xrel*0.4;//factor de ajuste: 0,4
+                    cueAngB+=event.motion.yrel*0.4;//factor de ajuste: 0,4
+                    actualizarCue(cueRotX, cueRotY, cueRotZ, cueAngB, cueAngA, cueLength + ballRad);
+                }
+
                 break;
             case SDL_QUIT:
                 quit = true;
@@ -436,6 +512,22 @@ int main(int argc, char *argv[]) {
                     if(rad<0)
                         rad+=.05;//factor de ajuste: 0,05
                     actualizarCam(x,y,z,angb,anga,rad);
+                    }
+                    break;
+                case SDLK_UP:{
+                        if (!balls[0]->isMoving())
+                            hitBall(balls[0], cueRotX, cueRotY, cueRotZ, cueAngA, cueAngB, strength);
+                    }
+                    break;
+
+                case SDLK_LEFT:{
+                        if (strength > 4)
+                            strength -= 2;
+                    }
+                    break;
+                case SDLK_RIGHT:{
+                    if (strength < 20)
+                        strength += 4;
                     }
                     break;
 
