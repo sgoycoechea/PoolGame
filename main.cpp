@@ -18,13 +18,7 @@
 #define M_PI 3.1415926
 
 using namespace std;
-void actualizarCam(float &x,float &y, float &z, float x_angle, float y_angle,float radius){
-    z = cos(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
-    x = sin(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
-    y = sin(x_angle*M_PI/180) * radius;
-}
-
-void actualizarCue(float &x,float &y, float &z, float x_angle, float y_angle,float radius){
+void updateCam(float &x,float &y, float &z, float x_angle, float y_angle,float radius){
     z = cos(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
     x = sin(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;
     y = sin(x_angle*M_PI/180) * radius;
@@ -106,8 +100,7 @@ void drawBalls(Ball** balls, GLuint* textures){
 }
 
 
-void drawCue(int numSteps,float radius, float hl,float* arrX_1,float* arrY_1, Ball* whiteBall, int ang, float rotX, float rotY, float rotZ, int strength){
-
+void drawCue(int numSteps, float radius, float hl, float* arrX_1, float* arrY_1, Ball* whiteBall, float cueRotAng1, float cueRotAng2, int strength){
 
     Color* brownColor = new Color(216, 156, 104);
     float a = 0.0f;
@@ -117,7 +110,10 @@ void drawCue(int numSteps,float radius, float hl,float* arrX_1,float* arrY_1, Ba
 
     double rad = whiteBall->getRad();
     glTranslatef(whiteBall->getPosX(), whiteBall->getPosY(), whiteBall->getPosZ());
-    glRotatef(ang, rotX, rotY, rotZ);
+    glRotatef(cueRotAng1, 0, 1, 0);
+    glRotatef(cueRotAng2, 1, 0, 0);
+
+    //glRotatef(90, 0, 0, 1);
     glTranslatef(0, hl + rad + strength/4 * rad, 0);
     glRotatef(-90, 1, 0, 0);
 
@@ -147,8 +143,24 @@ void moveBalls(Ball** balls, float time, float lTop, float wTop, float wBorder){
         balls[i]->updatePosAndVel(time, lTop, wTop, wBorder, balls);
 }
 
-void hitBall(Ball* whiteBall, float cueRotX, float cueRotY, float cueRotZ, float cueAngA, float cueAngB, int strength){
-    whiteBall->setVelocity(new Point(cueRotX * strength, 0, cueRotZ * strength));
+void hitBall(Ball* whiteBall, float cueRotAng1, float cueRotAng2, int strength){
+
+    float x = 0;
+    float y = 1;
+    float z = 0;
+
+    float strengthFactor = 2;
+
+    cueRotAng1 = cueRotAng1 * M_PI / 180;
+    cueRotAng2 = cueRotAng2 * M_PI / 180;
+
+    float rotatedY = cos(cueRotAng2) * y - sin(cueRotAng2) * z;
+    float rotatedZ = sin(cueRotAng2) * y + cos(cueRotAng2) * z;
+
+    float rotatedX = cos(cueRotAng1) * x - sin(cueRotAng1) * rotatedZ;
+          rotatedZ = sin(cueRotAng1) * x + cos(cueRotAng1) * rotatedZ;
+
+    whiteBall->setVelocity(new Point(rotatedX * strength * strengthFactor, 0, -rotatedZ * strength * strengthFactor));
 }
 
 
@@ -349,6 +361,13 @@ GLuint* loadTextures(){
 }
 
 
+bool ballsNotMoving(Ball** balls){
+    for (int i = 0; i < 16; i++)
+        if (balls[i]->isMoving())
+            return false;
+    return true;
+}
+
 float x,y,z;
 int main(int argc, char *argv[]) {
     float anga=0;
@@ -418,14 +437,11 @@ int main(int argc, char *argv[]) {
 
     // -----------------------------------
 
-    int cueAngA = 0;
-    int cueAngB = 0;
+    float cueRotAng1 = 90;
+    float cueRotAng2 = -75;
 
-    float cueRotX = 0;
-    float cueRotY = 0;
-    float cueRotZ = 0;
 
-    int strength = 4;
+    int strength = 12;
 
     auto lastFrameTime = clock();
     bool quit=false;
@@ -456,8 +472,8 @@ int main(int argc, char *argv[]) {
         float arrX_1[numSteps+1];
         float arrY_1[numSteps+1];
 
-        if (!balls[0]->isMoving())
-            drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueAngB + cueAngA, cueRotX, cueRotY, cueRotZ, strength);
+        if (ballsNotMoving(balls))
+            drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueRotAng1, cueRotAng2, strength);
 
 
 
@@ -486,12 +502,23 @@ int main(int argc, char *argv[]) {
                     else if (event.motion.yrel>=0 && angb > -80)
                         angb-=event.motion.yrel*0.4;//factor de ajuste: 0,4
                     anga+=event.motion.xrel*0.4;//factor de ajuste: 0,4
-                    actualizarCam(x,y,z,angb,anga,rad);
+                    updateCam(x,y,z,angb,anga,rad);
                 }
                 if(moveCue){
-                    cueAngA+=event.motion.xrel*0.4;//factor de ajuste: 0,4
-                    cueAngB+=event.motion.yrel*0.4;//factor de ajuste: 0,4
-                    actualizarCue(cueRotX, cueRotY, cueRotZ, cueAngB, cueAngA, cueLength + ballRad);
+                    cueRotAng1+=event.motion.xrel*0.4;//factor de ajuste: 0,4
+                    cueRotAng2+=event.motion.yrel*0.4;//factor de ajuste: 0,4
+
+                    while(cueRotAng1 >= 360)
+                        cueRotAng1 -= 360;
+
+                    while(cueRotAng2 >= 360)
+                        cueRotAng2 -= 360;
+
+                    while(cueRotAng1 < 0)
+                        cueRotAng1 += 360;
+
+                    while(cueRotAng2 < 0)
+                        cueRotAng2 += 360;
                 }
 
                 break;
@@ -505,18 +532,18 @@ int main(int argc, char *argv[]) {
                     break;
                 case SDLK_s:{
                     rad-=.05;//factor de ajuste: 0,05
-                    actualizarCam(x,y,z,angb,anga,rad);
+                    updateCam(x,y,z,angb,anga,rad);
                     }
                     break;
                 case SDLK_w:{
                     if(rad<0)
                         rad+=.05;//factor de ajuste: 0,05
-                    actualizarCam(x,y,z,angb,anga,rad);
+                    updateCam(x,y,z,angb,anga,rad);
                     }
                     break;
                 case SDLK_UP:{
                         if (!balls[0]->isMoving())
-                            hitBall(balls[0], cueRotX, cueRotY, cueRotZ, cueAngA, cueAngB, strength);
+                            hitBall(balls[0], cueRotAng1, cueRotAng2, strength);
                     }
                     break;
 

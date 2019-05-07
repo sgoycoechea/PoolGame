@@ -40,7 +40,7 @@ bool Ball::isMoving(){
 
 void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder, Ball** balls){
 
-    double velDecrease = time / 10;
+    double velDecrease = time / 3;
     double posFactor = time / 100;
 
     // Ball is against a border
