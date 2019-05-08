@@ -54,10 +54,12 @@
 		<Unit filename="include/Ball.h" />
 		<Unit filename="include/Color.h" />
 		<Unit filename="include/Point.h" />
+		<Unit filename="include/Rotation.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Ball.cpp" />
 		<Unit filename="src/Color.cpp" />
 		<Unit filename="src/Point.cpp" />
+		<Unit filename="src/Rotation.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
