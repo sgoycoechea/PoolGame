@@ -110,9 +110,9 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder
     if(velX != 0 || velY != 0 || velZ != 0){
 
         float magnitude = sqrt(pow(velX,2) + pow(velY,2) + pow(velZ,2));
-        float rotX = velZ;
-        float rotY = -velY;
-        float rotZ = -velX;
+        float rotX = velZ / magnitude;
+        float rotY = -velY / magnitude;
+        float rotZ = -velX / magnitude;
         float rotAng = distanceMoved / circumference * 180;
 
         Rotation* lastRotation = (Rotation*)rotations.back();
