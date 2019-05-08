@@ -1,4 +1,5 @@
 #include "../include/Ball.h"
+#include "../include/Rotation.h"
 #include <math.h>
 #include "SDL/SDL_opengl.h"
 #define M_PI 3.1415926
@@ -14,10 +15,6 @@ Ball::Ball(double x, double y, double z, double rad, double mass, Color* color){
     this->velX = 0;
     this->velY = 0;
     this->velZ = 0;
-    this->rotX = 0;
-    this->rotY = 0;
-    this->rotZ = 0;
-    this->rotAng = 0;
     this->color = color;
 }
 
@@ -51,8 +48,8 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder
             posX = lTop/2 - rad - wBorder;
         else
             posX = -lTop/2 + rad + wBorder;
-
     }
+
     if (posZ >= wTop/2 - rad - wBorder || posZ <= -wTop/2 + rad + wBorder){
         velZ = -velZ;
 
@@ -61,7 +58,6 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder
         else
             posZ = -wTop/2 + rad + wBorder;
     }
-
 
     double diffX = posX;
     double diffY = posY;
@@ -112,10 +108,24 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder
 
     // Ball rotation
     if(velX != 0 || velY != 0 || velZ != 0){
-        rotX = velZ;
-        rotY = -velY;
-        rotZ = -velX;
-        rotAng += distanceMoved / circumference * 180;
+
+        float magnitude = sqrt(pow(velX,2) + pow(velY,2) + pow(velZ,2));
+        float rotX = velZ;
+        float rotY = -velY;
+        float rotZ = -velX;
+        float rotAng = distanceMoved / circumference * 180;
+
+        Rotation* lastRotation = (Rotation*)rotations.back();
+
+        // If the last rotation had the same direction
+        if (rotations.size() > 0 && ((int)(lastRotation->getDirection()->getX() - rotX)  == 0) && ((int)(lastRotation->getDirection()->getY() - rotY) == 0) && ((int)(lastRotation->getDirection()->getZ() - rotZ) == 0)){
+            lastRotation->setAngle(lastRotation->getAngle() + rotAng);
+        }
+        else{
+            Point* rotDir = new Point(rotX, rotY, rotZ);
+            Rotation* newRot = new Rotation(rotAng, rotDir);
+            rotations.push_back(newRot);
+        }
     }
 
     // Decrease velocity
@@ -205,7 +215,12 @@ void Ball::draw(float lats, float longs, GLuint texture) {
         glPushMatrix();
 
         glTranslatef(posX, posY, posZ); // Ball movement
-        glRotatef(rotAng, rotX, rotY, rotZ); // Ball rotation when it moves
+
+        // Ball rotation when it moves
+        for (std::vector<Rotation*>::reverse_iterator  it = rotations.rbegin() ; it != rotations.rend(); ++it){
+            Rotation* rot = (Rotation*)(*it);
+            glRotatef(rot->getAngle(), rot->getDirection()->getX(), rot->getDirection()->getY(), rot->getDirection()->getZ()); // Ball rotation when it moves
+        }
 
         // To fix texture initial position
         glRotatef(90,0,1,0);

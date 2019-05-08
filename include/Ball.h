@@ -3,6 +3,8 @@
 #include "Color.h"
 #include "Point.h"
 #include "SDL/SDL_opengl.h"
+#include <vector>
+#include "Rotation.h"
 
 using namespace std;
 
@@ -14,13 +16,11 @@ class Ball{
         double velX;
         double velY;
         double velZ;
-        double rotX;
-        double rotY;
-        double rotZ;
-        double rotAng;
         double rad;
         double mass;
         Color* color;
+        vector<Rotation*> rotations;
+
     public:
         Ball(double, double, double, double, double, Color*);
         void setVelocity(double, double, double);
