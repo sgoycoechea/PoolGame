@@ -444,7 +444,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    if(SDL_EnableKeyRepeat(10, 10)<0) {
+    if(SDL_EnableKeyRepeat(30, 10)<0) {
         cerr << "No se pudo establecer el modo key-repeat: " << SDL_GetError() << endl;
         exit(1);
     }
@@ -502,6 +502,7 @@ int main(int argc, char *argv[]) {
 
     auto lastFrameTime = clock();
     bool quit=false;
+    bool pause=false;
     SDL_Event event;
     Ball** balls = initializeBalls(ballRad, ballMass, ballSeparation);
 
@@ -527,16 +528,16 @@ int main(int argc, char *argv[]) {
         gluLookAt(x,y,-z,0,0,0,0,1,0);
 
 
-        /*
-        drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
-        applyCollisions(balls, ballRad, lastCollisions);
-        moveBalls(balls, frameTime/40, lTop, wTop, wBorder);
-        drawBalls(balls, textures);
-        if (ballsNotMoving(balls))
-            drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueRotAng1, cueRotAng2, strength);
-        */
 
-        drawObj(vertices, uvs, normals, tableTexture);
+            drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
+            drawBalls(balls, textures);
+            if (ballsNotMoving(balls))
+                drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueRotAng1, cueRotAng2, strength);
+        if (!pause){
+            applyCollisions(balls, ballRad, lastCollisions);
+            moveBalls(balls, frameTime/40, lTop, wTop, wBorder);
+            //drawObj(vertices, uvs, normals, tableTexture);
+        }
 
         int xm,ym;
         SDL_GetMouseState(&xm, &ym);
@@ -565,7 +566,7 @@ int main(int argc, char *argv[]) {
                     anga+=event.motion.xrel*0.4;//factor de ajuste: 0,4
                     updateCam(x,y,z,angb,anga,rad);
                 }
-                if(moveCue){
+                if(moveCue && !pause){
                     cueRotAng1+=event.motion.xrel*0.4;//factor de ajuste: 0,4
                     cueRotAng2+=event.motion.yrel*0.4;//factor de ajuste: 0,4
 
@@ -591,6 +592,12 @@ int main(int argc, char *argv[]) {
                 case SDLK_ESCAPE:
                     quit = true;
                     break;
+                case SDLK_q:
+                    quit = true;
+                    break;
+                case SDLK_p:
+                    pause = !pause;
+                    break;
                 case SDLK_s:{
                     rad-=.05;//factor de ajuste: 0,05
                     updateCam(x,y,z,angb,anga,rad);
@@ -603,18 +610,18 @@ int main(int argc, char *argv[]) {
                     }
                     break;
                 case SDLK_UP:{
-                        if (!balls[0]->isMoving())
+                        if (!balls[0]->isMoving() && !pause)
                             hitBall(balls[0], cueRotAng1, cueRotAng2, strength);
                     }
                     break;
 
                 case SDLK_LEFT:{
-                        if (strength > 4)
+                        if (strength > 4 && !pause)
                             strength -= 2;
                     }
                     break;
                 case SDLK_RIGHT:{
-                    if (strength < 20)
+                    if (strength < 20 && !pause)
                         strength += 4;
                     }
                     break;
@@ -651,8 +658,8 @@ int main(int argc, char *argv[]) {
         // Force 60fps cap
         currentTime = clock();
         frameTime = (float)(currentTime - lastFrameTime);
-        if (frameTime < 17)
-            std::this_thread::sleep_for(std::chrono::milliseconds((int)(17- frameTime)));
+        //if (frameTime < 17)
+        //    std::this_thread::sleep_for(std::chrono::milliseconds((int)(17- frameTime)));
 
 
     }while(!quit);
