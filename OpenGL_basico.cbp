@@ -35,19 +35,26 @@
 			<Add option="-g" />
 			<Add directory="SDL-1.2.15/include" />
 			<Add directory="FreeImage" />
+			<Add directory="../assimp/include" />
+			<Add directory="../glm" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="FreeImage" />
 			<Add directory="SDL-1.2.15/lib" />
 			<Add directory="SDL-1.2.15/include" />
+			<Add directory="assimp/lib32" />
+			<Add directory="assimp/include" />
+			<Add directory="assimp/bin32" />
 		</ResourceCompiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDLmain -lSDL -lopengl32 -lglu32 -lFreeImage" />
+			<Add option="-lmingw32 -lSDLmain -lSDL -lopengl32 -lglu32 -lFreeImage -lassimp" />
 			<Add library="SDL-1.2.15/lib/libSDLmain.a" />
 			<Add library="SDL-1.2.15/lib/libSDL.dll.a" />
 			<Add library="FreeImage/FreeImage.lib" />
+			<Add library="assimp/lib32/assimp.lib" />
 			<Add directory="SDL-1.2.15/lib" />
 			<Add directory="FreeImage" />
+			<Add directory="assimp/lib32" />
 		</Linker>
 		<Unit filename="FreeImage.dll" />
 		<Unit filename="SDL.dll" />
@@ -55,11 +62,13 @@
 		<Unit filename="include/Color.h" />
 		<Unit filename="include/Point.h" />
 		<Unit filename="include/Rotation.h" />
+		<Unit filename="include/objloader.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Ball.cpp" />
 		<Unit filename="src/Color.cpp" />
 		<Unit filename="src/Point.cpp" />
 		<Unit filename="src/Rotation.cpp" />
+		<Unit filename="src/objloader.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

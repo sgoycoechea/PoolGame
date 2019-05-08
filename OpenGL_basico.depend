@@ -2136,7 +2136,7 @@
 	<math.h>
 	"SDL/SDL_opengl.h"
 
-1557279944 source:c:\users\santiago\desktop\poolgame\main.cpp
+1557337469 source:c:\users\santiago\desktop\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -2144,6 +2144,7 @@
 	"include/Color.h"
 	"include/Point.h"
 	"include/Ball.h"
+	"include/objloader.h"
 	<math.h>
 	<vector>
 	<chrono>
@@ -2152,6 +2153,10 @@
 	<unistd.h>
 	<thread>
 	<algorithm>
+	<string>
+	<cstdio>
+	<cstdlib>
+	<glm/glm.hpp>
 
 1325745840 c:\users\santiago\desktop\poolgame\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
@@ -2370,12 +2375,11 @@
 	<vector>
 	"Rotation.h"
 
-1557279930 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
+1557330368 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
 	"../include/Ball.h"
 	"../include/Rotation.h"
 	<math.h>
 	"SDL/SDL_opengl.h"
-	<fstream>
 
 1556731650 source:c:\users\santiago\desktop\poolgame\src\color.cpp
 	"../include/Color.h"
@@ -2391,4 +2395,1625 @@
 	"../include/Rotation.h"
 	"../include/Point.h"
 	<math.h>
+
+1557323160 source:c:\users\santiago\desktop\poolgame\lib\glm.cpp
+	<math.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	"glm.h"
+	<gl/gl.h>
+	"glut.h"
+	<GL/GL.h>
+	<GL/GLU.h>
+	<stdio.h>
+
+1417985499 c:\users\santiago\desktop\poolgame\lib\glm.h
+	"glut.h"
+
+976677772 c:\users\santiago\desktop\poolgame\lib\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1557325206 source:c:\users\santiago\desktop\poolgame\src\obj_loader.cpp
+	"../include/obj_loader.h"
+	<fstream>
+	<iostream>
+	<algorithm>
+	<map>
+
+1557325228 c:\users\santiago\desktop\poolgame\include\obj_loader.h
+	<glm/glm.hpp>
+	<vector>
+	<string>
+
+1557331930 source:c:\users\santiago\desktop\poolgame\src\objloader.cpp
+	<vector>
+	<stdio.h>
+	<string>
+	<cstring>
+	<glm/glm.hpp>
+	"../include/objloader.h"
+	<assimp/Importer.hpp>
+	<assimp/scene.h>
+	<assimp/postprocess.h>
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\glm.hpp
+	"detail/_fixes.hpp"
+	"detail/setup.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\_fixes.hpp
+	<cmath>
+
+1554197230 c:\users\santiago\desktop\poolgame\glm\glm\detail\setup.hpp
+	<cassert>
+	<cstddef>
+	"../simd/platform.h"
+	<cstdint>
+	<type_traits>
+
+1547205366 c:\users\santiago\desktop\poolgame\glm\glm\simd\platform.h
+	<cuda.h>
+	<immintrin.h>
+	<immintrin.h>
+	<popcntintrin.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1551438336 c:\users\santiago\desktop\poolgame\glm\glm\fwd.hpp
+	"detail/qualifier.hpp"
+
+1537202926 c:\users\santiago\desktop\poolgame\glm\glm\detail\qualifier.hpp
+	"setup.hpp"
+
+1533818823 c:\users\santiago\desktop\poolgame\glm\glm\vec2.hpp
+	"./ext/vector_bool2.hpp"
+	"./ext/vector_bool2_precision.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float2_precision.hpp"
+	"./ext/vector_double2.hpp"
+	"./ext/vector_double2_precision.hpp"
+	"./ext/vector_int2.hpp"
+	"./ext/vector_int2_precision.hpp"
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_uint2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_bool2.hpp
+	"../detail/type_vec2.hpp"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec2.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\_swizzle.hpp
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\_swizzle_func.hpp
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec2.inl
+	"./compute_vector_relational.hpp"
+
+1533818821 c:\users\santiago\desktop\poolgame\glm\glm\detail\compute_vector_relational.hpp
+	"setup.hpp"
+	<limits>
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_bool2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_float2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_float2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_double2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_double2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_int2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_int2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_uint2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_uint2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1533818823 c:\users\santiago\desktop\poolgame\glm\glm\vec3.hpp
+	"./ext/vector_bool3.hpp"
+	"./ext/vector_bool3_precision.hpp"
+	"./ext/vector_float3.hpp"
+	"./ext/vector_float3_precision.hpp"
+	"./ext/vector_double3.hpp"
+	"./ext/vector_double3_precision.hpp"
+	"./ext/vector_int3.hpp"
+	"./ext/vector_int3_precision.hpp"
+	"./ext/vector_uint3.hpp"
+	"./ext/vector_uint3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_bool3.hpp
+	"../detail/type_vec3.hpp"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec3.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec3.inl
+	"compute_vector_relational.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_bool3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_float3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_float3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_double3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_double3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_int3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_int3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_uint3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_uint3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1533818823 c:\users\santiago\desktop\poolgame\glm\glm\vec4.hpp
+	"./ext/vector_bool4.hpp"
+	"./ext/vector_bool4_precision.hpp"
+	"./ext/vector_float4.hpp"
+	"./ext/vector_float4_precision.hpp"
+	"./ext/vector_double4.hpp"
+	"./ext/vector_double4_precision.hpp"
+	"./ext/vector_int4.hpp"
+	"./ext/vector_int4_precision.hpp"
+	"./ext/vector_uint4.hpp"
+	"./ext/vector_uint4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_bool4.hpp
+	"../detail/type_vec4.hpp"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec4.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec4.inl
+	"compute_vector_relational.hpp"
+	"type_vec4_simd.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec4_simd.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_bool4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_float4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_float4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_double4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_double4_precision.hpp
+	"../detail/setup.hpp"
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_int4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_int4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_uint4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\vector_uint4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat2x2.hpp
+	"./ext/matrix_double2x2.hpp"
+	"./ext/matrix_double2x2_precision.hpp"
+	"./ext/matrix_float2x2.hpp"
+	"./ext/matrix_float2x2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat2x2.hpp
+	"type_vec2.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat2x2.inl
+	"../matrix.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\matrix.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"detail/func_matrix.inl"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat2x3.hpp
+	"./ext/matrix_double2x3.hpp"
+	"./ext/matrix_double2x3_precision.hpp"
+	"./ext/matrix_float2x3.hpp"
+	"./ext/matrix_float2x3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat2x3.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat2x3.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat2x4.hpp
+	"./ext/matrix_double2x4.hpp"
+	"./ext/matrix_double2x4_precision.hpp"
+	"./ext/matrix_float2x4.hpp"
+	"./ext/matrix_float2x4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat2x4.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat2x4.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat3x2.hpp
+	"./ext/matrix_double3x2.hpp"
+	"./ext/matrix_double3x2_precision.hpp"
+	"./ext/matrix_float3x2.hpp"
+	"./ext/matrix_float3x2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat3x2.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat3x2.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat3x3.hpp
+	"./ext/matrix_double3x3.hpp"
+	"./ext/matrix_double3x3_precision.hpp"
+	"./ext/matrix_float3x3.hpp"
+	"./ext/matrix_float3x3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat3x3.hpp
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat3x3.inl
+	"../matrix.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat3x4.hpp
+	"./ext/matrix_double3x4.hpp"
+	"./ext/matrix_double3x4_precision.hpp"
+	"./ext/matrix_float3x4.hpp"
+	"./ext/matrix_float3x4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat3x4.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat3x4.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat4x2.hpp
+	"./ext/matrix_double4x2.hpp"
+	"./ext/matrix_double4x2_precision.hpp"
+	"./ext/matrix_float4x2.hpp"
+	"./ext/matrix_float4x2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x2.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x2.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double4x2_precision.hpp
+	"../detail/type_mat4x2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float4x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat4x3.hpp
+	"./ext/matrix_double4x3.hpp"
+	"./ext/matrix_double4x3_precision.hpp"
+	"./ext/matrix_float4x3.hpp"
+	"./ext/matrix_float4x3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x3.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1547203406 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x3.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\mat4x4.hpp
+	"./ext/matrix_double4x4.hpp"
+	"./ext/matrix_double4x4_precision.hpp"
+	"./ext/matrix_float4x4.hpp"
+	"./ext/matrix_float4x4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x4.hpp
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x4.inl
+	"../matrix.hpp"
+	"type_mat4x4_simd.inl"
+
+1533818822 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_mat4x4_simd.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+	"func_matrix_simd.inl"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\geometric.hpp
+	"detail/type_vec3.hpp"
+	"detail/func_geometric.inl"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_geometric.inl
+	"../exponential.hpp"
+	"../common.hpp"
+	"func_geometric_simd.inl"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\exponential.hpp
+	"detail/type_vec1.hpp"
+	"detail/type_vec2.hpp"
+	"detail/type_vec3.hpp"
+	"detail/type_vec4.hpp"
+	<cmath>
+	"detail/func_exponential.inl"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec1.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_vec1.inl
+	"./compute_vector_relational.hpp"
+
+1533818821 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_exponential.inl
+	"../vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+	"func_exponential_simd.inl"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\vector_relational.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"detail/func_vector_relational.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_vector_relational.inl
+	"func_vector_relational_simd.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_vector_relational_simd.inl
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\_vectorize.hpp
+
+1533818821 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_exponential_simd.inl
+	"../simd/exponential.h"
+
+1531731968 c:\users\santiago\desktop\poolgame\glm\glm\simd\exponential.h
+	"platform.h"
+
+1554130947 c:\users\santiago\desktop\poolgame\glm\glm\common.hpp
+	"detail/qualifier.hpp"
+	"detail/_fixes.hpp"
+	"detail/func_common.inl"
+
+1551434967 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_common.inl
+	"../vector_relational.hpp"
+	"compute_common.hpp"
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+	"func_common_simd.inl"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\detail\compute_common.hpp
+	"setup.hpp"
+	<limits>
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_common_simd.inl
+	"../simd/common.h"
+	<immintrin.h>
+
+1552465509 c:\users\santiago\desktop\poolgame\glm\glm\simd\common.h
+	"platform.h"
+
+1525695782 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_geometric_simd.inl
+	"../simd/geometric.h"
+
+1525695782 c:\users\santiago\desktop\poolgame\glm\glm\simd\geometric.h
+	"common.h"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_matrix_simd.inl
+	"type_mat4x4.hpp"
+	"../geometric.hpp"
+	"../simd/matrix.h"
+	<cstring>
+
+1525695782 c:\users\santiago\desktop\poolgame\glm\glm\simd\matrix.h
+	"geometric.h"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_double2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\ext\matrix_float2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\trigonometric.hpp
+	"detail/setup.hpp"
+	"detail/qualifier.hpp"
+	"detail/func_trigonometric.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+	"func_trigonometric_simd.inl"
+
+1464685461 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_trigonometric_simd.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\packing.hpp
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float4.hpp"
+	"detail/func_packing.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_packing.inl
+	"../common.hpp"
+	"type_half.hpp"
+	"func_packing_simd.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1547203406 c:\users\santiago\desktop\poolgame\glm\glm\detail\type_half.inl
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_packing_simd.inl
+
+1537176751 c:\users\santiago\desktop\poolgame\glm\glm\integer.hpp
+	"detail/qualifier.hpp"
+	"common.hpp"
+	"vector_relational.hpp"
+	"detail/func_integer.inl"
+
+1540992241 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_integer.inl
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+	"func_integer_simd.inl"
+
+1535531570 c:\users\santiago\desktop\poolgame\glm\glm\detail\func_integer_simd.inl
+	"../simd/integer.h"
+
+1525695782 c:\users\santiago\desktop\poolgame\glm\glm\simd\integer.h
+
+1557331502 c:\users\santiago\desktop\poolgame\include\objloader.h
+	<glm/glm.hpp>
+
+1557331502 c:\users\santiago\desktop\poolgame\include\assimp.h
+	<glm/glm.hpp>
+
+1557334889 source:c:\users\santiago\desktop\poolgame\src\assimp.cpp
+	<vector>
+	<stdio.h>
+	<string>
+	<cstring>
+	<glm/glm.hpp>
+	"../include/objloader.h"
+	<assimp/Importer.hpp>
+	<assimp/scene.h>
+	<assimp/postprocess.h>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\importer.hpp
+	"types.h"
+	"config.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\types.h
+	<sys/types.h>
+	<memory.h>
+	<math.h>
+	<stddef.h>
+	<string.h>
+	<limits.h>
+	"defs.h"
+	"vector3.h"
+	"vector2.h"
+	"color4.h"
+	"matrix3x3.h"
+	"matrix4x4.h"
+	"quaternion.h"
+	<cstring>
+	<new>
+	<string>
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+	"vector2.inl"
+	"vector3.inl"
+	"color4.inl"
+	"quaternion.inl"
+	"matrix3x3.inl"
+	"matrix4x4.inl"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\defs.h
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\vector3.h
+	<cmath>
+	<math.h>
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\vector2.h
+	<cmath>
+	<math.h>
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\color4.h
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\matrix3x3.h
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\matrix4x4.h
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\quaternion.h
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\vector2.inl
+	"vector2.h"
+	<cmath>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\vector3.inl
+	"vector3.h"
+	<cmath>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\color4.inl
+	"color4.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\quaternion.inl
+	"quaternion.h"
+	<cmath>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\matrix3x3.inl
+	"matrix3x3.h"
+	"matrix4x4.h"
+	<algorithm>
+	<cmath>
+	<limits>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\matrix4x4.inl
+	"matrix4x4.h"
+	"matrix3x3.h"
+	"quaternion.h"
+	<algorithm>
+	<limits>
+	<cmath>
+	<math.h>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\scene.h
+	"types.h"
+	"texture.h"
+	"mesh.h"
+	"light.h"
+	"camera.h"
+	"material.h"
+	"anim.h"
+	"metadata.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\texture.h
+	"types.h"
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\compiler\pushpack1.h
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\compiler\poppack1.h
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\mesh.h
+	"types.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\light.h
+	"types.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\camera.h
+	"types.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\material.h
+	"types.h"
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+	"material.inl"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\material.inl
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\anim.h
+	"types.h"
+	"quaternion.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\metadata.h
+	<assert.h>
+	"Compiler/pstdint.h"
+	<stdint.h>
+	<string>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\compiler\pstdint.h
+	<stddef.h>
+	<limits.h>
+	<signal.h>
+	<stdint.h>
+	<wchar.h>
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\postprocess.h
+	"types.h"
+
+1402765209 c:\users\santiago\desktop\poolgame\assimp\include\assimp\config.h
+
+1557334868 c:\users\santiago\desktop\assimp\include\assimp\importer.hpp
+	<assimp/types.h>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\types.h
+	<sys/types.h>
+	<stddef.h>
+	<string.h>
+	<limits.h>
+	"defs.h"
+	"vector3.h"
+	"vector2.h"
+	"color4.h"
+	"matrix3x3.h"
+	"matrix4x4.h"
+	"quaternion.h"
+	<cstring>
+	<new>
+	<string>
+	"vector2.inl"
+	"vector3.inl"
+	"color4.inl"
+	"quaternion.inl"
+	"matrix3x3.inl"
+	"matrix4x4.inl"
+
+1557334924 c:\users\santiago\desktop\assimp\include\assimp\defs.h
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\vector3.h
+	<cmath>
+	<math.h>
+	"defs.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\vector2.h
+	<cmath>
+	<math.h>
+	"defs.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\color4.h
+	"defs.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\matrix3x3.h
+	"defs.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\matrix4x4.h
+	"vector3.h"
+	"defs.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\quaternion.h
+	"defs.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\vector2.inl
+	"vector2.h"
+	<cmath>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\vector3.inl
+	"vector3.h"
+	<cmath>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\color4.inl
+	"color4.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\quaternion.inl
+	"quaternion.h"
+	<cmath>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\matrix3x3.inl
+	"matrix3x3.h"
+	"matrix4x4.h"
+	<algorithm>
+	<cmath>
+	<limits>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\matrix4x4.inl
+	"matrix4x4.h"
+	"matrix3x3.h"
+	"quaternion.h"
+	<algorithm>
+	<limits>
+	<cmath>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\scene.h
+	"types.h"
+	"texture.h"
+	"mesh.h"
+	"light.h"
+	"camera.h"
+	"material.h"
+	"anim.h"
+	"metadata.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\texture.h
+	"types.h"
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\compiler\pushpack1.h
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\compiler\poppack1.h
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\mesh.h
+	"types.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\light.h
+	"types.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\camera.h
+	"types.h"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\material.h
+	"types.h"
+	"./Compiler/pushpack1.h"
+	"./Compiler/poppack1.h"
+	"material.inl"
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\material.inl
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\anim.h
+	<assimp/types.h>
+	<assimp/quaternion.h>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\metadata.h
+	"Compiler/pstdint.h"
+	<stdint.h>
+	<string>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\compiler\pstdint.h
+	<stddef.h>
+	<limits.h>
+	<signal.h>
+	<stdint.h>
+	<sys/inttypes.h>
+	<wchar.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1557297701 c:\users\santiago\desktop\assimp\include\assimp\postprocess.h
+	"types.h"
+
+1537176751 c:\users\santiago\desktop\glm\glm\glm.hpp
+	"detail/_fixes.hpp"
+	"detail/setup.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\_fixes.hpp
+	<cmath>
+
+1554197230 c:\users\santiago\desktop\glm\glm\detail\setup.hpp
+	<cassert>
+	<cstddef>
+	"../simd/platform.h"
+	<cstdint>
+	<type_traits>
+
+1547205366 c:\users\santiago\desktop\glm\glm\simd\platform.h
+	<cuda.h>
+	<immintrin.h>
+	<immintrin.h>
+	<popcntintrin.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1551438336 c:\users\santiago\desktop\glm\glm\fwd.hpp
+	"detail/qualifier.hpp"
+
+1537202926 c:\users\santiago\desktop\glm\glm\detail\qualifier.hpp
+	"setup.hpp"
+
+1533818823 c:\users\santiago\desktop\glm\glm\vec2.hpp
+	"./ext/vector_bool2.hpp"
+	"./ext/vector_bool2_precision.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float2_precision.hpp"
+	"./ext/vector_double2.hpp"
+	"./ext/vector_double2_precision.hpp"
+	"./ext/vector_int2.hpp"
+	"./ext/vector_int2_precision.hpp"
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_uint2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_bool2.hpp
+	"../detail/type_vec2.hpp"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec2.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\_swizzle.hpp
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\_swizzle_func.hpp
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec2.inl
+	"./compute_vector_relational.hpp"
+
+1533818821 c:\users\santiago\desktop\glm\glm\detail\compute_vector_relational.hpp
+	"setup.hpp"
+	<limits>
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_bool2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_float2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_float2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_double2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_double2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_int2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_int2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_uint2.hpp
+	"../detail/type_vec2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_uint2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1533818823 c:\users\santiago\desktop\glm\glm\vec3.hpp
+	"./ext/vector_bool3.hpp"
+	"./ext/vector_bool3_precision.hpp"
+	"./ext/vector_float3.hpp"
+	"./ext/vector_float3_precision.hpp"
+	"./ext/vector_double3.hpp"
+	"./ext/vector_double3_precision.hpp"
+	"./ext/vector_int3.hpp"
+	"./ext/vector_int3_precision.hpp"
+	"./ext/vector_uint3.hpp"
+	"./ext/vector_uint3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_bool3.hpp
+	"../detail/type_vec3.hpp"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec3.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec3.inl
+	"compute_vector_relational.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_bool3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_float3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_float3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_double3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_double3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_int3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_int3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_uint3.hpp
+	"../detail/type_vec3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_uint3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1533818823 c:\users\santiago\desktop\glm\glm\vec4.hpp
+	"./ext/vector_bool4.hpp"
+	"./ext/vector_bool4_precision.hpp"
+	"./ext/vector_float4.hpp"
+	"./ext/vector_float4_precision.hpp"
+	"./ext/vector_double4.hpp"
+	"./ext/vector_double4_precision.hpp"
+	"./ext/vector_int4.hpp"
+	"./ext/vector_int4_precision.hpp"
+	"./ext/vector_uint4.hpp"
+	"./ext/vector_uint4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_bool4.hpp
+	"../detail/type_vec4.hpp"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec4.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec4.inl
+	"compute_vector_relational.hpp"
+	"type_vec4_simd.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_vec4_simd.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_bool4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_float4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_float4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_double4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_double4_precision.hpp
+	"../detail/setup.hpp"
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_int4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_int4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_uint4.hpp
+	"../detail/type_vec4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\vector_uint4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat2x2.hpp
+	"./ext/matrix_double2x2.hpp"
+	"./ext/matrix_double2x2_precision.hpp"
+	"./ext/matrix_float2x2.hpp"
+	"./ext/matrix_float2x2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat2x2.hpp
+	"type_vec2.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat2x2.inl
+	"../matrix.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\matrix.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"detail/func_matrix.inl"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat2x3.hpp
+	"./ext/matrix_double2x3.hpp"
+	"./ext/matrix_double2x3_precision.hpp"
+	"./ext/matrix_float2x3.hpp"
+	"./ext/matrix_float2x3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat2x3.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat2x3.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat2x4.hpp
+	"./ext/matrix_double2x4.hpp"
+	"./ext/matrix_double2x4_precision.hpp"
+	"./ext/matrix_float2x4.hpp"
+	"./ext/matrix_float2x4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat2x4.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat2x4.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat3x2.hpp
+	"./ext/matrix_double3x2.hpp"
+	"./ext/matrix_double3x2_precision.hpp"
+	"./ext/matrix_float3x2.hpp"
+	"./ext/matrix_float3x2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat3x2.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat3x2.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1535531570 c:\users\santiago\desktop\glm\glm\ext\matrix_float3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat3x3.hpp
+	"./ext/matrix_double3x3.hpp"
+	"./ext/matrix_double3x3_precision.hpp"
+	"./ext/matrix_float3x3.hpp"
+	"./ext/matrix_float3x3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat3x3.hpp
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat3x3.inl
+	"../matrix.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat3x4.hpp
+	"./ext/matrix_double3x4.hpp"
+	"./ext/matrix_double3x4_precision.hpp"
+	"./ext/matrix_float3x4.hpp"
+	"./ext/matrix_float3x4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat3x4.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat3x4.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat4x2.hpp
+	"./ext/matrix_double4x2.hpp"
+	"./ext/matrix_double4x2_precision.hpp"
+	"./ext/matrix_float4x2.hpp"
+	"./ext/matrix_float4x2_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat4x2.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat4x2.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double4x2_precision.hpp
+	"../detail/type_mat4x2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float4x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat4x3.hpp
+	"./ext/matrix_double4x3.hpp"
+	"./ext/matrix_double4x3_precision.hpp"
+	"./ext/matrix_float4x3.hpp"
+	"./ext/matrix_float4x3_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat4x3.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1547203406 c:\users\santiago\desktop\glm\glm\detail\type_mat4x3.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\mat4x4.hpp
+	"./ext/matrix_double4x4.hpp"
+	"./ext/matrix_double4x4_precision.hpp"
+	"./ext/matrix_float4x4.hpp"
+	"./ext/matrix_float4x4_precision.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat4x4.hpp
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_mat4x4.inl
+	"../matrix.hpp"
+	"type_mat4x4_simd.inl"
+
+1533818822 c:\users\santiago\desktop\glm\glm\detail\type_mat4x4_simd.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+	"func_matrix_simd.inl"
+
+1537176751 c:\users\santiago\desktop\glm\glm\geometric.hpp
+	"detail/type_vec3.hpp"
+	"detail/func_geometric.inl"
+
+1537176751 c:\users\santiago\desktop\glm\glm\detail\func_geometric.inl
+	"../exponential.hpp"
+	"../common.hpp"
+	"func_geometric_simd.inl"
+
+1537176751 c:\users\santiago\desktop\glm\glm\exponential.hpp
+	"detail/type_vec1.hpp"
+	"detail/type_vec2.hpp"
+	"detail/type_vec3.hpp"
+	"detail/type_vec4.hpp"
+	<cmath>
+	"detail/func_exponential.inl"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec1.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\type_vec1.inl
+	"./compute_vector_relational.hpp"
+
+1533818821 c:\users\santiago\desktop\glm\glm\detail\func_exponential.inl
+	"../vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+	"func_exponential_simd.inl"
+
+1537176751 c:\users\santiago\desktop\glm\glm\vector_relational.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"detail/func_vector_relational.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_vector_relational.inl
+	"func_vector_relational_simd.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_vector_relational_simd.inl
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\_vectorize.hpp
+
+1533818821 c:\users\santiago\desktop\glm\glm\detail\func_exponential_simd.inl
+	"../simd/exponential.h"
+
+1531731968 c:\users\santiago\desktop\glm\glm\simd\exponential.h
+	"platform.h"
+
+1554130947 c:\users\santiago\desktop\glm\glm\common.hpp
+	"detail/qualifier.hpp"
+	"detail/_fixes.hpp"
+	"detail/func_common.inl"
+
+1551434967 c:\users\santiago\desktop\glm\glm\detail\func_common.inl
+	"../vector_relational.hpp"
+	"compute_common.hpp"
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+	"func_common_simd.inl"
+
+1537176751 c:\users\santiago\desktop\glm\glm\detail\compute_common.hpp
+	"setup.hpp"
+	<limits>
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_common_simd.inl
+	"../simd/common.h"
+	<immintrin.h>
+
+1552465509 c:\users\santiago\desktop\glm\glm\simd\common.h
+	"platform.h"
+
+1525695782 c:\users\santiago\desktop\glm\glm\detail\func_geometric_simd.inl
+	"../simd/geometric.h"
+
+1525695782 c:\users\santiago\desktop\glm\glm\simd\geometric.h
+	"common.h"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_matrix_simd.inl
+	"type_mat4x4.hpp"
+	"../geometric.hpp"
+	"../simd/matrix.h"
+	<cstring>
+
+1525695782 c:\users\santiago\desktop\glm\glm\simd\matrix.h
+	"geometric.h"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_double2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\ext\matrix_float2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537176751 c:\users\santiago\desktop\glm\glm\trigonometric.hpp
+	"detail/setup.hpp"
+	"detail/qualifier.hpp"
+	"detail/func_trigonometric.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+	"func_trigonometric_simd.inl"
+
+1464685461 c:\users\santiago\desktop\glm\glm\detail\func_trigonometric_simd.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\packing.hpp
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float4.hpp"
+	"detail/func_packing.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_packing.inl
+	"../common.hpp"
+	"type_half.hpp"
+	"func_packing_simd.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1547203406 c:\users\santiago\desktop\glm\glm\detail\type_half.inl
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_packing_simd.inl
+
+1537176751 c:\users\santiago\desktop\glm\glm\integer.hpp
+	"detail/qualifier.hpp"
+	"common.hpp"
+	"vector_relational.hpp"
+	"detail/func_integer.inl"
+
+1540992241 c:\users\santiago\desktop\glm\glm\detail\func_integer.inl
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+	"func_integer_simd.inl"
+
+1535531570 c:\users\santiago\desktop\glm\glm\detail\func_integer_simd.inl
+	"../simd/integer.h"
+
+1525695782 c:\users\santiago\desktop\glm\glm\simd\integer.h
 

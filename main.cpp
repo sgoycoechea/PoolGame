@@ -5,6 +5,7 @@
 #include "include/Color.h"
 #include "include/Point.h"
 #include "include/Ball.h"
+#include "include/objloader.h"
 #include <math.h>
 #include <vector>
 #include <chrono>
@@ -13,9 +14,15 @@
 #include <unistd.h>
 #include <thread>
 #include <algorithm>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <glm/glm.hpp>
+
 #define _USE_MATH_DEFINES
 #define FPS 60
 #define M_PI 3.1415926
+
 
 using namespace std;
 void updateCam(float &x,float &y, float &z, float x_angle, float y_angle,float radius){
@@ -33,6 +40,7 @@ void updateCam(float &x,float &y, float &z, float x_angle, float y_angle,float r
         glVertex3f(points[3]->getX(), points[3]->getY(), points[3]->getZ());
     glEnd();
 }
+
 void drawPrism(vector<Point*> points, Color* topColor, Color* restOfColors){
         // TOP
         vector<Point*> topPoints {points[0], points[1], points[2], points[3]};
@@ -127,10 +135,10 @@ void drawCue(int numSteps, float radius, float hl, float* arrX_1, float* arrY_1,
         arrX_1[i]=x;
         arrY_1[i]=y;
         glNormal3f(x/radius,y/radius,0);
-        glTexCoord2f(0,i*2*radius*M_PI/numSteps);
+        //glTexCoord2f(0,i*2*radius*M_PI/numSteps);
         glVertex3f(x,y,-hl);
         glNormal3f(x/radius,y/radius, 0);
-        glTexCoord2f(2*hl,i*2*radius*M_PI/numSteps);
+        //glTexCoord2f(2*hl,i*2*radius*M_PI/numSteps);
         glVertex3f(x,y, hl);
         a += step;
     }
@@ -315,6 +323,29 @@ void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, fl
     drawPrism(border4, brownColor, brownColor);
 }
 
+GLuint loadTexture(){
+    string file = "texture.jpg";
+
+    FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(file.c_str());
+    FIBITMAP* bitmap = FreeImage_Load(fif, file.c_str());
+    bitmap = FreeImage_ConvertTo24Bits(bitmap);
+    int texW = FreeImage_GetWidth(bitmap);
+    int texH = FreeImage_GetHeight(bitmap);
+    void* data = FreeImage_GetBits(bitmap);
+    GLuint texture;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texW, texH, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+    delete data;
+    return texture;
+}
+
 GLuint* loadTextures(){
     GLuint* textures = new GLuint[15];
 
@@ -368,6 +399,28 @@ bool ballsNotMoving(Ball** balls){
     return true;
 }
 
+void drawObj(std::vector< glm::vec3 > vertices, std::vector< glm::vec3 > uvs, std::vector< glm::vec3 > normals, GLuint tableText){
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, tableText);
+
+    glPushMatrix();
+    glTranslatef(0,-3,0);
+    glScalef(0.05,0.05,0.05);
+    glBegin(GL_TRIANGLE_FAN);
+
+    for (int i = 0; i < vertices.size(); i++){
+        glNormal3f(normals[i][0], normals[i][1], normals[i][2]);
+        glTexCoord3f(uvs[i][0], uvs[i][1], uvs[i][2]);
+        glVertex3f(vertices[i][0], vertices[i][1], vertices[i][2]);
+    }
+
+    glEnd();
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
+}
+
+
 float x,y,z;
 int main(int argc, char *argv[]) {
     float anga=0;
@@ -406,6 +459,7 @@ int main(int argc, char *argv[]) {
     glMatrixMode(GL_MODELVIEW);
 
     GLuint* textures = loadTextures();
+    GLuint tableTexture = loadTexture();
 
 
     // ---- Size of table and balls -----
@@ -424,6 +478,9 @@ int main(int argc, char *argv[]) {
     float h = 1.6;
     float wBorder = h/6;
     float hBorder = h/4;
+
+    int numSteps = 100;
+    int cueLength = 2.3;
     // -----------------------------------
 
     // --------- Colision checks ---------
@@ -448,10 +505,21 @@ int main(int argc, char *argv[]) {
     SDL_Event event;
     Ball** balls = initializeBalls(ballRad, ballMass, ballSeparation);
 
+    std::vector< glm::vec3 > vertices;
+    std::vector< glm::vec3 > uvs;
+    std::vector< glm::vec3 > normals; // No las usaremos por ahora
+
+
+    bool res = loadOBJ("test.obj", vertices, uvs, normals);
+
     do{
         auto currentTime = clock();
         float frameTime = (float)(currentTime - lastFrameTime);
         lastFrameTime = clock();
+
+
+        float arrX_1[numSteps+1];
+        float arrY_1[numSteps+1];
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -459,23 +527,16 @@ int main(int argc, char *argv[]) {
         gluLookAt(x,y,-z,0,0,0,0,1,0);
 
 
+        /*
         drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
-
         applyCollisions(balls, ballRad, lastCollisions);
         moveBalls(balls, frameTime/40, lTop, wTop, wBorder);
         drawBalls(balls, textures);
-
-
-
-        int numSteps = 100;
-        int cueLength = 2.3;
-        float arrX_1[numSteps+1];
-        float arrY_1[numSteps+1];
-
         if (ballsNotMoving(balls))
             drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueRotAng1, cueRotAng2, strength);
+        */
 
-
+        drawObj(vertices, uvs, normals, tableTexture);
 
         int xm,ym;
         SDL_GetMouseState(&xm, &ym);
