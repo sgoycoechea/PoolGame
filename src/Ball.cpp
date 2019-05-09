@@ -3,10 +3,11 @@
 #include <math.h>
 #include "SDL/SDL_opengl.h"
 #define M_PI 3.1415926
+#include <fstream>
 
 using namespace std;
 
-Ball::Ball(double x, double y, double z, double rad, double mass, Color* color){
+Ball::Ball(double x, double y, double z, double rad, double mass, Color* color, bool isWhiteBall){
     this->posX = x;
     this->posY = y;
     this->posZ = z;
@@ -16,6 +17,8 @@ Ball::Ball(double x, double y, double z, double rad, double mass, Color* color){
     this->velY = 0;
     this->velZ = 0;
     this->color = color;
+    this->inHole = false;
+    this->isWhiteBall = isWhiteBall;
 }
 
 void Ball::setVelocity(double x, double y, double z){
@@ -31,14 +34,43 @@ void Ball::setVelocity(Point* velVector){
 }
 
 bool Ball::isMoving(){
-    return velX != 0 || velY != 0 || velZ != 0;
+    return (!inHole && (velX != 0 || velY != 0 || velZ != 0));
 }
 
+bool Ball::checkEntersHole(float lTop, float wTop){
+    float d = 1.5;
+    if ( (posX > lTop/2 - rad*d || posX < -lTop/2 + rad*d || (posX < rad*d/2 && posX > -rad*d/2 )) && (posZ > wTop/2 - rad*d || posZ < -wTop/2 + rad*d)){
+        velX = 0;
+        velY = 0;
+        velZ = 0;
+
+        if (isWhiteBall){
+            posX = -2;
+            posZ = 0;
+        }
+
+        inHole = true;
+        return true;
+    }
+
+    return false;
+}
+
+bool Ball::isInHole(){
+    return inHole;
+}
+
+void Ball::setInHole(bool inHole){
+    this->inHole = inHole;
+}
 
 void Ball::updatePosAndVel(double time, double lTop, double wTop, Ball** balls){
 
     double velDecrease = time / 3;
     double posFactor = time / 100;
+
+    if (inHole) return;
+    if (checkEntersHole(lTop, wTop)) return;
 
     // Ball is against a border
     if (posX >= lTop/2 - rad || posX <= -lTop/2 + rad){
@@ -146,6 +178,9 @@ void Ball::setPos(Point* pos){
 }
 
 void Ball::draw(float lats, float longs, GLuint texture) {
+
+    if (inHole) return;
+
     double i, j;
     for(i = 0; i <= lats; i++)
     {

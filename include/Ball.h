@@ -20,9 +20,12 @@ class Ball{
         double mass;
         Color* color;
         vector<Rotation*> rotations;
+        bool inHole;
+        bool isWhiteBall;
+        bool checkEntersHole(float, float);
 
     public:
-        Ball(double, double, double, double, double, Color*);
+        Ball(double, double, double, double, double, Color*, bool);
         void setVelocity(double, double, double);
         void setVelocity(Point*);
         void draw(float, float, GLuint);
@@ -36,6 +39,8 @@ class Ball{
         Point* getPos();
         Point* getVel();
         void setPos(Point*);
+        bool isInHole();
+        void setInHole(bool);
 };
 
 #endif

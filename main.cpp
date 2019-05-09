@@ -31,7 +31,7 @@ void updateCam(float &x,float &y, float &z, float x_angle, float y_angle,float r
     y = sin(x_angle*M_PI/180) * radius;
 }
 
- void drawQuad(vector<Point*> points, Color* color){
+void drawQuad(vector<Point*> points, Color* color){
     glBegin(GL_QUADS);
         glColor3ub(color->getR(), color->getG(), color->getB());
         glVertex3f(points[0]->getX(), points[0]->getY(), points[0]->getZ());
@@ -70,27 +70,27 @@ Ball** initializeBalls(double ballRad, double ballMass, float ballSeparation){
     float whiteBallDistance = 1.5;
 
     // White ball
-    balls[0] = new Ball(-2, height, 0, ballRad, ballMass, whiteColor);
+    balls[0] = new Ball(-2, height, 0, ballRad, ballMass, whiteColor, true);
     // First line
-    balls[1] = new Ball(whiteBallDistance, height, 0, ballRad, ballMass, redColor);
+    balls[1] = new Ball(whiteBallDistance, height, 0, ballRad, ballMass, redColor, false);
     // Second line
-    balls[2] = new Ball(whiteBallDistance+ballSeparation, height, ballRad, ballRad, ballMass, redColor);
-    balls[3] = new Ball(whiteBallDistance+ballSeparation, height, -ballRad, ballRad, ballMass, redColor);
+    balls[2] = new Ball(whiteBallDistance+ballSeparation, height, ballRad, ballRad, ballMass, redColor, false);
+    balls[3] = new Ball(whiteBallDistance+ballSeparation, height, -ballRad, ballRad, ballMass, redColor, false);
     // Third line
-    balls[4] = new Ball(whiteBallDistance+ballSeparation*2, height, 0, ballRad, ballMass, redColor);
-    balls[5] = new Ball(whiteBallDistance+ballSeparation*2, height, ballRad*2, ballRad, ballMass, redColor);
-    balls[6] = new Ball(whiteBallDistance+ballSeparation*2, height, -ballRad*2, ballRad, ballMass, redColor);
+    balls[4] = new Ball(whiteBallDistance+ballSeparation*2, height, 0, ballRad, ballMass, redColor, false);
+    balls[5] = new Ball(whiteBallDistance+ballSeparation*2, height, ballRad*2, ballRad, ballMass, redColor, false);
+    balls[6] = new Ball(whiteBallDistance+ballSeparation*2, height, -ballRad*2, ballRad, ballMass, redColor, false);
     // Forth line
-    balls[7] = new Ball(whiteBallDistance+ballSeparation*3, height, ballRad, ballRad, ballMass, redColor);
-    balls[8] = new Ball(whiteBallDistance+ballSeparation*3, height, -ballRad, ballRad, ballMass, redColor);
-    balls[9] = new Ball(whiteBallDistance+ballSeparation*3, height, ballRad + ballRad*2, ballRad, ballMass, redColor);
-    balls[10] = new Ball(whiteBallDistance+ballSeparation*3, height, -ballRad - ballRad*2, ballRad, ballMass, redColor);
+    balls[7] = new Ball(whiteBallDistance+ballSeparation*3, height, ballRad, ballRad, ballMass, redColor, false);
+    balls[8] = new Ball(whiteBallDistance+ballSeparation*3, height, -ballRad, ballRad, ballMass, redColor, false);
+    balls[9] = new Ball(whiteBallDistance+ballSeparation*3, height, ballRad + ballRad*2, ballRad, ballMass, redColor, false);
+    balls[10] = new Ball(whiteBallDistance+ballSeparation*3, height, -ballRad - ballRad*2, ballRad, ballMass, redColor, false);
     // Fifth line
-    balls[11] = new Ball(whiteBallDistance+ballSeparation*4, height, 0, ballRad, ballMass, redColor);
-    balls[12] = new Ball(whiteBallDistance+ballSeparation*4, height, ballRad*2, ballRad, ballMass, redColor);
-    balls[13] = new Ball(whiteBallDistance+ballSeparation*4, height, ballRad*2*2, ballRad, ballMass, redColor);
-    balls[14] = new Ball(whiteBallDistance+ballSeparation*4, height, -ballRad*2, ballRad, ballMass, redColor);
-    balls[15] = new Ball(whiteBallDistance+ballSeparation*4, height, -ballRad*2*2, ballRad, ballMass, redColor);
+    balls[11] = new Ball(whiteBallDistance+ballSeparation*4, height, 0, ballRad, ballMass, redColor, false);
+    balls[12] = new Ball(whiteBallDistance+ballSeparation*4, height, ballRad*2, ballRad, ballMass, redColor, false);
+    balls[13] = new Ball(whiteBallDistance+ballSeparation*4, height, ballRad*2*2, ballRad, ballMass, redColor, false);
+    balls[14] = new Ball(whiteBallDistance+ballSeparation*4, height, -ballRad*2, ballRad, ballMass, redColor, false);
+    balls[15] = new Ball(whiteBallDistance+ballSeparation*4, height, -ballRad*2*2, ballRad, ballMass, redColor, false);
 
     return balls;
 }
@@ -101,13 +101,7 @@ void writeOutput(string text){
     outfile << text;
 }
 
-void drawBalls(Ball** balls, GLuint* textures){
-    int i = 0;
-    balls[0]->draw(50,50,-1);
-    for (int i = 1; i < 16; i++){
-        balls[i]->draw(50,50, textures[i - 1]);
-    }
-}
+
 
 
 void drawCue(int numSteps, float radius, float hl, float* arrX_1, float* arrY_1, Ball* whiteBall, float cueRotAng1, float cueRotAng2, float strength){
@@ -191,7 +185,7 @@ void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, bo
     int currentTime = (int)(clock());
 
 
-    if (magnitude < ballRad * 2 && !colliding[ball1Idx][ball2Idx]){
+    if (magnitude < ballRad * 2 && !colliding[ball1Idx][ball2Idx] && !ball1->isInHole() && !ball2->isInHole()){
 
         colliding[ball1Idx][ball2Idx] = true;
         colliding[ball2Idx][ball1Idx] = true;
@@ -235,69 +229,6 @@ void applyCollisions(Ball** balls, double ballRad, bool** colliding){
     for (int i = 0; i < 16; i++)
         for(int j = i+1; j < 16; j++)
             applyCollision(balls, i, j, ballRad, colliding);
-}
-
-void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, float wBorder, float hBorder){
-
-    Color* greenColor = new Color(35, 123, 86);
-    Color* brownColor = new Color(60, 36, 21);
-
-    vector<Point*> table;
-    table.push_back(new Point(-lTop/2,0,wTop/2));
-    table.push_back(new Point(lTop/2,0,wTop/2));
-    table.push_back(new Point(lTop/2,0,-wTop/2));
-    table.push_back(new Point(-lTop/2,0,-wTop/2));
-    table.push_back(new Point(-lBottom/2,-h,wBottom/2));
-    table.push_back(new Point(lBottom/2,-h,wBottom/2));
-    table.push_back(new Point(lBottom/2,-h,-wBottom/2));
-    table.push_back(new Point(-lBottom/2,-h,-wBottom/2));
-
-    vector<Point*> border1;
-    border1.push_back(new Point(-lTop/2, hBorder, wTop/2));
-    border1.push_back(new Point(lTop/2, hBorder, wTop/2));
-    border1.push_back(new Point(lTop/2, hBorder, wTop/2 - wBorder));
-    border1.push_back(new Point(-lTop/2, hBorder, wTop/2 - wBorder));
-    border1.push_back(new Point(-lTop/2, 0,wTop/2));
-    border1.push_back(new Point(lTop/2, 0,wTop/2));
-    border1.push_back(new Point(lTop/2, 0,wTop/2 - wBorder));
-    border1.push_back(new Point(-lTop/2, 0,wTop/2 - wBorder));
-
-    vector<Point*> border2;
-    border2.push_back(new Point(-lTop/2, hBorder, -wTop/2 + wBorder));
-    border2.push_back(new Point(lTop/2, hBorder, -wTop/2 + wBorder));
-    border2.push_back(new Point(lTop/2, hBorder, -wTop/2));
-    border2.push_back(new Point(-lTop/2, hBorder, -wTop/2));
-    border2.push_back(new Point(-lTop/2, 0, -wTop/2 + wBorder));
-    border2.push_back(new Point(lTop/2, 0, -wTop/2 + wBorder));
-    border2.push_back(new Point(lTop/2, 0, -wTop/2));
-    border2.push_back(new Point(-lTop/2, 0, -wTop/2));
-
-    vector<Point*> border3;
-    border3.push_back(new Point(lTop/2 - wBorder,hBorder,wTop/2));
-    border3.push_back(new Point(lTop/2, hBorder,wTop/2));
-    border3.push_back(new Point(lTop/2, hBorder,-wTop/2));
-    border3.push_back(new Point(lTop/2 - wBorder,hBorder,-wTop/2));
-    border3.push_back(new Point(lTop/2 - wBorder, 0,wTop/2));
-    border3.push_back(new Point(lTop/2, 0,wTop/2));
-    border3.push_back(new Point(lTop/2, 0,-wTop/2));
-    border3.push_back(new Point(lTop/2 - wBorder, 0,-wTop/2));
-
-    vector<Point*> border4;
-    border4.push_back(new Point(-lTop/2,hBorder,wTop/2));
-    border4.push_back(new Point(-lTop/2+ wBorder, hBorder,wTop/2));
-    border4.push_back(new Point(-lTop/2+ wBorder, hBorder,-wTop/2));
-    border4.push_back(new Point(-lTop/2,hBorder,-wTop/2));
-    border4.push_back(new Point(-lTop/2, 0,wTop/2));
-    border4.push_back(new Point(-lTop/2 + wBorder, 0,wTop/2));
-    border4.push_back(new Point(-lTop/2 +  wBorder, 0,-wTop/2));
-    border4.push_back(new Point(-lTop/2 , 0,-wTop/2));
-
-    // Draw table
-    drawPrism(table, greenColor, brownColor);
-    drawPrism(border1, brownColor, brownColor);
-    drawPrism(border2, brownColor, brownColor);
-    drawPrism(border3, brownColor, brownColor);
-    drawPrism(border4, brownColor, brownColor);
 }
 
 GLuint loadTexture(){
@@ -376,17 +307,30 @@ bool ballsNotMoving(Ball** balls){
     return true;
 }
 
+void drawBalls(Ball** balls, GLuint* textures){
+    int i = 0;
+    if (balls[0]->isInHole() && ballsNotMoving(balls))
+        balls[0]->setInHole(false);
+    balls[0]->draw(50,50,-1);
+    for (int i = 1; i < 16; i++){
+        balls[i]->draw(50,50, textures[i - 1]);
+    }
+}
+
 void drawObj(std::vector< glm::vec3 > vertices, std::vector< glm::vec2 > uvs, std::vector< glm::vec3 > normals, GLuint tableText){
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, tableText);
+
+
+    glPushMatrix();
 
     glTranslatef(-2.67,0.53,-0.54);
     glScalef(0.035,0.035,0.035);
     glRotatef(90,0,0,1);
     glRotatef(90,0,1,0);
 
-    glPushMatrix();
+
 
     glBegin(GL_QUADS);
 
@@ -499,16 +443,13 @@ int main(int argc, char *argv[]) {
         glLoadIdentity();
         gluLookAt(x,y,-z,0,0,0,0,1,0);
 
-
-
-        //drawTable(lTop, wTop, lBottom, wBottom, h, wBorder, hBorder);
         drawBalls(balls, textures);
+        drawObj(vertices, uvs, normals, tableTexture);
         if (ballsNotMoving(balls))
            drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueRotAng1, cueRotAng2, strength);
         if (!pause){
             applyCollisions(balls, ballRad, colliding);
             moveBalls(balls, frameTime/40, lTop, wTop);
-            drawObj(vertices, uvs, normals, tableTexture);
         }
 
         int xm,ym;
