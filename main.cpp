@@ -322,6 +322,87 @@ void camOnTopOfCue(float cueRotAng1, float cueRotAng2, Ball* whiteBall){
     gluLookAt(camPosX, camPosY, camPosZ, whiteBall->getPosX(), whiteBall->getPosY(), whiteBall->getPosZ(), 0, 1, 0);
 }
 
+void drawRoom(GLuint floorTexture, GLuint wallTexture){
+    int roomLength = 20;
+    int roomWidth = 15;
+    int roomHeight = 20;
+    int floorRepeat = 7;
+    int wallRepeat = 3;
+    float roomFloor = -2.49;
+
+    glColor3ub(181, 150, 97);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, floorTexture);
+
+    // Floor
+    glBegin(GL_QUADS);
+    glTexCoord2f(floorRepeat, floorRepeat);
+    glVertex3f(roomLength, roomFloor, roomWidth);
+    glTexCoord2f(floorRepeat, 0);
+    glVertex3f(roomLength, roomFloor, -roomWidth);
+    glTexCoord2f(0, 0);
+    glVertex3f(-roomLength, roomFloor, -roomWidth);
+    glTexCoord2f(0, floorRepeat);
+    glVertex3f(-roomLength, roomFloor, roomWidth);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, wallTexture);
+
+    // Ceiling
+    glBegin(GL_QUADS);
+    glTexCoord2f(wallRepeat, wallRepeat);
+    glVertex3f(roomLength, roomFloor + roomHeight, roomWidth);
+    glTexCoord2f(wallRepeat, 0);
+    glVertex3f(roomLength, roomFloor + roomHeight, -roomWidth);
+    glTexCoord2f(0, 0);
+    glVertex3f(-roomLength, roomFloor + roomHeight, -roomWidth);
+    glTexCoord2f(0, wallRepeat);
+    glVertex3f(-roomLength, roomFloor + roomHeight, roomWidth);
+    glEnd();
+
+    //Walls
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, wallRepeat);
+    glVertex3f(roomLength, roomFloor, roomWidth);
+    glTexCoord2f(wallRepeat, wallRepeat);
+    glVertex3f(roomLength, roomFloor, -roomWidth);
+    glTexCoord2f(wallRepeat, 0);
+    glVertex3f(roomLength, roomFloor + roomHeight, -roomWidth);
+    glTexCoord2f(0,0);
+    glVertex3f(roomLength, roomFloor + roomHeight, roomWidth);
+
+    glTexCoord2f(wallRepeat, wallRepeat);
+    glVertex3f(roomLength, roomFloor + roomHeight, -roomWidth);
+    glTexCoord2f(wallRepeat, 0);
+    glVertex3f(roomLength, roomFloor, -roomWidth);
+    glTexCoord2f(0, 0);
+    glVertex3f(-roomLength, roomFloor, -roomWidth);
+    glTexCoord2f(0, wallRepeat);
+    glVertex3f(-roomLength, roomFloor + roomHeight, -roomWidth);
+
+    glTexCoord2f(0, wallRepeat);
+    glVertex3f(-roomLength, roomFloor + roomHeight, roomWidth);
+    glTexCoord2f(wallRepeat, wallRepeat);
+    glVertex3f(-roomLength, roomFloor + roomHeight, -roomWidth);
+    glTexCoord2f(wallRepeat, 0);
+    glVertex3f(-roomLength, roomFloor, -roomWidth);
+    glTexCoord2f(0, 0);
+    glVertex3f(-roomLength, roomFloor, roomWidth);
+
+    glTexCoord2f(wallRepeat, wallRepeat);
+    glVertex3f(roomLength, roomFloor, roomWidth);
+    glTexCoord2f(wallRepeat, 0);
+    glVertex3f(roomLength, roomFloor + roomHeight, roomWidth);
+    glTexCoord2f(0,0);
+    glVertex3f(-roomLength, roomFloor + roomHeight, roomWidth);
+    glTexCoord2f(0, wallRepeat);
+    glVertex3f(-roomLength, roomFloor, roomWidth);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+}
+
 void initializeSDL(){
     if (SDL_Init(SDL_INIT_VIDEO)<0) {
         cerr << "Failed to initialize SDL: " << SDL_GetError() << endl;
@@ -378,6 +459,8 @@ int main(int argc, char *argv[]) {
     // Load textures and models
     GLuint* ballTextures = loadBallTextures();
     GLuint tableTexture = loadTexture("resources/PoolTable.jpg");
+    GLuint floorTexture = loadTexture("resources/floor.jpg");
+    GLuint wallTexture = loadTexture("resources/wall.jpg");
     std::vector< glm::vec3 > vertices, normals;
     std::vector< glm::vec2 > uvs;
     loadOBJ("resources/PoolTable.obj", vertices, uvs, normals);
@@ -421,6 +504,7 @@ int main(int argc, char *argv[]) {
             camOnTopOfCue(cueRotAng1, cueRotAng2, balls[0]);
 
         // Draw objects and apply physics
+        drawRoom(floorTexture, wallTexture);
         drawBalls(balls, ballTextures);
         drawTable(vertices, uvs, normals, tableTexture);
         if (ballsNotMoving(balls))
