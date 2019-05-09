@@ -110,7 +110,7 @@ void drawBalls(Ball** balls, GLuint* textures){
 }
 
 
-void drawCue(int numSteps, float radius, float hl, float* arrX_1, float* arrY_1, Ball* whiteBall, float cueRotAng1, float cueRotAng2, int strength){
+void drawCue(int numSteps, float radius, float hl, float* arrX_1, float* arrY_1, Ball* whiteBall, float cueRotAng1, float cueRotAng2, float strength){
 
     Color* brownColor = new Color(216, 156, 104);
     float a = 0.0f;
@@ -492,10 +492,10 @@ int main(int argc, char *argv[]) {
     // -----------------------------------
 
     float cueRotAng1 = 90;
-    float cueRotAng2 = -75;
+    float cueRotAng2 = -80;
 
 
-    int strength = 12;
+    float strength = 5;
 
     auto lastFrameTime = clock();
     bool quit=false;
@@ -548,11 +548,16 @@ int main(int argc, char *argv[]) {
                 if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)){
                     moveCue=true;
                 }
-
                 break;
             case SDL_MOUSEBUTTONUP:
                 moveCam=false;
-                moveCue=false;
+
+                if (moveCue){
+                    moveCue=false;
+                    if (ballsNotMoving(balls) && !pause)
+                        hitBall(balls[0], cueRotAng1, cueRotAng2, strength);
+                    strength = 4;
+                }
                 break;
             case SDL_MOUSEMOTION:
                 if(moveCam){
@@ -564,20 +569,17 @@ int main(int argc, char *argv[]) {
                     updateCam(x,y,z,angb,anga,rad);
                 }
                 if(moveCue && !pause){
-                    cueRotAng1+=event.motion.xrel*0.4;//factor de ajuste: 0,4
-                    cueRotAng2+=event.motion.yrel*0.4;//factor de ajuste: 0,4
+                    cueRotAng1+= event.motion.xrel*0.4;//factor de ajuste: 0,4
+                    strength += event.motion.yrel*0.4;//factor de ajuste: 0,4
 
+                    if (strength > 20)
+                        strength = 20;
+                    if (strength < 4)
+                        strength = 4;
                     while(cueRotAng1 >= 360)
                         cueRotAng1 -= 360;
-
-                    while(cueRotAng2 >= 360)
-                        cueRotAng2 -= 360;
-
                     while(cueRotAng1 < 0)
                         cueRotAng1 += 360;
-
-                    while(cueRotAng2 < 0)
-                        cueRotAng2 += 360;
                 }
 
                 break;
@@ -606,22 +608,17 @@ int main(int argc, char *argv[]) {
                     updateCam(x,y,z,angb,anga,rad);
                     }
                     break;
-                case SDLK_UP:{
-                        if (!balls[0]->isMoving() && !pause)
-                            hitBall(balls[0], cueRotAng1, cueRotAng2, strength);
-                    }
-                    break;
 
-                case SDLK_LEFT:{
-                        if (strength > 4 && !pause)
-                            strength -= 2;
-                    }
-                    break;
-                case SDLK_RIGHT:{
-                    if (strength < 20 && !pause)
-                        strength += 4;
-                    }
-                    break;
+                //case SDLK_LEFT:{
+                //        if (strength > 4 && !pause)
+                //            strength -= 2;
+                //    }
+                //    break;
+                //case SDLK_RIGHT:{
+                //    if (strength < 20 && !pause)
+                //        strength += 4;
+                //    }
+                //    break;
 
                 case SDLK_F11:{
                     flags ^= SDL_FULLSCREEN;
