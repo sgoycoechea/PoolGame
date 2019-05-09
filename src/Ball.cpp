@@ -35,28 +35,28 @@ bool Ball::isMoving(){
 }
 
 
-void Ball::updatePosAndVel(double time, double lTop, double wTop, double wBorder, Ball** balls){
+void Ball::updatePosAndVel(double time, double lTop, double wTop, Ball** balls){
 
     double velDecrease = time / 3;
     double posFactor = time / 100;
 
     // Ball is against a border
-    if (posX >= lTop/2 - rad - wBorder || posX <= -lTop/2 + rad + wBorder){
+    if (posX >= lTop/2 - rad || posX <= -lTop/2 + rad){
         velX = -velX;
 
-        if (posX >= lTop/2 - rad - wBorder)
-            posX = lTop/2 - rad - wBorder;
+        if (posX >= lTop/2 - rad)
+            posX = lTop/2 - rad;
         else
-            posX = -lTop/2 + rad + wBorder;
+            posX = -lTop/2 + rad;
     }
 
-    if (posZ >= wTop/2 - rad - wBorder || posZ <= -wTop/2 + rad + wBorder){
+    if (posZ >= wTop/2 - rad || posZ <= -wTop/2 + rad){
         velZ = -velZ;
 
-        if (posZ >= wTop/2 - rad - wBorder)
-            posZ = wTop/2 - rad - wBorder;
+        if (posZ >= wTop/2 - rad)
+            posZ = wTop/2 - rad;
         else
-            posZ = -wTop/2 + rad + wBorder;
+            posZ = -wTop/2 + rad;
     }
 
     double diffX = posX;

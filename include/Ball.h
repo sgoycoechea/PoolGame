@@ -26,7 +26,7 @@ class Ball{
         void setVelocity(double, double, double);
         void setVelocity(Point*);
         void draw(float, float, GLuint);
-        void updatePosAndVel(double, double, double, double, Ball**);
+        void updatePosAndVel(double, double, double, Ball**);
         double getPosX();
         double getPosY();
         double getPosZ();

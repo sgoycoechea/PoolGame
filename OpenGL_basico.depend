@@ -2136,7 +2136,7 @@
 	<math.h>
 	"SDL/SDL_opengl.h"
 
-1557337469 source:c:\users\santiago\desktop\poolgame\main.cpp
+1557370981 source:c:\users\santiago\desktop\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -2368,14 +2368,14 @@
 
 1557002810 c:\users\santiago\desktop\poolgame\include\point.h
 
-1557280144 c:\users\santiago\desktop\poolgame\include\ball.h
+1557370006 c:\users\santiago\desktop\poolgame\include\ball.h
 	"Color.h"
 	"Point.h"
 	"SDL/SDL_opengl.h"
 	<vector>
 	"Rotation.h"
 
-1557330368 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
+1557370025 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
 	"../include/Ball.h"
 	"../include/Rotation.h"
 	<math.h>
@@ -2429,16 +2429,13 @@
 	<vector>
 	<string>
 
-1557331930 source:c:\users\santiago\desktop\poolgame\src\objloader.cpp
+1557367568 source:c:\users\santiago\desktop\poolgame\src\objloader.cpp
 	<vector>
 	<stdio.h>
 	<string>
 	<cstring>
 	<glm/glm.hpp>
 	"../include/objloader.h"
-	<assimp/Importer.hpp>
-	<assimp/scene.h>
-	<assimp/postprocess.h>
 
 1537176751 c:\users\santiago\desktop\poolgame\glm\glm\glm.hpp
 	"detail/_fixes.hpp"
@@ -3077,7 +3074,7 @@
 
 1525695782 c:\users\santiago\desktop\poolgame\glm\glm\simd\integer.h
 
-1557331502 c:\users\santiago\desktop\poolgame\include\objloader.h
+1557365636 c:\users\santiago\desktop\poolgame\include\objloader.h
 	<glm/glm.hpp>
 
 1557331502 c:\users\santiago\desktop\poolgame\include\assimp.h

@@ -35,26 +35,20 @@
 			<Add option="-g" />
 			<Add directory="SDL-1.2.15/include" />
 			<Add directory="FreeImage" />
-			<Add directory="../assimp/include" />
 			<Add directory="../glm" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="FreeImage" />
 			<Add directory="SDL-1.2.15/lib" />
 			<Add directory="SDL-1.2.15/include" />
-			<Add directory="assimp/lib32" />
-			<Add directory="assimp/include" />
-			<Add directory="assimp/bin32" />
 		</ResourceCompiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDLmain -lSDL -lopengl32 -lglu32 -lFreeImage -lassimp" />
+			<Add option="-lmingw32 -lSDLmain -lSDL -lopengl32 -lglu32 -lFreeImage" />
 			<Add library="SDL-1.2.15/lib/libSDLmain.a" />
 			<Add library="SDL-1.2.15/lib/libSDL.dll.a" />
 			<Add library="FreeImage/FreeImage.lib" />
-			<Add library="assimp/lib32/assimp.lib" />
 			<Add directory="SDL-1.2.15/lib" />
 			<Add directory="FreeImage" />
-			<Add directory="assimp/lib32" />
 		</Linker>
 		<Unit filename="FreeImage.dll" />
 		<Unit filename="SDL.dll" />
