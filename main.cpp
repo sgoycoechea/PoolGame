@@ -364,7 +364,7 @@ int main(int argc, char *argv[]) {
 
     Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
 
-    if(SDL_SetVideoMode(640, 480, 32, flags)==NULL) {
+    if(SDL_SetVideoMode(1280, 720, 32, flags)==NULL) {
         cerr << "No se pudo establecer el modo de video: " << SDL_GetError() << endl;
         exit(1);
     }
@@ -379,7 +379,7 @@ int main(int argc, char *argv[]) {
     float color = 0;
     glClearColor(color, color, color, 1);
 
-    gluPerspective(45, 640/480.f, 0.1, 100);
+    gluPerspective(45, 1280/720.f, 0.1, 100);
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_MODELVIEW);
 
@@ -524,36 +524,6 @@ int main(int argc, char *argv[]) {
                     updateCam(x,y,z,angb,anga,rad);
                     }
                     break;
-
-                //case SDLK_LEFT:{
-                //        if (strength > 4 && !pause)
-                //            strength -= 2;
-                //    }
-                //    break;
-                //case SDLK_RIGHT:{
-                //    if (strength < 20 && !pause)
-                //        strength += 4;
-                //    }
-                //    break;
-
-                case SDLK_F11:{
-                    flags ^= SDL_FULLSCREEN;
-                    if(SDL_SetVideoMode(640, 480, 32, flags)==NULL) {
-                        fprintf(stderr, "No se pudo establecer el modo de video: %s\n", SDL_GetError());
-                        exit(1);
-                    }
-
-                    glMatrixMode(GL_PROJECTION);
-
-                    float color = 0;
-                    glClearColor(color, color, color, 1);
-
-                    gluPerspective(45, 640/480.f, 0.1, 100);
-
-                    glMatrixMode(GL_MODELVIEW);
-                    }
-                    break;
-
                 default:
                     break;
                 }
