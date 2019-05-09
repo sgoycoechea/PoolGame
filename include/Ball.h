@@ -23,6 +23,9 @@ class Ball{
         bool inHole;
         bool isWhiteBall;
         bool checkEntersHole(float, float);
+        void checkTableCollision(float, float);
+        void applyRotation(double);
+        void decreaseVelocity(double);
 
     public:
         Ball(double, double, double, double, double, Color*, bool);

@@ -37,9 +37,9 @@ bool Ball::isMoving(){
     return (!inHole && (velX != 0 || velY != 0 || velZ != 0));
 }
 
-bool Ball::checkEntersHole(float lTop, float wTop){
+bool Ball::checkEntersHole(float tableLength, float tableWidth){
     float d = 1.5;
-    if ( (posX > lTop/2 - rad*d || posX < -lTop/2 + rad*d || (posX < rad*d/2 && posX > -rad*d/2 )) && (posZ > wTop/2 - rad*d || posZ < -wTop/2 + rad*d)){
+    if ( (posX > tableLength/2 - rad*d || posX < -tableLength/2 + rad*d || (posX < rad*d/2 && posX > -rad*d/2 )) && (posZ > tableWidth/2 - rad*d || posZ < -tableWidth/2 + rad*d) ){
         velX = 0;
         velY = 0;
         velZ = 0;
@@ -64,46 +64,30 @@ void Ball::setInHole(bool inHole){
     this->inHole = inHole;
 }
 
-void Ball::updatePosAndVel(double time, double lTop, double wTop, Ball** balls){
+// If ball collides against a border of the table, change its velocity direction
+void Ball::checkTableCollision(float tableLength, float tableWidth){
 
-    double velDecrease = time / 3;
-    double posFactor = time / 100;
-
-    if (inHole) return;
-    if (checkEntersHole(lTop, wTop)) return;
-
-    // Ball is against a border
-    if (posX >= lTop/2 - rad || posX <= -lTop/2 + rad){
+    if (posX >= tableLength/2 - rad || posX <= -tableLength/2 + rad){
         velX = -velX;
-
-        if (posX >= lTop/2 - rad)
-            posX = lTop/2 - rad;
+        if (posX >= tableLength/2 - rad)
+            posX = tableLength/2 - rad;
         else
-            posX = -lTop/2 + rad;
+            posX = -tableLength/2 + rad;
     }
 
-    if (posZ >= wTop/2 - rad || posZ <= -wTop/2 + rad){
+    if (posZ >= tableWidth/2 - rad || posZ <= -tableWidth/2 + rad){
         velZ = -velZ;
-
-        if (posZ >= wTop/2 - rad)
-            posZ = wTop/2 - rad;
+        if (posZ >= tableWidth/2 - rad)
+            posZ = tableWidth/2 - rad;
         else
-            posZ = -wTop/2 + rad;
+            posZ = -tableWidth/2 + rad;
     }
+}
 
-    double diffX = posX;
-    double diffY = posY;
-    double diffZ = posZ;
-    posX += velX * posFactor;
-    posZ += velZ * posFactor;
+void Ball::applyRotation(double distanceMoved){
 
-    diffX = posX - diffX;
-    diffY = posY - diffY;
-    diffZ = posZ - diffZ;
-    double distanceMoved = sqrt(pow(diffX,2) + pow(diffY,2) + pow(diffZ,2));
     double circumference = 2 * M_PI * rad;
 
-    // Ball rotation
     if(velX != 0 || velY != 0 || velZ != 0){
 
         float magnitude = sqrt(pow(velX,2) + pow(velY,2) + pow(velZ,2));
@@ -123,24 +107,48 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, Ball** balls){
             Rotation* newRot = new Rotation(rotAng, rotDir);
             rotations.push_back(newRot);
         }
+    }
+}
 
-        // Decrease velocity
-        if (velDecrease > 0){
-            if (magnitude < velDecrease){
-                velX = 0;
-                velY = 0;
-                velZ = 0;
-            }
+void Ball::decreaseVelocity(double time){
+    double velDecrease = time / 3;
+    float magnitude = sqrt(pow(velX,2) + pow(velY,2) + pow(velZ,2));
 
-            else{
-                float decreaseFactor = magnitude / (magnitude - velDecrease);
-                velX /= decreaseFactor;
-                velY /= decreaseFactor;
-                velZ /= decreaseFactor;
-            }
-
+    if (velDecrease > 0){
+        if (magnitude < velDecrease){
+            velX = 0;
+            velY = 0;
+            velZ = 0;
+        }
+        else{
+            float decreaseFactor = magnitude / (magnitude - velDecrease);
+            velX /= decreaseFactor;
+            velY /= decreaseFactor;
+            velZ /= decreaseFactor;
         }
     }
+}
+
+void Ball::updatePosAndVel(double time, double tableLength, double tableWidth, Ball** balls){
+
+    double posFactor = time / 100;
+
+    if (inHole) return;
+    if (checkEntersHole(tableLength, tableWidth)) return;
+
+    checkTableCollision(tableLength, tableWidth);
+
+    // Update position
+    double diffX = velX * posFactor;
+    double diffY = velY * posFactor;
+    double diffZ = velZ * posFactor;
+    posX += velX * posFactor;
+    posZ += velZ * posFactor;
+
+    double distanceMoved = sqrt(pow(diffX,2) + pow(diffY,2) + pow(diffZ,2));
+    applyRotation(distanceMoved);
+
+    decreaseVelocity(time);
 }
 
 double Ball::getPosX(){
@@ -181,8 +189,25 @@ void Ball::draw(float lats, float longs, GLuint texture) {
 
     if (inHole) return;
 
-    double i, j;
-    for(i = 0; i <= lats; i++)
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glPushMatrix();
+
+    // Ball movement
+    glTranslatef(posX, posY, posZ);
+
+    // Ball rotation when it moves
+    for (std::vector<Rotation*>::reverse_iterator  it = rotations.rbegin() ; it != rotations.rend(); ++it){
+        Rotation* rot = (Rotation*)(*it);
+        glRotatef(rot->getAngle(), rot->getDirection()->getX(), rot->getDirection()->getY(), rot->getDirection()->getZ()); // Ball rotation when it moves
+    }
+
+    // To fix texture initial position
+    glRotatef(90,0,1,0);
+    glRotatef(-90,1,0,0);
+
+    // Draw sphere
+    for(int i = 0; i <= lats; i++)
     {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
         double z0 = sin(lat0);
@@ -192,27 +217,9 @@ void Ball::draw(float lats, float longs, GLuint texture) {
         double z1 = sin(lat1);
         double zr1 = cos(lat1);
 
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, texture);
-
-        glPushMatrix();
-
-        glTranslatef(posX, posY, posZ); // Ball movement
-
-        // Ball rotation when it moves
-        for (std::vector<Rotation*>::reverse_iterator  it = rotations.rbegin() ; it != rotations.rend(); ++it){
-            Rotation* rot = (Rotation*)(*it);
-            glRotatef(rot->getAngle(), rot->getDirection()->getX(), rot->getDirection()->getY(), rot->getDirection()->getZ()); // Ball rotation when it moves
-        }
-
-        // To fix texture initial position
-        glRotatef(90,0,1,0);
-        glRotatef(-90,1,0,0);
-
         glBegin(GL_QUAD_STRIP);
         glColor3ub( color->getR(), color->getG(), color->getB());
-
-        for(j = 0; j <= longs; j++)
+        for(int j = 0; j <= longs; j++)
         {
             double lng = 2 * M_PI * (double) (j - 1) / longs;
             double x = cos(lng);
@@ -232,7 +239,8 @@ void Ball::draw(float lats, float longs, GLuint texture) {
             glVertex3d(rad*x * zr1,rad* y * zr1, rad*z1);
         }
         glEnd();
-        glPopMatrix();
-        glDisable(GL_TEXTURE_2D);
+
     }
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
  }
