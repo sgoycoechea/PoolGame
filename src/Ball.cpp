@@ -91,39 +91,22 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, Ball** balls){
             Rotation* newRot = new Rotation(rotAng, rotDir);
             rotations.push_back(newRot);
         }
-    }
 
-    // Decrease velocity
-    if (velDecrease > 0){
+        // Decrease velocity
+        if (velDecrease > 0){
+            if (magnitude < velDecrease){
+                velX = 0;
+                velY = 0;
+                velZ = 0;
+            }
 
-        // X velocity
-        if (velX > 0){
-            velX -= velDecrease;
-            if (velX < 0) velX = 0;
-        }
-        else if (velX < 0){
-            velX += velDecrease;
-            if (velX > 0) velX = 0;
-        }
+            else{
+                float decreaseFactor = magnitude / (magnitude - velDecrease);
+                velX /= decreaseFactor;
+                velY /= decreaseFactor;
+                velZ /= decreaseFactor;
+            }
 
-        // Y velocity
-        if (velY > 0){
-            velY -= velDecrease;
-            if (velY < 0) velY = 0;
-        }
-        else if (velY < 0){
-            velY += velDecrease;
-            if (velY > 0) velY = 0;
-        }
-
-        // Z velocity
-        if (velZ > 0){
-            velZ -= velDecrease;
-            if (velZ < 0) velZ = 0;
-        }
-        else if (velZ < 0){
-            velZ += velDecrease;
-            if (velZ > 0) velZ = 0;
         }
     }
 }
