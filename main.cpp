@@ -174,7 +174,7 @@ void hitBall(Ball* whiteBall, float cueRotAng1, float cueRotAng2, int strength){
 }
 
 
-void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, int** lastCollisions){
+void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, bool** colliding){
 
     Ball* ball1 = balls[ball1Idx];
     Ball* ball2 = balls[ball2Idx];
@@ -190,45 +190,14 @@ void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, in
 
     int currentTime = (int)(clock());
 
-    if (magnitude < ballRad * 2 && currentTime - lastCollisions[ball1Idx][ball2Idx] > 50){
 
-        lastCollisions[ball1Idx][ball2Idx] = currentTime;
-        lastCollisions[ball2Idx][ball1Idx] = currentTime;
+    if (magnitude < ballRad * 2 && !colliding[ball1Idx][ball2Idx]){
+
+        colliding[ball1Idx][ball2Idx] = true;
+        colliding[ball2Idx][ball1Idx] = true;
 
         Point* unitVector = (*normalVector) / magnitude;
         Point* tangentVector = new Point(-unitVector->getZ(), -unitVector->getY(), unitVector->getX());
-
-
-
-        // Don't let balls get inside each other
-        /*
-        double diff = ballRad * 2 - magnitude;
-        double diffX1 = unitVector->getX() * diff / 2;
-        double diffY1 = unitVector->getY() * diff / 2;
-        double diffZ1 = unitVector->getZ() * diff / 2;
-        double diffX2 = unitVector->getX() * diff / 2;
-        double diffY2 = unitVector->getY() * diff / 2;
-        double diffZ2 = unitVector->getZ() * diff / 2;
-
-        if (ball1->getPosX() > ball2->getPosX()){
-            diffX2 = -diffX2;}
-        else{
-            diffX1 = -diffX1;}
-        if (ball1->getPosY() > ball2->getPosY()){
-            diffY2 = -diffY2;}
-        else{
-            diffY1 = -diffY1;}
-        if (ball1->getPosZ() > ball2->getPosZ()){
-            diffZ2 = -diffZ2;}
-        else{
-            diffZ1 = -diffZ1;}
-
-        ball1->setPos(new Point(ball1->getPosX() + diffX1, ball1->getPosY() + diffY1, ball1->getPosZ() + diffZ1));
-        ball2->setPos(new Point(ball2->getPosX() + diffX2, ball2->getPosY() + diffY2, ball2->getPosZ() + diffZ2));
-
-        */
-
-
 
         double vector1NormalMagnitude = unitVector->dotProduct(ball1Vel);
         double vector1TangentMagnitude = tangentVector->dotProduct(ball1Vel);
@@ -254,12 +223,18 @@ void applyCollision(Ball** balls, int ball1Idx, int ball2Idx, double ballRad, in
         ball1->setVelocity(newVector1Velocity);
         ball2->setVelocity(newVector2Velocity);
     }
+
+    else if (magnitude > ballRad * 2){
+        colliding[ball1Idx][ball2Idx] = false;
+        colliding[ball2Idx][ball1Idx] = false;
+    }
+
 }
 
-void applyCollisions(Ball** balls, double ballRad, int** lastCollisions){
+void applyCollisions(Ball** balls, double ballRad, bool** colliding){
     for (int i = 0; i < 16; i++)
         for(int j = i+1; j < 16; j++)
-            applyCollision(balls, i, j, ballRad, lastCollisions);
+            applyCollision(balls, i, j, ballRad, colliding);
 }
 
 void drawTable(float lTop, float wTop, float lBottom, float wBottom, float h, float wBorder, float hBorder){
@@ -482,12 +457,12 @@ int main(int argc, char *argv[]) {
 
     // --------- Colision checks ---------
 
-    int** lastCollisions = new int*[16];
+    bool** colliding = new bool*[16];
         for (int i = 0; i < 16; i++)
-            lastCollisions[i] = new int[16];
+            colliding[i] = new bool[16];
         for(int i = 0; i < 16; i++)
             for(int j = 0; j < 16; j++)
-                lastCollisions[i][j] = 0;
+                colliding[i][j] = false;
 
     // -----------------------------------
 
@@ -531,7 +506,7 @@ int main(int argc, char *argv[]) {
         if (ballsNotMoving(balls))
            drawCue(numSteps, 0.04, cueLength, arrX_1, arrY_1, balls[0], cueRotAng1, cueRotAng2, strength);
         if (!pause){
-            applyCollisions(balls, ballRad, lastCollisions);
+            applyCollisions(balls, ballRad, colliding);
             moveBalls(balls, frameTime/40, lTop, wTop);
             drawObj(vertices, uvs, normals, tableTexture);
         }

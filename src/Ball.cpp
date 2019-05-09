@@ -65,41 +65,6 @@ void Ball::updatePosAndVel(double time, double lTop, double wTop, Ball** balls){
     posX += velX * posFactor;
     posZ += velZ * posFactor;
 
-
-    // --------------------------------
-    // Dont let balls get inside others
-    /*
-    for (int i = 0; i < 16; i ++){
-        Point* ball1Pos = getPos();
-        Point* ball2Pos = balls[i]->getPos();
-        Point* normalVector = (*ball1Pos) - ball2Pos;
-        double magnitude = normalVector->magnitude();
-        Point* unitVector = (*normalVector) / magnitude;
-
-
-        if (magnitude < rad * 2 && magnitude > 0){
-
-            double diff = rad * 2 - magnitude;
-            double diffX = unitVector->getX() * diff;
-            double diffY = unitVector->getY() * diff;
-            double diffZ = unitVector->getZ() * diff;
-
-            if (posX < balls[i]->getPosX())
-                diffX = -diffX;
-            if (posY < balls[i]->getPosY())
-                diffY = -diffY;
-            if (posZ < balls[i]->getPosZ())
-                diffZ = -diffZ;
-
-            posX = posX + diffX;
-            posY = posY + diffY;
-            posZ = posZ + diffZ;
-        }
-    }
-    */
-    // --------------------------------
-
-
     diffX = posX - diffX;
     diffY = posY - diffY;
     diffZ = posZ - diffZ;
