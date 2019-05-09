@@ -158,11 +158,13 @@ void hitBall(Ball* whiteBall, float cueRotAng1, float cueRotAng2, int strength){
     cueRotAng1 = cueRotAng1 * M_PI / 180;
     cueRotAng2 = cueRotAng2 * M_PI / 180;
 
+    // Vertical cue rotation
     float rotatedY = cos(cueRotAng2) * y - sin(cueRotAng2) * z;
     float rotatedZ = sin(cueRotAng2) * y + cos(cueRotAng2) * z;
 
+    // Horizontal cue rotation
     float rotatedX = cos(cueRotAng1) * x - sin(cueRotAng1) * rotatedZ;
-          rotatedZ = sin(cueRotAng1) * x + cos(cueRotAng1) * rotatedZ;
+    rotatedZ = sin(cueRotAng1) * x + cos(cueRotAng1) * rotatedZ;
 
     whiteBall->setVelocity(new Point(rotatedX * strength * strengthFactor, 0, -rotatedZ * strength * strengthFactor));
 }
@@ -346,6 +348,36 @@ void drawObj(std::vector< glm::vec3 > vertices, std::vector< glm::vec2 > uvs, st
 }
 
 
+void camOnTopOfCue(float cueRotAng1, float cueRotAng2, Ball* whiteBall){
+    float x = 0;
+    float y = 1;
+    float z = 0;
+
+    float cueRotAngRadians1 = cueRotAng1 * M_PI / 180;
+    float cueRotAngRadians2 = cueRotAng2 * M_PI / 180;
+
+    // Create a vector rotatedX, rotatedY, rotatedZ with the direction of the cue
+    // Vertical cue rotation
+    float rotatedY = cos(cueRotAngRadians2) * y - sin(cueRotAngRadians2) * z;
+    float rotatedZ = sin(cueRotAngRadians2) * y + cos(cueRotAngRadians2) * z;
+    // Horizontal cue rotation
+    float rotatedX = cos(cueRotAngRadians1) * x - sin(cueRotAngRadians1) * rotatedZ;
+    rotatedZ = sin(cueRotAngRadians1) * x + cos(cueRotAngRadians1) * rotatedZ;
+
+    // Make camera distance constant by dividing by the magnitude of the vector and multiplying by a factor
+    float magnitude = sqrt(pow(rotatedX, 2) + pow(rotatedY, 2) + pow(rotatedZ, 2));
+    rotatedX *= 7 / magnitude;
+    rotatedY *= 7 / magnitude;
+    rotatedZ *= 7 / magnitude;
+
+    float camPosX = whiteBall->getPosX() - rotatedX;
+    float camPosY = whiteBall->getPosY() + rotatedY + 3; // Add a constant so the camera is a bit above the cue
+    float camPosZ = whiteBall->getPosZ() + rotatedZ;
+
+    gluLookAt(camPosX, camPosY, camPosZ, whiteBall->getPosX(), whiteBall->getPosY(), whiteBall->getPosZ(), 0, 1, 0);
+
+}
+
 float x,y,z;
 int main(int argc, char *argv[]) {
     float anga=0;
@@ -414,8 +446,9 @@ int main(int argc, char *argv[]) {
     float cueRotAng2 = -80;
 
 
-    float strength = 5;
+    float strength = 4;
 
+    int viewMode = 0;
     auto lastFrameTime = clock();
     bool quit=false;
     bool pause=false;
@@ -441,7 +474,12 @@ int main(int argc, char *argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
-        gluLookAt(x,y,-z,0,0,0,0,1,0);
+        if (viewMode == 0)
+            gluLookAt(x,y,-z,0,0,0,0,1,0);
+        else if (viewMode == 1)
+            gluLookAt(0,7,0,0,0,0,0,0,-1);
+        else
+            camOnTopOfCue(cueRotAng1, cueRotAng2, balls[0]);
 
         drawBalls(balls, textures);
         drawObj(vertices, uvs, normals, tableTexture);
@@ -470,13 +508,13 @@ int main(int argc, char *argv[]) {
 
                 if (moveCue){
                     moveCue=false;
-                    if (ballsNotMoving(balls) && !pause)
+                    if (ballsNotMoving(balls) && !pause && strength > 4)
                         hitBall(balls[0], cueRotAng1, cueRotAng2, strength);
                     strength = 4;
                 }
                 break;
             case SDL_MOUSEMOTION:
-                if(moveCam){
+                if(moveCam && viewMode == 0){
                     if (event.motion.yrel<0 && angb < 80 )
                         angb-=event.motion.yrel*0.4;//factor de ajuste: 0,4
                     else if (event.motion.yrel>=0 && angb > -80)
@@ -484,7 +522,7 @@ int main(int argc, char *argv[]) {
                     anga+=event.motion.xrel*0.4;//factor de ajuste: 0,4
                     updateCam(x,y,z,angb,anga,rad);
                 }
-                if(moveCue && !pause){
+                if(moveCue && !pause && ballsNotMoving(balls)){
                     cueRotAng1+= event.motion.xrel*0.4;//factor de ajuste: 0,4
                     strength += event.motion.yrel*0.4;//factor de ajuste: 0,4
 
@@ -510,16 +548,23 @@ int main(int argc, char *argv[]) {
                 case SDLK_q:
                     quit = true;
                     break;
+                case SDLK_v:
+                    viewMode++;
+                    if (viewMode > 2)
+                        viewMode = 0;
+                    break;
                 case SDLK_p:
                     pause = !pause;
                     break;
                 case SDLK_s:{
-                    rad-=.05;//factor de ajuste: 0,05
-                    updateCam(x,y,z,angb,anga,rad);
+                    if (viewMode == 0){
+                        rad-=.05;//factor de ajuste: 0,05
+                        updateCam(x,y,z,angb,anga,rad);
+                    }
                     }
                     break;
                 case SDLK_w:{
-                    if(rad<0)
+                    if(rad<0 && viewMode == 0)
                         rad+=.05;//factor de ajuste: 0,05
                     updateCam(x,y,z,angb,anga,rad);
                     }
