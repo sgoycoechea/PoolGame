@@ -36,6 +36,7 @@
 			<Add directory="SDL-1.2.15/include" />
 			<Add directory="FreeImage" />
 			<Add directory="../glm" />
+			<Add directory="glm" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="FreeImage" />

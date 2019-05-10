@@ -336,7 +336,9 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
     glBindTexture(GL_TEXTURE_2D, floorTexture);
 
     // Floor
+
     glBegin(GL_QUADS);
+    glNormal3f(0,1,0);
     glTexCoord2f(floorRepeat, floorRepeat);
     glVertex3f(roomLength, roomFloor, roomWidth);
     glTexCoord2f(floorRepeat, 0);
@@ -351,6 +353,7 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
 
     // Ceiling
     glBegin(GL_QUADS);
+    glNormal3f(0,-1,0);
     glTexCoord2f(wallRepeat, wallRepeat);
     glVertex3f(roomLength, roomFloor + roomHeight, roomWidth);
     glTexCoord2f(wallRepeat, 0);
@@ -363,6 +366,7 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
 
     //Walls
     glBegin(GL_QUADS);
+    glNormal3f(0,0,-1);
     glTexCoord2f(0, wallRepeat);
     glVertex3f(roomLength, roomFloor, roomWidth);
     glTexCoord2f(wallRepeat, wallRepeat);
@@ -373,6 +377,7 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
     glVertex3f(roomLength, roomFloor + roomHeight, roomWidth);
 
     glTexCoord2f(wallRepeat, wallRepeat);
+    glNormal3f(1,0,0);
     glVertex3f(roomLength, roomFloor + roomHeight, -roomWidth);
     glTexCoord2f(wallRepeat, 0);
     glVertex3f(roomLength, roomFloor, -roomWidth);
@@ -382,6 +387,7 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
     glVertex3f(-roomLength, roomFloor + roomHeight, -roomWidth);
 
     glTexCoord2f(0, wallRepeat);
+    glNormal3f(0,0,-1);
     glVertex3f(-roomLength, roomFloor + roomHeight, roomWidth);
     glTexCoord2f(wallRepeat, wallRepeat);
     glVertex3f(-roomLength, roomFloor + roomHeight, -roomWidth);
@@ -391,6 +397,7 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
     glVertex3f(-roomLength, roomFloor, roomWidth);
 
     glTexCoord2f(wallRepeat, wallRepeat);
+    glNormal3f(1,0,0);
     glVertex3f(roomLength, roomFloor, roomWidth);
     glTexCoord2f(wallRepeat, 0);
     glVertex3f(roomLength, roomFloor + roomHeight, roomWidth);
@@ -487,6 +494,11 @@ int main(int argc, char *argv[]) {
     bool pause = false;
     auto lastFrameTime = clock();
 
+    //WIREFRAME OPTIONS
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); //WIREFRAME ON
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); //WIREFRAME OFF
+
+
     do{
         auto currentTime = clock();
         float frameTime = (float)(currentTime - lastFrameTime);
@@ -494,6 +506,40 @@ int main(int argc, char *argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
+
+
+
+        //LIGHTING
+
+        glPushMatrix();
+
+
+
+        GLfloat red_light_diffuse[] = {1.0, 0.0, 0.0, 1.0};
+        GLfloat position[] = {10.0f, 10.0f, 10.0f, 1.0f};  // light spot
+        GLfloat ambient[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+        GLfloat diffuse[]    = {1.0f, 1.0f, 1.0f, 1.0f};
+        GLfloat specular[] = {1.0f, 1.0f, 1.0f, 0.0f};
+        GLfloat direction[] = {0.0f, 0.0f, -1.0f};
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0); // habilita la luz 0
+
+        glLightfv(GL_LIGHT0, GL_POSITION, position);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, direction); //HACE ALGO?
+
+
+        //glLightfv(GL_LIGHT0, GL_DIFFUSE, red_light_diffuse);
+
+        //TEXUTRA CON LUCES
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+        glPopMatrix();
+
+
 
         // Set camera position
         if (viewMode == 0)
