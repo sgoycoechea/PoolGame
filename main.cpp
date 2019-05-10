@@ -497,6 +497,13 @@ int main(int argc, char *argv[]) {
     bool slowMotion = false;
     bool flatShading = false;
     auto lastFrameTime = clock();
+    int lightColor = 0;
+    int lightPosition = 0;
+    float light1 = 1.0f;
+    float light2 = 1.0f;
+    float light3 = 1.0f;
+    float light4 = 1.0f;
+    float lightPos = 1.0f;
 
 
 
@@ -519,14 +526,29 @@ int main(int argc, char *argv[]) {
 
 
         GLfloat red_light_diffuse[] = {1.0, 0.0, 0.0, 1.0};
-        GLfloat position[] = {10.0f, 10.0f, 10.0f, 1.0f};  // light spot
-        GLfloat ambient[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+        GLfloat position[] = {10.0f, 10.0f, 10.0f, lightPos};  // light spot
+        GLfloat ambient[]  = {light1, light2, light3, light4};
         GLfloat diffuse[]    = {1.0f, 1.0f, 1.0f, 1.0f};
         GLfloat specular[] = {1.0f, 1.0f, 1.0f, 0.0f};
         GLfloat direction[] = {0.0f, 0.0f, -1.0f};
 
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0); // habilita la luz 0
+
+
+         if(lightColor == 0){
+            light1 = 1.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
+         }else if(lightColor == 1 ){
+            light1 = 4.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
+         }else if(lightColor == 2 ){
+            light1 = 1.0f; light2 = 4.0f; light3 = 1.0f; light4 = 1.0f;
+         }else if(lightColor == 3 ) {
+            light1 = 1.0f; light2 = 1.0f; light3 = 4.0f; light4 = 1.0f;
+         };
+
+         if(lightPosition == 0)
+                lightPos = 1.0f;
+         else lightPos = 0.0f;
 
         glLightfv(GL_LIGHT0, GL_POSITION, position);
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
@@ -661,6 +683,16 @@ int main(int argc, char *argv[]) {
                         camRad += .05;
                     updateCam(camX, camY, camZ, camAngB, camAngA, camRad);
                     }
+                    break;
+                case SDLK_l:
+                    lightColor++;
+                    if (lightColor > 3)
+                        lightColor = 0;
+                    break;
+                case SDLK_k:
+                    lightPosition++;
+                    if (lightPosition > 1)
+                        lightPosition = 0;
                     break;
                 default:
                     break;
