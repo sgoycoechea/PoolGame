@@ -257,20 +257,25 @@ bool ballsNotMoving(Ball** balls){
     return true;
 }
 
-void drawBalls(Ball** balls, GLuint* textures){
+void drawBalls(Ball** balls, GLuint* textures, bool applyTextures){
     int i = 0;
     if (balls[0]->isInHole() && ballsNotMoving(balls))
         balls[0]->setInHole(false);
     balls[0]->draw(15,15,-1);
     for (int i = 1; i < 16; i++){
-        balls[i]->draw(15,15, textures[i - 1]);
+        if (applyTextures)
+            balls[i]->draw(15,15, textures[i - 1]);
+        else
+            balls[i]->draw(15,15, -1);
     }
 }
 
-void drawTable(std::vector< glm::vec3 > vertices, std::vector< glm::vec2 > uvs, std::vector< glm::vec3 > normals, GLuint texture){
+void drawTable(std::vector< glm::vec3 > vertices, std::vector< glm::vec2 > uvs, std::vector< glm::vec3 > normals, GLuint texture, bool applyTextures){
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    if (applyTextures){
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture);
+    }
     glPushMatrix();
 
     glTranslatef(-2.67,0.53,-0.54);
@@ -288,7 +293,8 @@ void drawTable(std::vector< glm::vec3 > vertices, std::vector< glm::vec2 > uvs, 
 
     glEnd();
     glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
+    if (applyTextures)
+        glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -322,7 +328,7 @@ void camOnTopOfCue(float cueRotAng1, float cueRotAng2, Ball* whiteBall){
     gluLookAt(camPosX, camPosY, camPosZ, whiteBall->getPosX(), whiteBall->getPosY(), whiteBall->getPosZ(), 0, 1, 0);
 }
 
-void drawRoom(GLuint floorTexture, GLuint wallTexture){
+void drawRoom(GLuint floorTexture, GLuint wallTexture, bool applyTextures){
     int roomLength = 20;
     int roomWidth = 15;
     int roomHeight = 20;
@@ -332,9 +338,10 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
 
     glColor3ub(181, 150, 97);
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, floorTexture);
-
+    if (applyTextures){
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, floorTexture);
+    }
     // Floor
 
     glBegin(GL_QUADS);
@@ -349,7 +356,8 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
     glVertex3f(-roomLength, roomFloor, roomWidth);
     glEnd();
 
-    glBindTexture(GL_TEXTURE_2D, wallTexture);
+    if (applyTextures)
+        glBindTexture(GL_TEXTURE_2D, wallTexture);
 
     // Ceiling
     glBegin(GL_QUADS);
@@ -407,7 +415,8 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture){
     glVertex3f(-roomLength, roomFloor, roomWidth);
     glEnd();
 
-    glDisable(GL_TEXTURE_2D);
+    if (applyTextures)
+        glDisable(GL_TEXTURE_2D);
 }
 
 void initializeSDL(){
@@ -493,7 +502,7 @@ int main(int argc, char *argv[]) {
     bool quit = false;
     bool pause = false;
     bool wireframe = false;
-    bool applyTextures = false;
+    bool applyTextures = true;
     bool slowMotion = false;
     bool flatShading = false;
     auto lastFrameTime = clock();
@@ -514,9 +523,6 @@ int main(int argc, char *argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
-
-
-
 
 
         //LIGHTING
@@ -573,9 +579,9 @@ int main(int argc, char *argv[]) {
             camOnTopOfCue(cueRotAng1, cueRotAng2, balls[0]);
 
         // Draw objects and apply physics
-        drawRoom(floorTexture, wallTexture);
-        drawBalls(balls, ballTextures);
-        drawTable(vertices, uvs, normals, tableTexture);
+        drawRoom(floorTexture, wallTexture, applyTextures);
+        drawBalls(balls, ballTextures, applyTextures);
+        drawTable(vertices, uvs, normals, tableTexture, applyTextures);
         if (ballsNotMoving(balls))
            drawCue(100, 0.04, cueLength, balls[0], cueRotAng1, cueRotAng2, strength);
         if (!pause){
@@ -635,9 +641,10 @@ int main(int argc, char *argv[]) {
             case SDL_QUIT:
                 quit = true;
                 break;
-            case SDL_KEYDOWN:{
+
+            case SDL_KEYUP:{
                 switch(event.key.keysym.sym){
-                case SDLK_ESCAPE:
+                    case SDLK_ESCAPE:
                     quit = true;
                     break;
                 case SDLK_q:
@@ -661,7 +668,7 @@ int main(int argc, char *argv[]) {
                         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
                     wireframe = !wireframe;
                     break;
-                case SDLK_b:
+                case SDLK_t:
                     applyTextures = !applyTextures;
                     break;
                 case SDLK_c:
@@ -671,6 +678,23 @@ int main(int argc, char *argv[]) {
                         glShadeModel(GL_FLAT);
                     flatShading = !flatShading;
                     break;
+                case SDLK_l:
+                    lightColor++;
+                    if (lightColor > 3)
+                        lightColor = 0;
+                    break;
+                case SDLK_k:
+                    lightPosition++;
+                    if (lightPosition > 1)
+                        lightPosition = 0;
+                    break;
+                default:
+                    break;
+                }
+            }
+            case SDL_KEYDOWN:{
+                switch(event.key.keysym.sym){
+
                 case SDLK_s:{
                     if (viewMode == 0){
                         camRad -= .05;
@@ -683,16 +707,6 @@ int main(int argc, char *argv[]) {
                         camRad += .05;
                     updateCam(camX, camY, camZ, camAngB, camAngA, camRad);
                     }
-                    break;
-                case SDLK_l:
-                    lightColor++;
-                    if (lightColor > 3)
-                        lightColor = 0;
-                    break;
-                case SDLK_k:
-                    lightPosition++;
-                    if (lightPosition > 1)
-                        lightPosition = 0;
                     break;
                 default:
                     break;
