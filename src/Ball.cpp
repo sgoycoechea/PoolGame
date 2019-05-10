@@ -84,6 +84,16 @@ void Ball::checkTableCollision(float tableLength, float tableWidth){
     }
 }
 
+bool Ball::hasSameDirection(float rotX, float rotZ){
+
+    Rotation* lastRotation = (Rotation*)rotations.back();
+
+    bool res = lastRotation->getDirection()->getX() - rotX < 0.01 && lastRotation->getDirection()->getX() - rotX > -0.01
+                && lastRotation->getDirection()->getZ() - rotZ < 0.01 && lastRotation->getDirection()->getZ() - rotZ > -0.01;
+
+    return res;
+}
+
 void Ball::applyRotation(double distanceMoved){
 
     double circumference = 2 * M_PI * rad;
@@ -96,10 +106,11 @@ void Ball::applyRotation(double distanceMoved){
         float rotZ = -velX / magnitude;
         float rotAng = distanceMoved / circumference * 180;
 
-        Rotation* lastRotation = (Rotation*)rotations.back();
+
 
         // If the last rotation had the same direction
-        if (rotations.size() > 0 && ((int)(lastRotation->getDirection()->getX() - rotX)  == 0) && ((int)(lastRotation->getDirection()->getY() - rotY) == 0) && ((int)(lastRotation->getDirection()->getZ() - rotZ) == 0)){
+        if (rotations.size() > 0 && hasSameDirection(rotX, rotZ)){
+            Rotation* lastRotation = (Rotation*)rotations.back();
             lastRotation->setAngle(lastRotation->getAngle() + rotAng);
         }
         else{

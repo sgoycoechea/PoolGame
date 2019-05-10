@@ -26,6 +26,7 @@ class Ball{
         void checkTableCollision(float, float);
         void applyRotation(double);
         void decreaseVelocity(double);
+        bool hasSameDirection(float, float);
 
     public:
         Ball(double, double, double, double, double, Color*, bool);
