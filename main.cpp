@@ -261,9 +261,9 @@ void drawBalls(Ball** balls, GLuint* textures){
     int i = 0;
     if (balls[0]->isInHole() && ballsNotMoving(balls))
         balls[0]->setInHole(false);
-    balls[0]->draw(50,50,-1);
+    balls[0]->draw(15,15,-1);
     for (int i = 1; i < 16; i++){
-        balls[i]->draw(50,50, textures[i - 1]);
+        balls[i]->draw(15,15, textures[i - 1]);
     }
 }
 
@@ -492,11 +492,12 @@ int main(int argc, char *argv[]) {
     int viewMode = 0;
     bool quit = false;
     bool pause = false;
+    bool wireframe = false;
+    bool applyTextures = false;
+    bool slowMotion = false;
+    bool flatShading = false;
     auto lastFrameTime = clock();
 
-    //WIREFRAME OPTIONS
-    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); //WIREFRAME ON
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); //WIREFRAME OFF
 
 
     do{
@@ -506,6 +507,8 @@ int main(int argc, char *argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
+
+
 
 
 
@@ -539,8 +542,6 @@ int main(int argc, char *argv[]) {
 
         glPopMatrix();
 
-
-
         // Set camera position
         if (viewMode == 0)
             gluLookAt(camX, camY, -camZ, 0, 0, 0, 0, 1, 0);
@@ -557,7 +558,10 @@ int main(int argc, char *argv[]) {
            drawCue(100, 0.04, cueLength, balls[0], cueRotAng1, cueRotAng2, strength);
         if (!pause){
             applyCollisions(balls, ballRad, colliding);
-            moveBalls(balls, frameTime / 40, tableLength, tableWidth);
+            if (slowMotion)
+                moveBalls(balls, frameTime / 120, tableLength, tableWidth);
+            else
+                moveBalls(balls, frameTime / 40, tableLength, tableWidth);
         }
 
         // Process events
@@ -583,7 +587,6 @@ int main(int argc, char *argv[]) {
                 break;
 
             case SDL_MOUSEMOTION:
-
                 // Move cam
                 if (moveCam && viewMode == 0){
                     if (event.motion.yrel < 0 && camAngB < 80 )
@@ -626,6 +629,26 @@ int main(int argc, char *argv[]) {
                 case SDLK_p:
                     pause = !pause;
                     break;
+                case SDLK_m:
+                    slowMotion = !slowMotion;
+                    break;
+                case SDLK_n:
+                    if (wireframe)
+                        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    else
+                        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                    wireframe = !wireframe;
+                    break;
+                case SDLK_b:
+                    applyTextures = !applyTextures;
+                    break;
+                case SDLK_c:
+                    if (flatShading)
+                        glShadeModel(GL_SMOOTH);
+                    else
+                        glShadeModel(GL_FLAT);
+                    flatShading = !flatShading;
+                    break;
                 case SDLK_s:{
                     if (viewMode == 0){
                         camRad -= .05;
@@ -650,11 +673,11 @@ int main(int argc, char *argv[]) {
         }
         SDL_GL_SwapBuffers();
 
-        // Force 60fps cap
+        // Force 30fps cap
         currentTime = clock();
         frameTime = (float)(currentTime - lastFrameTime);
-        //if (frameTime < 17)
-        //    std::this_thread::sleep_for(std::chrono::milliseconds((int)(17- frameTime)));
+        if (frameTime < 33.3)
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(33.3 - frameTime)));
 
 
     }while(!quit);

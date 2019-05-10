@@ -203,7 +203,7 @@ void Ball::draw(float lats, float longs, GLuint texture) {
     }
 
     // To fix texture initial position
-    glRotatef(90,0,1,0);
+    glRotatef(110,0,1,0);
     glRotatef(-90,1,0,0);
 
     // Draw sphere
