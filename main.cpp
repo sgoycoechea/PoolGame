@@ -581,7 +581,7 @@ int main(int argc, char *argv[]) {
         drawBalls(balls, ballTextures, applyTextures);
         drawTable(vertices, uvs, normals, tableTexture, applyTextures);
         if (ballsNotMoving(balls))
-           drawCue(100, 0.04, cueLength, balls[0], cueRotAng1, cueRotAng2, strength);
+           drawCue(10, 0.04, cueLength, balls[0], cueRotAng1, cueRotAng2, strength);
         if (!pause){
             applyCollisions(balls, ballRad, colliding);
             if (slowMotion)
