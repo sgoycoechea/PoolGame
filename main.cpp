@@ -450,6 +450,52 @@ bool** getCollisionMatrix(){
     return colliding;
 }
 
+void setLighting(float lightPositionX, float lightPositionZ, int lightColor){
+
+    float light1 = 1.0f;
+    float light2 = 1.0f;
+    float light3 = 1.0f;
+    float light4 = 1.0f;
+    float lightPos = 1.0f;
+
+    if(lightColor == 0){
+        light1 = 1.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
+     }else if(lightColor == 1 ){
+        light1 = 4.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
+     }else if(lightColor == 2 ){
+        light1 = 1.0f; light2 = 4.0f; light3 = 1.0f; light4 = 1.0f;
+     }else if(lightColor == 3 ) {
+        light1 = 1.0f; light2 = 1.0f; light3 = 4.0f; light4 = 1.0f;
+     };
+
+    glPushMatrix();
+
+    GLfloat position[] = {lightPositionX, 5, lightPositionZ, 1};  // light spot
+    GLfloat ambient[]  = {light1/3, light2/3, light3/3, light4/3};
+    GLfloat specular[]  = {light1*2, light2*2, light3*2, light4*2};
+    GLfloat diffuse[]  = {light1*2, light2*2, light3*2, light4*2};
+    //GLfloat diffuse[]    = {1.0f, 1.0f, 1.0f, 1.0f};
+    //GLfloat specular[] = {1.0f, 1.0f, 1.0f, 0.0f};
+    GLfloat direction[] = {0, -1, 0};
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0); // habilita la luz 0
+
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, direction); //HACE ALGO?
+
+    //GLfloat red_light_diffuse[] = {1.0, 0.0, 0.0, 1.0};
+    //glLightfv(GL_LIGHT0, GL_DIFFUSE, red_light_diffuse);
+
+    //TEXUTRA CON LUCES
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glPopMatrix();
+}
+
 int main(int argc, char *argv[]) {
 
     // Initialize viewMode 0 camera
@@ -507,13 +553,8 @@ int main(int argc, char *argv[]) {
     bool flatShading = false;
     auto lastFrameTime = clock();
     int lightColor = 0;
-    int lightPosition = 0;
-    float light1 = 1.0f;
-    float light2 = 1.0f;
-    float light3 = 1.0f;
-    float light4 = 1.0f;
-    float lightPos = 1.0f;
-
+    float lightPositionX = 0;
+    float lightPositionZ = 0;
 
 
     do{
@@ -524,52 +565,6 @@ int main(int argc, char *argv[]) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
 
-
-        //LIGHTING
-
-        glPushMatrix();
-
-
-
-        GLfloat red_light_diffuse[] = {1.0, 0.0, 0.0, 1.0};
-        GLfloat position[] = {10.0f, 10.0f, 10.0f, lightPos};  // light spot
-        GLfloat ambient[]  = {light1, light2, light3, light4};
-        GLfloat diffuse[]    = {1.0f, 1.0f, 1.0f, 1.0f};
-        GLfloat specular[] = {1.0f, 1.0f, 1.0f, 0.0f};
-        GLfloat direction[] = {0.0f, 0.0f, -1.0f};
-
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0); // habilita la luz 0
-
-
-         if(lightColor == 0){
-            light1 = 1.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
-         }else if(lightColor == 1 ){
-            light1 = 4.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
-         }else if(lightColor == 2 ){
-            light1 = 1.0f; light2 = 4.0f; light3 = 1.0f; light4 = 1.0f;
-         }else if(lightColor == 3 ) {
-            light1 = 1.0f; light2 = 1.0f; light3 = 4.0f; light4 = 1.0f;
-         };
-
-         if(lightPosition == 0)
-                lightPos = 1.0f;
-         else lightPos = 0.0f;
-
-        glLightfv(GL_LIGHT0, GL_POSITION, position);
-        glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, direction); //HACE ALGO?
-
-
-        //glLightfv(GL_LIGHT0, GL_DIFFUSE, red_light_diffuse);
-
-        //TEXUTRA CON LUCES
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-        glPopMatrix();
-
         // Set camera position
         if (viewMode == 0)
             gluLookAt(camX, camY, -camZ, 0, 0, 0, 0, 1, 0);
@@ -577,6 +572,8 @@ int main(int argc, char *argv[]) {
             gluLookAt(0, 7, 0, 0, 0, 0, 0, 0, -1);
         else
             camOnTopOfCue(cueRotAng1, cueRotAng2, balls[0]);
+
+        setLighting(lightPositionX, lightPositionZ, lightColor);
 
         // Draw objects and apply physics
         drawRoom(floorTexture, wallTexture, applyTextures);
@@ -683,11 +680,6 @@ int main(int argc, char *argv[]) {
                     if (lightColor > 3)
                         lightColor = 0;
                     break;
-                case SDLK_k:
-                    lightPosition++;
-                    if (lightPosition > 1)
-                        lightPosition = 0;
-                    break;
                 default:
                     break;
                 }
@@ -708,6 +700,23 @@ int main(int argc, char *argv[]) {
                     updateCam(camX, camY, camZ, camAngB, camAngA, camRad);
                     }
                     break;
+                case SDLK_DOWN:
+                    if (lightPositionX > -5)
+                        lightPositionX -= .5;
+                    break;
+                case SDLK_UP:
+                    if (lightPositionX < 5)
+                        lightPositionX += .5;
+                    break;
+                case SDLK_RIGHT:
+                    if (lightPositionZ < 5)
+                        lightPositionZ += .5;
+                    break;
+                case SDLK_LEFT:
+                    if (lightPositionZ > -5)
+                        lightPositionZ -= .5;
+                    break;
+
                 default:
                     break;
                 }
