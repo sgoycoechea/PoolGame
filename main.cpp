@@ -504,7 +504,7 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
     float green = 255;
     float strProportion = (strength - 4.0) / 16.0;
 
-    if (strProportion < 0.5){
+    if (strProportion <= 0.5){
         red = 255 * strProportion * 2;
     }
     else{
@@ -520,7 +520,6 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-
 
     glRasterPos2f(0.3, 0.96);
     string timeLabel = "Time: ";
@@ -542,9 +541,7 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel2[i]);
 
     glBegin(GL_QUADS);
-    // Cue strength rectangle
-
-    glColor3ub(red, green, 0);
+    glColor3ub(red, green, 20);
     glVertex2f(0.8, 0.94);
     glVertex2f(0.8, 0.97);
     glVertex2f(0.81 + strProportion * 0.1, 0.97);
