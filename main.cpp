@@ -509,7 +509,7 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
     }
     else{
         red = 255;
-        green = 255 * (1 - strProportion * 2);
+        green = 255 * (1 - strProportion) * 2;
     }
 
     // Draw HUD
