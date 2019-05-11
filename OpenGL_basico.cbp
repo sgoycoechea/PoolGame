@@ -37,6 +37,7 @@
 			<Add directory="FreeImage" />
 			<Add directory="../glm" />
 			<Add directory="glm" />
+			<Add directory="glut-3.7.6" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="FreeImage" />
@@ -48,6 +49,7 @@
 			<Add library="SDL-1.2.15/lib/libSDLmain.a" />
 			<Add library="SDL-1.2.15/lib/libSDL.dll.a" />
 			<Add library="FreeImage/FreeImage.lib" />
+			<Add library="glut-3.7.6/glut32.lib" />
 			<Add directory="SDL-1.2.15/lib" />
 			<Add directory="FreeImage" />
 		</Linker>

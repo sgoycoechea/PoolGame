@@ -111,9 +111,29 @@ void drawCue(int numSteps, float radius, float hl, Ball* whiteBall, float cueRot
     glPopMatrix();
 }
 
-void moveBalls(Ball** balls, float time, float tableLength, float tableWidth){
-    for (int i = 0; i < 16; i++)
-        balls[i]->updatePosAndVel(time, tableLength, tableWidth, balls);
+bool moveBalls(Ball** balls, float time, float tableLength, float tableWidth, GLuint* ballTextures, int &scoreStripped, int &scoreSolid){
+
+    bool gameEnded = false;
+    for (int i = 0; i < 16; i++){
+        bool enteredHole = balls[i]->updatePosAndVel(time, tableLength, tableWidth, balls);
+
+        if (enteredHole && !balls[i]->isWhiteBall()){
+
+            writeOutput("\nentro bola: " + to_string(i));
+
+            if (i == 4)
+                gameEnded = true;
+            else if (i < 9)
+                scoreStripped++;
+            else
+                scoreSolid++;
+        }
+    }
+
+    if (scoreStripped == 7 || scoreSolid == 7)
+        gameEnded = true;
+
+    return gameEnded;
 }
 
 void hitBall(Ball* whiteBall, float cueRotAng1, float cueRotAng2, int strength){
@@ -231,19 +251,10 @@ GLuint* loadBallTextures(){
         textures[i-1] = loadTexture(file);
     }
 
-    // Shuffle textures to get random ball positions
-    GLuint blackTexture = textures[7];
-    srand(time(0));
-    random_shuffle(textures, textures + 15);
-
-    // Swap black ball into 8th position
-    int blackPosition = -1;
-    for (int i = 0; i < 15; i++)
-        if (textures[i] == blackTexture)
-            blackPosition = i;
+    // Swap 8th ball into the corresponding position
     GLuint aux = textures[3];
-    textures[3] = textures[blackPosition];
-    textures[blackPosition] = aux;
+    textures[3] = textures[7];
+    textures[7] = aux;
 
     return textures;
 }
@@ -498,7 +509,7 @@ void setLighting(float lightPositionX, float lightPositionZ, int lightColor, boo
     glPopMatrix();
 }
 
-void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
+void drawHUD(int time, int scoreStripped, int scoreSolid, float strength, bool gameEnded){
 
     float red = 0;
     float green = 255;
@@ -521,7 +532,7 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
     glPushMatrix();
     glLoadIdentity();
 
-    glRasterPos2f(0.3, 0.96);
+    glRasterPos2f(0.1, 0.96);
     string timeLabel = "Time: ";
     timeLabel += to_string(time );
     for(int i = 0; i < timeLabel.size(); i++)
@@ -529,16 +540,22 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
 
     string scoreLabel1 = "Stripped: " + to_string(scoreStripped);
     string scoreLabel2 = "Solid: " + to_string(scoreSolid);
+    string endGameLabel = "Game finished!";
 
 
-    glRasterPos2f(0.4, 0.96);
+    glRasterPos2f(0.25, 0.96);
     for(int i = 0; i < scoreLabel1.size(); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel1[i]);
 
-
-    glRasterPos2f(0.5, 0.96);
+    glRasterPos2f(0.35, 0.96);
     for(int i = 0; i < scoreLabel2.size(); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel2[i]);
+
+    if (gameEnded){
+        glRasterPos2f(0.5, 0.96);
+        for(int i = 0; i < endGameLabel.size(); i++)
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, endGameLabel[i]);
+    }
 
     glBegin(GL_QUADS);
     glColor3ub(red, green, 20);
@@ -631,7 +648,7 @@ int main(int argc, char *argv[]) {
     int scoreSolid = 0;
     float lightPositionX = 0;
     float lightPositionZ = 0;
-
+    bool gameEnded = false;
 
     do{
         auto currentTime = clock();
@@ -657,15 +674,15 @@ int main(int argc, char *argv[]) {
         drawTable(vertices, uvs, normals, tableTexture, applyTextures);
         if (ballsNotMoving(balls))
            drawCue(10, 0.04, cueLength, balls[0], cueRotAng1, cueRotAng2, strength);
-        if (!pause){
+        if (!pause && !gameEnded){
             applyCollisions(balls, ballRad, colliding);
             if (slowMotion)
-                moveBalls(balls, frameTime / 120, tableLength, tableWidth);
+                gameEnded = moveBalls(balls, frameTime / 120, tableLength, tableWidth, ballTextures, scoreStripped, scoreSolid);
             else
-                moveBalls(balls, frameTime / 40, tableLength, tableWidth);
+                gameEnded = moveBalls(balls, frameTime / 40, tableLength, tableWidth, ballTextures, scoreStripped, scoreSolid);
         }
 
-        drawHUD(currentTime / 1000, scoreStripped, scoreSolid, strength);
+        drawHUD(currentTime / 1000, scoreStripped, scoreSolid, strength, gameEnded);
 
 
         // Process events

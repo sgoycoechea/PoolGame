@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Ball::Ball(double x, double y, double z, double rad, double mass, Color* color, bool isWhiteBall){
+Ball::Ball(double x, double y, double z, double rad, double mass, Color* color, bool isWhite){
     this->posX = x;
     this->posY = y;
     this->posZ = z;
@@ -18,7 +18,11 @@ Ball::Ball(double x, double y, double z, double rad, double mass, Color* color, 
     this->velZ = 0;
     this->color = color;
     this->inHole = false;
-    this->isWhiteBall = isWhiteBall;
+    this->isWhite = isWhite;
+}
+
+bool Ball::isWhiteBall(){
+    return isWhite;
 }
 
 void Ball::setVelocity(double x, double y, double z){
@@ -44,7 +48,7 @@ bool Ball::checkEntersHole(float tableLength, float tableWidth){
         velY = 0;
         velZ = 0;
 
-        if (isWhiteBall){
+        if (isWhite){
             posX = -2;
             posZ = 0;
         }
@@ -140,12 +144,12 @@ void Ball::decreaseVelocity(double time){
     }
 }
 
-void Ball::updatePosAndVel(double time, double tableLength, double tableWidth, Ball** balls){
+bool Ball::updatePosAndVel(double time, double tableLength, double tableWidth, Ball** balls){
 
     double posFactor = time / 100;
 
-    if (inHole) return;
-    if (checkEntersHole(tableLength, tableWidth)) return;
+    if (inHole) return false;
+    if (checkEntersHole(tableLength, tableWidth)) return true;
 
     checkTableCollision(tableLength, tableWidth);
 
@@ -160,6 +164,8 @@ void Ball::updatePosAndVel(double time, double tableLength, double tableWidth, B
     applyRotation(distanceMoved);
 
     decreaseVelocity(time);
+
+    return false;
 }
 
 double Ball::getPosX(){
