@@ -18,6 +18,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <glm/glm.hpp>
+#include <glut.h>
 
 #define _USE_MATH_DEFINES
 #define FPS 60
@@ -497,6 +498,81 @@ void setLighting(float lightPositionX, float lightPositionZ, int lightColor, boo
     glPopMatrix();
 }
 
+void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
+
+    float red = 0;
+    float green = 255;
+    float strProportion = (strength - 4.0) / 16.0;
+
+    if (strProportion < 0.5){
+        red = 255 * strProportion * 2;
+    }
+    else{
+        red = 255;
+        green = 255 * (1 - strProportion * 2);
+    }
+
+    // Draw HUD
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0.0, 1.0, 1.0, 0.0);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+
+    glRasterPos2f(0.3, 0.96);
+    string timeLabel = "Time: ";
+    timeLabel += to_string(time );
+    for(int i = 0; i < timeLabel.size(); i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, timeLabel[i]);
+
+    string scoreLabel1 = "Stripped: " + to_string(scoreStripped);
+    string scoreLabel2 = "Solid: " + to_string(scoreSolid);
+
+
+    glRasterPos2f(0.4, 0.96);
+    for(int i = 0; i < scoreLabel1.size(); i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel1[i]);
+
+
+    glRasterPos2f(0.5, 0.96);
+    for(int i = 0; i < scoreLabel2.size(); i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel2[i]);
+
+    glBegin(GL_QUADS);
+    // Cue strength rectangle
+
+    glColor3ub(red, green, 0);
+    glVertex2f(0.8, 0.94);
+    glVertex2f(0.8, 0.97);
+    glVertex2f(0.81 + strProportion * 0.1, 0.97);
+    glVertex2f(0.81 + strProportion * 0.1, 0.94);
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(0.8, 0.94);
+    glVertex2f(0.8, 0.97);
+    glVertex2f(0.91, 0.97);
+    glVertex2f(0.91, 0.94);
+    glVertex2f(0.8, 0.94);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(2.0f, 2.0f, 2.0f);
+    glVertex2f(0, 0.9);
+    glVertex2f(0, 1);
+    glVertex2f(1, 1);
+    glVertex2f(1, 0.9);
+    glEnd();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
+
 int main(int argc, char *argv[]) {
 
     // Initialize viewMode 0 camera
@@ -554,6 +630,8 @@ int main(int argc, char *argv[]) {
     bool flatShading = false;
     auto lastFrameTime = clock();
     int lightColor = 0;
+    int scoreStripped = 0;
+    int scoreSolid = 0;
     float lightPositionX = 0;
     float lightPositionZ = 0;
 
@@ -589,6 +667,9 @@ int main(int argc, char *argv[]) {
             else
                 moveBalls(balls, frameTime / 40, tableLength, tableWidth);
         }
+
+        drawHUD(currentTime / 1000, scoreStripped, scoreSolid, strength);
+
 
         // Process events
         int xm,ym;

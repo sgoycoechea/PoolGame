@@ -2136,7 +2136,7 @@
 	<math.h>
 	"SDL/SDL_opengl.h"
 
-1557371381 source:c:\users\santiago\desktop\poolgame\main.cpp
+1557608699 source:c:\users\santiago\desktop\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -2157,6 +2157,7 @@
 	<cstdio>
 	<cstdlib>
 	<glm/glm.hpp>
+	<glut.h>
 
 1325745840 c:\users\santiago\desktop\poolgame\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
@@ -2368,18 +2369,19 @@
 
 1557002810 c:\users\santiago\desktop\poolgame\include\point.h
 
-1557370006 c:\users\santiago\desktop\poolgame\include\ball.h
+1557529697 c:\users\santiago\desktop\poolgame\include\ball.h
 	"Color.h"
 	"Point.h"
 	"SDL/SDL_opengl.h"
 	<vector>
 	"Rotation.h"
 
-1557370025 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
+1557583032 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
 	"../include/Ball.h"
 	"../include/Rotation.h"
 	<math.h>
 	"SDL/SDL_opengl.h"
+	<fstream>
 
 1556731650 source:c:\users\santiago\desktop\poolgame\src\color.cpp
 	"../include/Color.h"
@@ -4922,4 +4924,30 @@
 	<cstring>
 	<glm/glm.hpp>
 	"../include/objloader.h"
+
+976692172 c:\users\santiago\desktop\poolgame\glut-3.7.6\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1426360528 c:\users\santiago\desktop\poolgame\freeglut\include\gl\glut.h
+	"freeglut_std.h"
+
+1426360528 c:\users\santiago\desktop\poolgame\freeglut\include\gl\freeglut_std.h
+	<windows.h>
+	<EGL/egl.h>
+	<GLES/gl.h>
+	<GLES2/gl2.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1426360528 c:\users\santiago\desktop\poolgame\freeglut\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1426360528 c:\users\santiago\desktop\poolgame\freeglut\include\gl\freeglut_ext.h
+	<stdarg.h>
 
