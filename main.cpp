@@ -548,6 +548,8 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
     glVertex2f(0.81 + strProportion * 0.1, 0.94);
     glEnd();
 
+
+
     glBegin(GL_LINE_STRIP);
     glVertex2f(0.8, 0.94);
     glVertex2f(0.8, 0.97);
@@ -569,6 +571,51 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength){
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
 }
+
+
+void drawMenu(bool showMenu, GLuint helpTexture){
+    if(showMenu){
+        // Draw Menu
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, helpTexture);
+
+
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        gluOrtho2D(0.0, 1.0, 1.0, 0.0);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+
+
+
+        glBegin(GL_QUADS);
+        glColor3f(255, 255, 255);
+        glTexCoord2f(0,1);
+        glVertex2f(0.03 , 0.05);
+        glTexCoord2f(0, 0);
+        glVertex2f(0.03, 0.6);
+        glTexCoord2f(1, 0);
+        glVertex2f(0.3, 0.6);
+        glTexCoord2f(1, 1);
+        glVertex2f(0.3, 0.05);
+        glEnd();
+
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, helpTexture);
+
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+
+        glDisable(GL_TEXTURE_2D);
+    }
+}
+
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -597,6 +644,7 @@ int main(int argc, char *argv[]) {
     GLuint tableTexture = loadTexture("resources/PoolTable.jpg");
     GLuint floorTexture = loadTexture("resources/floor.jpg");
     GLuint wallTexture = loadTexture("resources/wall.jpg");
+    GLuint helpTexture = loadTexture("resources/help.jpg");
     std::vector< glm::vec3 > vertices, normals;
     std::vector< glm::vec2 > uvs;
     loadOBJ("resources/PoolTable.obj", vertices, uvs, normals);
@@ -631,6 +679,7 @@ int main(int argc, char *argv[]) {
     int scoreSolid = 0;
     float lightPositionX = 0;
     float lightPositionZ = 0;
+    bool showMenu = false;
 
 
     do{
@@ -666,7 +715,7 @@ int main(int argc, char *argv[]) {
         }
 
         drawHUD(currentTime / 1000, scoreStripped, scoreSolid, strength);
-
+        drawMenu(showMenu, helpTexture);
 
         // Process events
         int xm,ym;
@@ -758,6 +807,9 @@ int main(int argc, char *argv[]) {
                     lightColor++;
                     if (lightColor > 3)
                         lightColor = 0;
+                    break;
+                case SDLK_h:
+                    showMenu = !showMenu;
                     break;
                 default:
                     break;

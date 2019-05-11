@@ -4027,14 +4027,14 @@
 
 1557268651 c:\users\pepes\desktop\compgraf\poolgame\include\point.h
 
-1557454904 source:c:\users\pepes\desktop\compgraf\poolgame\src\ball.cpp
+1557538539 source:c:\users\pepes\desktop\compgraf\poolgame\src\ball.cpp
 	"../include/Ball.h"
 	"../include/Rotation.h"
 	<math.h>
 	"SDL/SDL_opengl.h"
 	<fstream>
 
-1557446318 c:\users\pepes\desktop\compgraf\poolgame\include\ball.h
+1557538539 c:\users\pepes\desktop\compgraf\poolgame\include\ball.h
 	"Color.h"
 	"Point.h"
 	"SDL/SDL_opengl.h"
@@ -4076,7 +4076,7 @@
 	"../include/Point.h"
 	<math.h>
 
-1557457857 source:c:\users\pepes\desktop\compgraf\poolgame\main.cpp
+1557618889 source:c:\users\pepes\desktop\compgraf\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -4097,6 +4097,7 @@
 	<cstdio>
 	<cstdlib>
 	<glm/glm.hpp>
+	<glut.h>
 
 1557268656 c:\users\pepes\desktop\compgraf\poolgame\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
@@ -4950,4 +4951,9 @@
 
 1426360528 c:\users\santiago\desktop\poolgame\freeglut\include\gl\freeglut_ext.h
 	<stdarg.h>
+
+1557612045 c:\users\pepes\desktop\compgraf\poolgame\glut-3.7.6\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
 
