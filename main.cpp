@@ -41,7 +41,6 @@ void updateCam(float &x,float &y, float &z, float x_angle, float y_angle, float 
 
 Ball** initializeBalls(double ballRad, double ballMass, float ballSeparation){
     Ball** balls = new Ball*[16];
-    Color* redColor = new Color(70,10,10);
     Color* whiteColor = new Color(230, 230, 230);
     float height = ballRad;
     float whiteBallDistance = 1.5;
@@ -49,32 +48,31 @@ Ball** initializeBalls(double ballRad, double ballMass, float ballSeparation){
     // White ball
     balls[0] = new Ball(-2, height, 0, ballRad, ballMass, whiteColor, true);
     // First line
-    balls[1] = new Ball(whiteBallDistance, height, 0, ballRad, ballMass, redColor, false);
+    balls[1] = new Ball(whiteBallDistance, height, 0, ballRad, ballMass, whiteColor, false);
     // Second line
-    balls[2] = new Ball(whiteBallDistance + ballSeparation, height, ballRad, ballRad, ballMass, redColor, false);
-    balls[3] = new Ball(whiteBallDistance + ballSeparation, height, -ballRad, ballRad, ballMass, redColor, false);
+    balls[2] = new Ball(whiteBallDistance + ballSeparation, height, ballRad, ballRad, ballMass, whiteColor, false);
+    balls[3] = new Ball(whiteBallDistance + ballSeparation, height, -ballRad, ballRad, ballMass, whiteColor, false);
     // Third line
-    balls[4] = new Ball(whiteBallDistance + ballSeparation * 2, height, 0, ballRad, ballMass, redColor, false);
-    balls[5] = new Ball(whiteBallDistance + ballSeparation * 2, height, ballRad * 2, ballRad, ballMass, redColor, false);
-    balls[6] = new Ball(whiteBallDistance + ballSeparation * 2, height, -ballRad * 2, ballRad, ballMass, redColor, false);
+    balls[4] = new Ball(whiteBallDistance + ballSeparation * 2, height, 0, ballRad, ballMass, whiteColor, false);
+    balls[5] = new Ball(whiteBallDistance + ballSeparation * 2, height, ballRad * 2, ballRad, ballMass, whiteColor, false);
+    balls[6] = new Ball(whiteBallDistance + ballSeparation * 2, height, -ballRad * 2, ballRad, ballMass, whiteColor, false);
     // Forth line
-    balls[7] = new Ball(whiteBallDistance + ballSeparation * 3, height, ballRad, ballRad, ballMass, redColor, false);
-    balls[8] = new Ball(whiteBallDistance + ballSeparation * 3, height, -ballRad, ballRad, ballMass, redColor, false);
-    balls[9] = new Ball(whiteBallDistance + ballSeparation * 3, height, ballRad + ballRad * 2, ballRad, ballMass, redColor, false);
-    balls[10] = new Ball(whiteBallDistance + ballSeparation * 3, height, -ballRad - ballRad * 2, ballRad, ballMass, redColor, false);
+    balls[7] = new Ball(whiteBallDistance + ballSeparation * 3, height, ballRad, ballRad, ballMass, whiteColor, false);
+    balls[8] = new Ball(whiteBallDistance + ballSeparation * 3, height, -ballRad, ballRad, ballMass, whiteColor, false);
+    balls[9] = new Ball(whiteBallDistance + ballSeparation * 3, height, ballRad + ballRad * 2, ballRad, ballMass, whiteColor, false);
+    balls[10] = new Ball(whiteBallDistance + ballSeparation * 3, height, -ballRad - ballRad * 2, ballRad, ballMass, whiteColor, false);
     // Fifth line
-    balls[11] = new Ball(whiteBallDistance + ballSeparation * 4, height, 0, ballRad, ballMass, redColor, false);
-    balls[12] = new Ball(whiteBallDistance + ballSeparation * 4, height, ballRad * 2, ballRad, ballMass, redColor, false);
-    balls[13] = new Ball(whiteBallDistance + ballSeparation * 4, height, ballRad * 4, ballRad, ballMass, redColor, false);
-    balls[14] = new Ball(whiteBallDistance + ballSeparation * 4, height, -ballRad * 2, ballRad, ballMass, redColor, false);
-    balls[15] = new Ball(whiteBallDistance + ballSeparation * 4, height, -ballRad * 4, ballRad, ballMass, redColor, false);
+    balls[11] = new Ball(whiteBallDistance + ballSeparation * 4, height, 0, ballRad, ballMass, whiteColor, false);
+    balls[12] = new Ball(whiteBallDistance + ballSeparation * 4, height, ballRad * 2, ballRad, ballMass, whiteColor, false);
+    balls[13] = new Ball(whiteBallDistance + ballSeparation * 4, height, ballRad * 4, ballRad, ballMass, whiteColor, false);
+    balls[14] = new Ball(whiteBallDistance + ballSeparation * 4, height, -ballRad * 2, ballRad, ballMass, whiteColor, false);
+    balls[15] = new Ball(whiteBallDistance + ballSeparation * 4, height, -ballRad * 4, ballRad, ballMass, whiteColor, false);
 
     return balls;
 }
 
 
 void drawCue(int numSteps, float radius, float hl, Ball* whiteBall, float cueRotAng1, float cueRotAng2, float strength){
-    Color* brownColor = new Color(216, 156, 104);
     float a = 0.0f;
     float step = (2 * M_PI) / (float)numSteps;
     double ballRad = whiteBall->getRad();
@@ -95,7 +93,7 @@ void drawCue(int numSteps, float radius, float hl, Ball* whiteBall, float cueRot
 
     // Draw the cylinder
     glBegin(GL_TRIANGLE_STRIP);
-    glColor3ub(brownColor->getR(), brownColor->getG(), brownColor->getB());
+    glColor3ub(152, 118, 84);
     for (int i = 0; i <= numSteps; i++)
     {
         float x = cos(a) * radius;
@@ -282,6 +280,7 @@ void drawTable(std::vector< glm::vec3 > vertices, std::vector< glm::vec2 > uvs, 
     glScalef(0.035,0.035,0.035);
     glRotatef(90,0,0,1);
     glRotatef(90,0,1,0);
+    glColor3ub(230, 230, 230);
 
     glBegin(GL_QUADS);
 
@@ -336,13 +335,13 @@ void drawRoom(GLuint floorTexture, GLuint wallTexture, bool applyTextures){
     int wallRepeat = 3;
     float roomFloor = -2.49;
 
-    glColor3ub(181, 150, 97);
-
     if (applyTextures){
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, floorTexture);
     }
     // Floor
+
+    glColor3ub(230, 230, 230);
 
     glBegin(GL_QUADS);
     glNormal3f(0,1,0);
@@ -450,47 +449,49 @@ bool** getCollisionMatrix(){
     return colliding;
 }
 
-void setLighting(float lightPositionX, float lightPositionZ, int lightColor){
+void setLighting(float lightPositionX, float lightPositionZ, int lightColor, bool applyTextures){
 
-    float light1 = 1.0f;
-    float light2 = 1.0f;
-    float light3 = 1.0f;
-    float light4 = 1.0f;
-    float lightPos = 1.0f;
+    float lightR = 2.0f;
+    float lightG = 2.0f;
+    float lightB = 2.0f;
 
-    if(lightColor == 0){
-        light1 = 1.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
-     }else if(lightColor == 1 ){
-        light1 = 4.0f; light2 = 1.0f; light3 = 1.0f; light4 = 1.0f;
-     }else if(lightColor == 2 ){
-        light1 = 1.0f; light2 = 4.0f; light3 = 1.0f; light4 = 1.0f;
-     }else if(lightColor == 3 ) {
-        light1 = 1.0f; light2 = 1.0f; light3 = 4.0f; light4 = 1.0f;
-     };
+    if (!applyTextures){
+        lightR = 1.0f;
+        lightG = 1.0f;
+        lightB = 1.0f;
+    }
+
+    if (lightColor == 1)
+        lightR = 8.0f;
+    if (lightColor == 2)
+        lightG = 8.0f;
+    if (lightColor == 3)
+        lightB = 8.0f;
+
+    GLfloat position[] = {lightPositionX, 5, lightPositionZ, 1};
+    GLfloat ambient[]  = {lightR / 10, lightG / 10, lightB / 10, 0.4f};
+    GLfloat specular[]  = {lightR, lightG, lightB, 2.0f};
+    GLfloat diffuse[]  = {lightR, lightG, lightB, 2.0f};
+    GLfloat direction[] = {0, -1, 0};
+
+    GLfloat materialAmbient[] = {.2, .2, .2, 1};
+    GLfloat materialDiffuse[] = {.8, .8, .8, 1};
 
     glPushMatrix();
 
-    GLfloat position[] = {lightPositionX, 5, lightPositionZ, 1};  // light spot
-    GLfloat ambient[]  = {light1/3, light2/3, light3/3, light4/3};
-    GLfloat specular[]  = {light1*2, light2*2, light3*2, light4*2};
-    GLfloat diffuse[]  = {light1*2, light2*2, light3*2, light4*2};
-    //GLfloat diffuse[]    = {1.0f, 1.0f, 1.0f, 1.0f};
-    //GLfloat specular[] = {1.0f, 1.0f, 1.0f, 0.0f};
-    GLfloat direction[] = {0, -1, 0};
-
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0); // habilita la luz 0
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
 
     glLightfv(GL_LIGHT0, GL_POSITION, position);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, direction); //HACE ALGO?
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, direction);
 
-    //GLfloat red_light_diffuse[] = {1.0, 0.0, 0.0, 1.0};
-    //glLightfv(GL_LIGHT0, GL_DIFFUSE, red_light_diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materialAmbient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialDiffuse);
 
-    //TEXUTRA CON LUCES
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     glPopMatrix();
@@ -573,7 +574,7 @@ int main(int argc, char *argv[]) {
         else
             camOnTopOfCue(cueRotAng1, cueRotAng2, balls[0]);
 
-        setLighting(lightPositionX, lightPositionZ, lightColor);
+        setLighting(lightPositionX, lightPositionZ, lightColor, applyTextures);
 
         // Draw objects and apply physics
         drawRoom(floorTexture, wallTexture, applyTextures);
