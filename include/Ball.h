@@ -21,7 +21,7 @@ class Ball{
         Color* color;
         vector<Rotation*> rotations;
         bool inHole;
-        bool isWhiteBall;
+        bool isWhite;
         bool checkEntersHole(float, float);
         void checkTableCollision(float, float);
         void applyRotation(double);
@@ -33,7 +33,7 @@ class Ball{
         void setVelocity(double, double, double);
         void setVelocity(Point*);
         void draw(float, float, GLuint);
-        void updatePosAndVel(double, double, double, Ball**);
+        bool updatePosAndVel(double, double, double, Ball**);
         double getPosX();
         double getPosY();
         double getPosZ();
@@ -45,6 +45,7 @@ class Ball{
         void setPos(Point*);
         bool isInHole();
         void setInHole(bool);
+        bool isWhiteBall();
 };
 
 #endif
