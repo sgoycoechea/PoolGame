@@ -118,9 +118,6 @@ bool moveBalls(Ball** balls, float time, float tableLength, float tableWidth, GL
         bool enteredHole = balls[i]->updatePosAndVel(time, tableLength, tableWidth, balls);
 
         if (enteredHole && !balls[i]->isWhiteBall()){
-
-            writeOutput("\nentro bola: " + to_string(i));
-
             if (i == 4)
                 gameEnded = true;
             else if (i < 9)
