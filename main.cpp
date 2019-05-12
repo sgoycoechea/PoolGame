@@ -333,7 +333,7 @@ void camOnTopOfCue(float cueRotAng1, float cueRotAng2, Ball* whiteBall){
     rotatedZ *= 7 / magnitude;
 
     float camPosX = whiteBall->getPosX() - rotatedX;
-    float camPosY = whiteBall->getPosY() + rotatedY + 3; // Add a constant so the camera is a bit above the cue
+    float camPosY = whiteBall->getPosY() + rotatedY + 2; // Add a constant so the camera is a bit above the cue
     float camPosZ = whiteBall->getPosZ() + rotatedZ;
 
     gluLookAt(camPosX, camPosY, camPosZ, whiteBall->getPosX(), whiteBall->getPosY(), whiteBall->getPosZ(), 0, 1, 0);
@@ -532,28 +532,30 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength, bool g
     glPushMatrix();
     glLoadIdentity();
 
-    glRasterPos2f(0.1, 0.96);
-    string timeLabel = "Time: ";
-    timeLabel += to_string(time );
-    for(int i = 0; i < timeLabel.size(); i++)
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, timeLabel[i]);
+    glDisable(GL_LIGHTING);
 
+    string timeLabel = "Time: " + to_string(time);
     string scoreLabel1 = "Stripped: " + to_string(scoreStripped);
     string scoreLabel2 = "Solid: " + to_string(scoreSolid);
     string endGameLabel = "Game finished!";
+    string helpLabel = "Press H for Help";
 
+
+    glColor3ub(170, 170, 170);
 
     glRasterPos2f(0.25, 0.96);
     for(int i = 0; i < scoreLabel1.size(); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel1[i]);
+
+    glRasterPos2f(0.1, 0.96);
+    for(int i = 0; i < timeLabel.size(); i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, timeLabel[i]);
 
     glRasterPos2f(0.35, 0.96);
     for(int i = 0; i < scoreLabel2.size(); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel2[i]);
 
     glRasterPos2f(0.65, 0.96);
-    string helpLabel = "Press H for Help";
-
     for(int i = 0; i < helpLabel.size(); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, helpLabel[i]);
 
@@ -564,14 +566,12 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength, bool g
     }
 
     glBegin(GL_QUADS);
-    glColor3ub(red, green, 20);
+    glColor3ub(red, green, 0);
     glVertex2f(0.8, 0.94);
     glVertex2f(0.8, 0.97);
     glVertex2f(0.81 + strProportion * 0.1, 0.97);
     glVertex2f(0.81 + strProportion * 0.1, 0.94);
     glEnd();
-
-
 
     glBegin(GL_LINE_STRIP);
     glVertex2f(0.8, 0.94);
@@ -582,7 +582,7 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength, bool g
     glEnd();
 
     glBegin(GL_QUADS);
-    glColor3f(2.0f, 2.0f, 2.0f);
+    glColor3ub(30, 30, 30);
     glVertex2f(0, 0.9);
     glVertex2f(0, 1);
     glVertex2f(1, 1);
@@ -593,6 +593,8 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength, bool g
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
+
+    glEnable(GL_LIGHTING);
 }
 
 
