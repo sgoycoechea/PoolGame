@@ -6,17 +6,8 @@
 #include "include/Point.h"
 #include "include/Ball.h"
 #include "include/objloader.h"
-#include <math.h>
-#include <vector>
-#include <chrono>
-#include <ctime>
-#include <fstream>
 #include <unistd.h>
 #include <thread>
-#include <algorithm>
-#include <string>
-#include <cstdio>
-#include <cstdlib>
 #include <glm/glm.hpp>
 #include <glut.h>
 
@@ -25,14 +16,6 @@
 #define M_PI 3.1415926
 
 using namespace std;
-
-
-void writeOutput(string text){
-    std::ofstream outfile;
-    outfile.open("output.txt", std::ios_base::app);
-    outfile << text;
-}
-
 
 void updateCam(float &x,float &y, float &z, float x_angle, float y_angle, float radius){
     z = cos(y_angle*M_PI/180) * cos(x_angle*M_PI/180) * radius;

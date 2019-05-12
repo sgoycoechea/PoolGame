@@ -1,10 +1,13 @@
 #ifndef BALL_H
 #define BALL_H
+#include "SDL/SDL_opengl.h"
 #include "Color.h"
 #include "Point.h"
-#include "SDL/SDL_opengl.h"
-#include <vector>
 #include "Rotation.h"
+#include <vector>
+#include <math.h>
+
+#define M_PI 3.1415926
 
 using namespace std;
 

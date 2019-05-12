@@ -2136,7 +2136,7 @@
 	<math.h>
 	"SDL/SDL_opengl.h"
 
-1557613996 source:c:\users\santiago\desktop\poolgame\main.cpp
+1557693247 source:c:\users\santiago\desktop\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -2145,17 +2145,8 @@
 	"include/Point.h"
 	"include/Ball.h"
 	"include/objloader.h"
-	<math.h>
-	<vector>
-	<chrono>
-	<ctime>
-	<fstream>
 	<unistd.h>
 	<thread>
-	<algorithm>
-	<string>
-	<cstdio>
-	<cstdlib>
 	<glm/glm.hpp>
 	<glut.h>
 
@@ -2367,28 +2358,25 @@
 
 1556731632 c:\users\santiago\desktop\poolgame\include\color.h
 
-1557002810 c:\users\santiago\desktop\poolgame\include\point.h
+1557693455 c:\users\santiago\desktop\poolgame\include\point.h
+	<math.h>
 
-1557612402 c:\users\santiago\desktop\poolgame\include\ball.h
+1557693432 c:\users\santiago\desktop\poolgame\include\ball.h
+	"SDL/SDL_opengl.h"
 	"Color.h"
 	"Point.h"
-	"SDL/SDL_opengl.h"
-	<vector>
 	"Rotation.h"
-
-1557612416 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
-	"../include/Ball.h"
-	"../include/Rotation.h"
+	<vector>
 	<math.h>
-	"SDL/SDL_opengl.h"
-	<fstream>
+
+1557693428 source:c:\users\santiago\desktop\poolgame\src\ball.cpp
+	"../include/Ball.h"
 
 1556731650 source:c:\users\santiago\desktop\poolgame\src\color.cpp
 	"../include/Color.h"
 
-1557002823 source:c:\users\santiago\desktop\poolgame\src\point.cpp
+1557693452 source:c:\users\santiago\desktop\poolgame\src\point.cpp
 	"../include/Point.h"
-	<math.h>
 
 1557276342 c:\users\santiago\desktop\poolgame\include\rotation.h
 	"../include/Point.h"
@@ -2431,7 +2419,7 @@
 	<vector>
 	<string>
 
-1557367568 source:c:\users\santiago\desktop\poolgame\src\objloader.cpp
+1557693313 source:c:\users\santiago\desktop\poolgame\src\objloader.cpp
 	<vector>
 	<stdio.h>
 	<string>

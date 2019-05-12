@@ -1,9 +1,4 @@
 #include "../include/Ball.h"
-#include "../include/Rotation.h"
-#include <math.h>
-#include "SDL/SDL_opengl.h"
-#define M_PI 3.1415926
-#include <fstream>
 
 using namespace std;
 
