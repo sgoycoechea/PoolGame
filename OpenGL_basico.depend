@@ -4027,14 +4027,14 @@
 
 1557268651 c:\users\pepes\desktop\compgraf\poolgame\include\point.h
 
-1557538539 source:c:\users\pepes\desktop\compgraf\poolgame\src\ball.cpp
+1557619913 source:c:\users\pepes\desktop\compgraf\poolgame\src\ball.cpp
 	"../include/Ball.h"
 	"../include/Rotation.h"
 	<math.h>
 	"SDL/SDL_opengl.h"
 	<fstream>
 
-1557538539 c:\users\pepes\desktop\compgraf\poolgame\include\ball.h
+1557619913 c:\users\pepes\desktop\compgraf\poolgame\include\ball.h
 	"Color.h"
 	"Point.h"
 	"SDL/SDL_opengl.h"
@@ -4076,7 +4076,7 @@
 	"../include/Point.h"
 	<math.h>
 
-1557618889 source:c:\users\pepes\desktop\compgraf\poolgame\main.cpp
+1557619998 source:c:\users\pepes\desktop\compgraf\poolgame\main.cpp
 	<iostream>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"

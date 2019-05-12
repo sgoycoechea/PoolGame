@@ -551,6 +551,12 @@ void drawHUD(int time, int scoreStripped, int scoreSolid, float strength, bool g
     for(int i = 0; i < scoreLabel2.size(); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreLabel2[i]);
 
+    glRasterPos2f(0.65, 0.96);
+    string helpLabel = "Press H for Help";
+
+    for(int i = 0; i < helpLabel.size(); i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, helpLabel[i]);
+
     if (gameEnded){
         glRasterPos2f(0.5, 0.96);
         for(int i = 0; i < endGameLabel.size(); i++)
