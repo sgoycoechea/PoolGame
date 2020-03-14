@@ -14,5 +14,17 @@ The code in the following files is from a 3D mesh model loader downloaded from t
 - src/assimp
 - src/objloader
 
+Features of the game:
 
-No physics engine was used for the project.
+- Position of the light can be moved
+- Color of the light can be changed
+- Textures can be turned ON/OFF
+- Wireframe mode
+- Shade model can be changed between flat and smooth
+- Slow motion mode
+- 30 fps cap
+
+
+**No physics engine was used for the project.**
+
+![](PoolGame.gif)
