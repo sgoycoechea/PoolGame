@@ -2,6 +2,8 @@
 
 This is a billiard game made with C++ and OpenGL. It was made as a two person project for the University course Introduction to Computer Graphics.
 
+The game can be played by downloading the Binaries folder and executing PoolGame.exe
+
 The code we developed is in the following files:
 - main
 - src/Ball
@@ -23,7 +25,6 @@ Features of the game:
 - Shade model can be changed between flat and smooth
 - Slow motion mode
 - 30 fps cap
-
 
 **No physics engine was used for the project.**
 
